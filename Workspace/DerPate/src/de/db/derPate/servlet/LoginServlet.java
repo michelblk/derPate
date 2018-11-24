@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.db.derPate.Constants.Ui.Inputs;
 import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.util.InputVerifyUtil;
@@ -36,8 +38,12 @@ public class LoginServlet extends HttpServlet {
 	 * status code, to let the client know, that the login was not successful).
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	protected void doPost(@Nullable HttpServletRequest request, @Nullable HttpServletResponse response)
 			throws ServletException, IOException {
+		if (request == null || response == null) {
+			return;
+		}
+
 		String username = request.getParameter(Inputs.LOGIN_USERNAME.toString());
 		String password = request.getParameter(Inputs.LOGIN_PASSWORD.toString());
 		String token = request.getParameter(Inputs.LOGIN_TOKEN.toString());

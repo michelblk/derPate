@@ -1,8 +1,5 @@
 package de.db.derPate;
 
-import java.text.DateFormat;
-import java.util.Locale;
-
 import de.db.derPate.util.HashUtil;
 import de.db.derPate.util.SHA256Util;
 
@@ -14,16 +11,6 @@ import de.db.derPate.util.SHA256Util;
  *
  */
 public final class Constants {
-	/**
-	 * This class contains all static attributes that have no relation to a
-	 * specified context
-	 *
-	 */
-	public static final class General {
-		public static final DateFormat DATETIMEFORMAT_READABLE = DateFormat.getDateTimeInstance(DateFormat.DEFAULT,
-				DateFormat.DEFAULT, Locale.getDefault());
-	}
-
 	/**
 	 * This class contains all static attributes related with the login.
 	 */

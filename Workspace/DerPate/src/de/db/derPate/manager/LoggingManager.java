@@ -1,6 +1,7 @@
 package de.db.derPate.manager;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,9 +44,9 @@ public class LoggingManager {
 	 * @param level       The {@link Level} of the log record
 	 * @param description Description for the log record
 	 */
-	public static void log(Level level, String description) {
+	public static void log(@NonNull Level level, @NonNull String description) {
 		Date currentTime = TimeUtil.getCurrentTime();
-		String currentTimeString = TimeUtil.dateToReadableString(currentTime);
+		String currentTimeString = TimeUtil.dateToReadableString(currentTime, Locale.getDefault());
 		String output = currentTimeString + ": " + description;
 		getLogger().log(level, output);
 	}

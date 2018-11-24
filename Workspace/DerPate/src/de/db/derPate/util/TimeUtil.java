@@ -3,11 +3,10 @@ package de.db.derPate.util;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-
-import de.db.derPate.Constants;
 
 /**
  * This util is used to simplify date operations
@@ -30,12 +29,13 @@ public class TimeUtil {
 	/**
 	 * Converts a {@link Date}-Object to a readable String.
 	 *
-	 * @param date {@link Date}
+	 * @param date   {@link Date}
+	 * @param locale {@link Locale}, which determines the date and time format
 	 * @return readable date-{@link String}
 	 */
 	@Nullable
-	public static String dateToReadableString(Date date) {
-		DateFormat dateFormat = Constants.General.DATETIMEFORMAT_READABLE;
+	public static String dateToReadableString(Date date, Locale locale) {
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, locale);
 		return dateFormat.format(date);
 		// TODO exceptions?
 	}

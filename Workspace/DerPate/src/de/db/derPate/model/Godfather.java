@@ -39,7 +39,7 @@ public class Godfather extends UsernamePasswordLogin {
 	 * @param email       Email address
 	 * @param information {@link GodfatherInformation}-Object
 	 */
-	public Godfather(int id, String email, GodfatherInformation information) {
+	public Godfather(int id, @NonNull String email, @NonNull GodfatherInformation information) {
 		super(id);
 		super.setEmail(email);
 		this.setInformation(information);

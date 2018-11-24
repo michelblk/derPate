@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.db.derPate.manager.LoginManager;
 import de.db.derPate.model.LoginUser;
 
@@ -36,8 +38,12 @@ public class LogoutServlet extends HttpServlet {
 	 * redirects to the start page.
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doGet(@Nullable HttpServletRequest request, @Nullable HttpServletResponse response)
 			throws ServletException, IOException {
+		if (request == null || response == null) {
+			return;
+		}
+
 		// get data
 		HttpSession session = request.getSession(true);
 

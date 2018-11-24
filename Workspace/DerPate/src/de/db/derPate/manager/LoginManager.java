@@ -48,15 +48,18 @@ public class LoginManager {
 	 * <b>null</b>, if user was not logged in.
 	 *
 	 * @param session Session of which the {@link LoginUser} should be read from
-	 * @return {@link LoginUser}
+	 * @return {@link LoginUser} or <code>null</code>, if given {@link HttpSession}
+	 *         was null or user was not properly logged in
 	 */
 	@Nullable
-	public LoginUser getUserBySession(HttpSession session) {
+	public LoginUser getUserBySession(@Nullable HttpSession session) {
 		LoginUser user = null;
-		try {
-			user = (LoginUser) session.getAttribute(this.userKey);
-		} catch (IllegalStateException | ClassCastException e) {
-			LoggingManager.log(Level.INFO, "Could not get user due to an session error");
+		if (session != null) {
+			try {
+				user = (LoginUser) session.getAttribute(this.userKey);
+			} catch (IllegalStateException | ClassCastException e) {
+				LoggingManager.log(Level.INFO, "Could not get user due to an session error");
+			}
 		}
 		return user;
 	}
@@ -67,21 +70,25 @@ public class LoginManager {
 	 * @param request {@link HttpServletRequest}
 	 * @param user    {@link LoginUser}
 	 * @return <code>true</code>, if successful; <code>false</code> if an error
-	 *         occurred
+	 *         occurred or given {@link HttpServletRequest} was null
 	 */
-	public boolean login(HttpServletRequest request, LoginUser user) {
-		try {
-			HttpSession session = this.newSession(request); // creates new session to prevent session hijacking
+	public boolean login(@Nullable HttpServletRequest request, @NonNull LoginUser user) {
+		boolean success = false;
 
-			user.removeSecret(); // remove password from user to prevent unwanted use
-			session.setAttribute(this.userKey, user);
-			session.setMaxInactiveInterval(Constants.Login.MAX_INACTIVE_SECONDS);
+		if (request != null) {
+			try {
+				HttpSession session = this.newSession(request); // creates new session to prevent session hijacking
 
-			return true;
-		} catch (IllegalStateException e) {
-			LoggingManager.log(Level.INFO, "Could not login user due to an session error");
-			return false;
+				user.removeSecret(); // remove password from user to prevent unwanted use
+				session.setAttribute(this.userKey, user);
+				session.setMaxInactiveInterval(Constants.Login.MAX_INACTIVE_SECONDS);
+
+				success = true;
+			} catch (IllegalStateException e) {
+				LoggingManager.log(Level.INFO, "Could not login user due to an session error");
+			}
 		}
+		return success;
 	}
 
 	/**
@@ -89,33 +96,41 @@ public class LoginManager {
 	 *
 	 * @param session {@link HttpSession}
 	 * @return <code>true</code>, if user is logged in; <code>false</code>, if user
-	 *         is not
+	 *         is not or given {@link HttpSession} was null
 	 */
-	public boolean isLoggedIn(HttpSession session) {
-		try {
-			return (session.getAttribute(this.userKey) != null); // user is logged in, when session contains an user
-																	// object
-		} catch (IllegalStateException e) {
-			LoggingManager.log(Level.INFO, "Could not read login status out of session");
-			return false;
+	public boolean isLoggedIn(@Nullable HttpSession session) {
+		boolean success = false;
+		if (session != null) {
+			try {
+				success = (session.getAttribute(this.userKey) != null); // user is logged in, when session contains an
+																		// user
+																		// object
+			} catch (IllegalStateException e) {
+				LoggingManager.log(Level.INFO, "Could not read login status out of session");
+			}
 		}
+		return success;
 	}
 
 	/**
 	 * Removes connection between {@link HttpSession} and {@link LoginUser}
 	 *
 	 * @param session HttpSession
-	 * @return <code>true</code>, if successful; <code>false</code>, if not
+	 * @return <code>true</code>, if successful; <code>false</code>, if an error
+	 *         occurred or given {@link HttpSession} was null
 	 */
-	public boolean logout(HttpSession session) {
-		try {
-			session.removeAttribute(this.userKey); // remove user
-			session.invalidate(); // destroy session
-			return true;
-		} catch (IllegalStateException e) {
-			LoggingManager.log(Level.INFO, "Could not logout user due to an session error");
-			return false;
+	public boolean logout(@Nullable HttpSession session) {
+		boolean success = false;
+		if (session != null) {
+			try {
+				session.removeAttribute(this.userKey); // remove user
+				session.invalidate(); // destroy session
+				success = true;
+			} catch (IllegalStateException e) {
+				LoggingManager.log(Level.INFO, "Could not logout user due to an session error");
+			}
 		}
+		return success;
 	}
 
 	/**
@@ -124,13 +139,18 @@ public class LoginManager {
 	 * Caution: All session attributed will be gone after this method was executed!
 	 *
 	 * @param request {@link HttpServletRequest}
-	 * @return new {@link HttpSession}
+	 * @return new {@link HttpSession} or <code>null</code>, if given
+	 *         {@link HttpServletRequest} was null
 	 */
-	private HttpSession newSession(HttpServletRequest request) {
-		HttpSession session = request.getSession(true); // true means, that a new session should be initiated if none
-														// was existent
-		session.invalidate(); // destroy old session
-		session = request.getSession(true); // create new session to prevent session hijacking
-		return session;
+	@Nullable
+	private HttpSession newSession(@Nullable HttpServletRequest request) {
+		HttpSession newSession = null;
+		if (request != null) {
+			HttpSession session = request.getSession(true); // true means, that a new session should be initiated if
+															// none was existent
+			session.invalidate(); // destroy old session
+			newSession = request.getSession(true); // create new session to prevent session hijacking
+		}
+		return newSession;
 	}
 }
