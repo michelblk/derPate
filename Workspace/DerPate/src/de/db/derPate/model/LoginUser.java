@@ -14,7 +14,7 @@ public abstract class LoginUser {
 	}
 
 	/**
-	 * Returns the database id.
+	 * Returns the database id
 	 *
 	 * @return id
 	 */

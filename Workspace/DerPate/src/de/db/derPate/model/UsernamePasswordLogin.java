@@ -14,12 +14,18 @@ import de.db.derPate.manager.LoginManager;
  */
 public abstract class UsernamePasswordLogin extends LoginUser {
 	@NonNull
-	private String email;
+	private String email = "";
 	@Nullable
-	private String password;
+	private String password = null;
 
-	public UsernamePasswordLogin(int id) {
+	public UsernamePasswordLogin(int id, @NonNull String email) {
 		super(id);
+		this.setEmail(email);
+	}
+
+	public UsernamePasswordLogin(int id, @NonNull String email, @Nullable String password) {
+		this(id, email);
+		this.setPassword(password);
 	}
 
 	/**

@@ -12,7 +12,7 @@ import de.db.derPate.manager.LoginManager;
  * @see LoginUser
  */
 public class Trainee extends LoginUser {
-	@NonNull
+	@Nullable
 	private String loginToken;
 	@Nullable
 	private Godfather godfather = null;
@@ -26,7 +26,48 @@ public class Trainee extends LoginUser {
 	 */
 	public Trainee(int id, @NonNull String loginToken, @Nullable Godfather godfather) {
 		super(id);
+		this.setLoginToken(loginToken);
+		this.setGodfather(godfather);
+	}
+
+	/**
+	 * Returns {@link #loginToken}<br>
+	 * Might be <code>null</code>, if {@link #removeSecret()} was called.
+	 *
+	 * @return the loginToken
+	 */
+	@Nullable
+	public String getLoginToken() {
+		return this.loginToken;
+	}
+
+	/**
+	 * Sets the {@link #loginToken}.
+	 *
+	 * @param loginToken the loginToken to set
+	 */
+	private void setLoginToken(@Nullable String loginToken) {
 		this.loginToken = loginToken;
+	}
+
+	/**
+	 * Returns the {@link #godfather}, if {@link Trainee} already selected one.<br>
+	 * Might be <code>null</code>, if {@link Trainee} didn't select a
+	 * {@link Godfather}.
+	 *
+	 * @return the {@link #godfather}
+	 */
+	@Nullable
+	public Godfather getGodfather() {
+		return this.godfather;
+	}
+
+	/**
+	 * Sets the {@link #godfather}.
+	 *
+	 * @param godfather the godfather to set
+	 */
+	public void setGodfather(@Nullable Godfather godfather) {
 		this.godfather = godfather;
 	}
 
@@ -38,6 +79,6 @@ public class Trainee extends LoginUser {
 	 */
 	@Override
 	public void removeSecret() {
-		this.loginToken = null;
+		this.setLoginToken(null);
 	}
 }
