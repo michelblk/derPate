@@ -2,6 +2,8 @@ package de.db.derPate.model;
 
 import javax.servlet.http.HttpSession;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import de.db.derPate.manager.LoginManager;
 
 /**
@@ -15,10 +17,11 @@ import de.db.derPate.manager.LoginManager;
 public class Admin extends UsernamePasswordLogin {
 	/**
 	 * Default constructor
-	 * 
-	 * @param id Database id
+	 *
+	 * @param id    Database id
+	 * @param email Email
 	 */
-	public Admin(int id) {
-		super(id);
+	public Admin(int id, @NonNull String email) {
+		super(id, email);
 	}
 }

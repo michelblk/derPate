@@ -2,7 +2,7 @@ package model;
 
 import org.junit.Before;
 
-class UserTest {
+public class UserTest {
 
 	@Before
 	public void init() {

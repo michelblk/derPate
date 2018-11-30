@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 import de.db.derPate.util.TimeUtil;
 
@@ -30,10 +31,14 @@ public class LoggingManager {
 	 *
 	 * @return {@link Logger}
 	 */
-	@NonNull
+	@Nullable
 	public static Logger getLogger() {
 		if (logger == null) {
-			logger = java.util.logging.Logger.getLogger(LOGGER_NAME);
+			try {
+				logger = java.util.logging.Logger.getLogger(LOGGER_NAME);
+			} catch (NullPointerException e) {
+				System.err.println("Could not get java util logger! Logs will be skipped");
+			}
 		}
 		return logger;
 	}
@@ -44,10 +49,13 @@ public class LoggingManager {
 	 * @param level       The {@link Level} of the log record
 	 * @param description Description for the log record
 	 */
-	public static void log(@NonNull Level level, @NonNull String description) {
+	public static void log(@Nullable Level level, @NonNull String description) {
 		Date currentTime = TimeUtil.getCurrentTime();
 		String currentTimeString = TimeUtil.dateToReadableString(currentTime, Locale.getDefault());
 		String output = currentTimeString + ": " + description;
-		getLogger().log(level, output);
+		Logger logg = getLogger();
+		if (logg != null && level != null) {
+			logg.log(level, output);
+		}
 	}
 }

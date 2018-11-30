@@ -20,6 +20,7 @@ public class TimeUtil {
 	 *
 	 * @return {@link Date}
 	 */
+	@SuppressWarnings("null")
 	@NonNull
 	public static Date getCurrentTime() {
 		Calendar calendar = Calendar.getInstance();

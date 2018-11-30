@@ -9,7 +9,11 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.db.derPate.Constants;
+import de.db.derPate.Usermode;
+import de.db.derPate.model.Admin;
+import de.db.derPate.model.Godfather;
 import de.db.derPate.model.LoginUser;
+import de.db.derPate.model.Trainee;
 
 /**
  * This class is used to read and write login data (see {@link LoginUser}) to
@@ -20,7 +24,9 @@ import de.db.derPate.model.LoginUser;
  * @see LoginUser
  */
 public class LoginManager {
-	private static LoginManager instance = null;
+	@NonNull
+	private static LoginManager instance = new LoginManager();
+	@NonNull
 	private final String userKey;
 
 	/**
@@ -37,9 +43,6 @@ public class LoginManager {
 	 */
 	@NonNull
 	public static LoginManager getInstance() {
-		if (instance == null) {
-			instance = new LoginManager();
-		}
 		return instance;
 	}
 
@@ -78,12 +81,13 @@ public class LoginManager {
 		if (request != null) {
 			try {
 				HttpSession session = this.newSession(request); // creates new session to prevent session hijacking
+				if (session != null) {
+					user.removeSecret(); // remove password from user to prevent unwanted use
+					session.setAttribute(this.userKey, user);
+					session.setMaxInactiveInterval(Constants.Login.MAX_INACTIVE_SECONDS);
 
-				user.removeSecret(); // remove password from user to prevent unwanted use
-				session.setAttribute(this.userKey, user);
-				session.setMaxInactiveInterval(Constants.Login.MAX_INACTIVE_SECONDS);
-
-				success = true;
+					success = true;
+				}
 			} catch (IllegalStateException e) {
 				LoggingManager.log(Level.INFO, "Could not login user due to an session error");
 			}
@@ -110,6 +114,27 @@ public class LoginManager {
 			}
 		}
 		return success;
+	}
+
+	/**
+	 * Returns a {@link Usermode}, depending on the given {@link LoginUser}
+	 *
+	 * @param user the {@link LoginUser}
+	 * @return the {@link Usermode}
+	 */
+	@Nullable
+	public Usermode getUsermode(@NonNull LoginUser user) {
+		Usermode result = null;
+
+		if (user instanceof Admin) {
+			result = Usermode.ADMIN;
+		} else if (user instanceof Godfather) {
+			result = Usermode.GODFATHER;
+		} else if (user instanceof Trainee) {
+			result = Usermode.TRAINEE;
+		}
+
+		return result;
 	}
 
 	/**
