@@ -6,20 +6,14 @@ package de.db.derPate.model;
  * @author MichelBlank
  *
  */
-public abstract class LoginUser {
-	private final int id;
-
-	public LoginUser(int id) {
-		this.id = id;
-	}
-
+public abstract class LoginUser extends Id {
 	/**
-	 * Returns the database id
-	 *
-	 * @return id
+	 * Constructor
+	 * 
+	 * @param id id
 	 */
-	public int getId() {
-		return this.id;
+	public LoginUser(int id) {
+		super(id);
 	}
 
 	/**

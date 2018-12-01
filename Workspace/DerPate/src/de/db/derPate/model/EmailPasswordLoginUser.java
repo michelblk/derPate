@@ -12,18 +12,31 @@ import de.db.derPate.manager.LoginManager;
  * @author MichelBlank
  * @see LoginUser
  */
-public abstract class UsernamePasswordLogin extends LoginUser {
+public abstract class EmailPasswordLoginUser extends LoginUser {
 	@NonNull
 	private String email = "";
 	@Nullable
 	private String password = null;
 
-	public UsernamePasswordLogin(int id, @NonNull String email) {
+	/**
+	 * Constructor used, when object should not be used for login
+	 *
+	 * @param id    id
+	 * @param email email
+	 */
+	public EmailPasswordLoginUser(int id, @NonNull String email) {
 		super(id);
 		this.setEmail(email);
 	}
 
-	public UsernamePasswordLogin(int id, @NonNull String email, @Nullable String password) {
+	/**
+	 * Constructor used, when object is used for login
+	 * 
+	 * @param id       id
+	 * @param email    email
+	 * @param password hashed password
+	 */
+	public EmailPasswordLoginUser(int id, @NonNull String email, @Nullable String password) {
 		this(id, email);
 		this.setPassword(password);
 	}

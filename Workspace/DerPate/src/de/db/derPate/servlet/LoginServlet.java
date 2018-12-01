@@ -28,6 +28,9 @@ import de.db.derPate.util.InputVerifyUtil;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Constructor
+	 */
 	public LoginServlet() {
 		super();
 	}
@@ -44,11 +47,11 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 
-		String username = request.getParameter(Inputs.LOGIN_USERNAME.toString());
+		String email = request.getParameter(Inputs.LOGIN_EMAIL.toString());
 		String password = request.getParameter(Inputs.LOGIN_PASSWORD.toString());
 		String token = request.getParameter(Inputs.LOGIN_TOKEN.toString());
 
-		if (InputVerifyUtil.isNotEmpty(username) && InputVerifyUtil.isNotEmpty(password)) {
+		if (InputVerifyUtil.isNotEmpty(email) && InputVerifyUtil.isNotEmpty(password)) {
 			// username and password detected
 			response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 		} else if (InputVerifyUtil.isNotEmpty(token)) {

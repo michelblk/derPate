@@ -11,7 +11,7 @@ import de.db.derPate.manager.LoginManager;
  *
  * @author MichelBlank
  */
-public class Godfather extends UsernamePasswordLogin {
+public class Godfather extends EmailPasswordLoginUser {
 	@Nullable
 	private GodfatherInformation information;
 

@@ -1,5 +1,8 @@
 package de.db.derPate;
 
+import de.db.derPate.model.Admin;
+import de.db.derPate.model.Godfather;
+import de.db.derPate.model.Trainee;
 import de.db.derPate.util.HashUtil;
 import de.db.derPate.util.SHA256Util;
 
@@ -15,10 +18,14 @@ public final class Constants {
 	 * This class contains all static attributes related with the login.
 	 */
 	public static final class Login {
-		// hash algorithm
+		/**
+		 * hash algorithm
+		 */
 		public static final HashUtil hashUtil = new SHA256Util();
 
-		// max time the user stays logged in, while inactive
+		/**
+		 * max time the user stays logged in, while inactive
+		 */
 		public static final int MAX_INACTIVE_SECONDS = 600;
 	}
 
@@ -34,7 +41,20 @@ public final class Constants {
 		 * Use {@link Inputs#toString()} to get the name.
 		 */
 		public static enum Inputs {
-			LOGIN_USERNAME("username"), LOGIN_PASSWORD("password"), LOGIN_TOKEN("token");
+			/**
+			 * Inputfield used by {@link Admin}s and {@link Godfather}s to provide their
+			 * email address
+			 */
+			LOGIN_EMAIL("email"),
+			/**
+			 * Inputfield used by {@link Admin}s and {@link Godfather}s to provide their
+			 * password
+			 */
+			LOGIN_PASSWORD("password"),
+			/**
+			 * Inputfield used by {@link Trainee}s to provide their token
+			 */
+			LOGIN_TOKEN("token");
 
 			private final String frontendName;
 
@@ -43,7 +63,7 @@ public final class Constants {
 			}
 
 			/**
-			 * Returns the name of the input field for frontend or backend use.
+			 * Returns the name of the input field for frontend or backend use
 			 */
 			@Override
 			public String toString() {
