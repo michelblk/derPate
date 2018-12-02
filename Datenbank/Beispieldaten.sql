@@ -24,6 +24,6 @@ INSERT INTO `admin`(`Username`, `Password`) VALUES ('Lukas Keller', 'admin');
 INSERT INTO `admin`(`Username`, `Password`) VALUES ('admin', 'admin');
 
 INSERT INTO `godfather`(`Email`, `Password`, `Last_Name`, `First_Name`, `Id_Location`, `Description`, `Picture`, `Id_Teaching_Type`, `Id_Job`, `Hiring_Date`, `Birthday`, `Pick_Text`) 
-	VALUES ('max.mustermann@deutschebahn.com', 'Mustermann', 'Max', '2', 'ölkfdasdkjfakjdsf', ' ', '2', '5', '2016-10-15', '1995-11-11', '069 666666');
+	VALUES ('max.mustermann@deutschebahn.com', '', 'Mustermann', 'Max', '2', 'ölkfdasdkjfakjdsf', ' ', '2', '5', '2016-10-15', '1995-11-11', '069 666666');
 INSERT INTO `godfather`(`Email`, `Password`, `Last_Name`, `First_Name`, `Id_Location`, `Description`, `Picture`, `Id_Teaching_Type`, `Id_Job`, `Hiring_Date`, `Birthday`, `Pick_Text`) 
-	VALUES ('lewis.stoll@deutschebahn.com', 'Stoll', 'Lewis', '1', 'ölaskjdfddlsow3kkdskcnm', ' ', '1', '1', '2017-08-15', '1997-06-16', '938 9374939');
+	VALUES ('lewis.stoll@deutschebahn.com', '', 'Stoll', 'Lewis', '1', 'ölaskjdfddlsow3kkdskcnm', ' ', '1', '1', '2017-08-15', '1997-06-16', '938 9374939');
