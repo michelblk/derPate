@@ -19,9 +19,12 @@ import de.db.derPate.util.TimeUtil;
  * @see Logger
  */
 public class LoggingManager {
-	public static Logger logger;
+	private static Logger logger;
 	private static final String LOGGER_NAME = "derPateLogger";
 
+	/**
+	 * Constructor
+	 */
 	public LoggingManager() {
 
 	}

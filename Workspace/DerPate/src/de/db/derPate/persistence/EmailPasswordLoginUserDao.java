@@ -47,7 +47,7 @@ abstract class EmailPasswordLoginUserDao extends IdDao {
 			Session session = sessionFactory.openSession();
 
 			NaturalIdLoadAccess<? extends DatabaseEntity> loader = session.byNaturalId(this.cls).with(LockOptions.READ);
-			loader = loader.using("email", email);
+			loader = loader.using("email", email); // TODO find better way
 			DatabaseEntity entity = loader.load();
 			result = (T) entity;
 

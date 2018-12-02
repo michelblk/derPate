@@ -21,7 +21,17 @@ public final class Constants {
 		/**
 		 * hash algorithm
 		 */
-		public static final HashUtil hashUtil = new SHA256Util();
+		public static final HashUtil hashUtil = SHA256Util.getInstance();
+
+		/**
+		 * Seperator used to split hash and salt
+		 */
+		public static final String hashSeperator = ".";
+
+		/**
+		 * Length (in bytes) of the salt to use
+		 */
+		public static final int hashSaltLength = 64;
 
 		/**
 		 * max time the user stays logged in, while inactive
