@@ -3,6 +3,7 @@ package de.db.derPate;
 import de.db.derPate.model.Admin;
 import de.db.derPate.model.Godfather;
 import de.db.derPate.model.Trainee;
+import de.db.derPate.util.CSRFPreventionUtil;
 import de.db.derPate.util.HashUtil;
 import de.db.derPate.util.SHA256Util;
 
@@ -14,6 +15,24 @@ import de.db.derPate.util.SHA256Util;
  *
  */
 public final class Constants {
+	/**
+	 * This class contains all static attributes that have influence about the
+	 * security of this application.
+	 */
+	public static final class Security {
+		/**
+		 * The number of tokens that can be generated per session per form, used in the
+		 * {@link CSRFPreventionUtil}. If the number of tokens is exceeded, the oldest
+		 * one will be invalidated.
+		 */
+		public static final int CSRF_MAX_TOKENS = 10;
+		/**
+		 * The time in seconds, a csrf prevention token is valid. This has to be greater
+		 * that the time, the user can be expected to fill in a form.
+		 */
+		public static final int CSRF_TIMEOUT_IN_SECONDS = 10 * 60;
+	}
+
 	/**
 	 * This class contains all static attributes related with the login.
 	 */
