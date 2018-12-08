@@ -15,7 +15,7 @@ public interface HashUtil {
 	 * @param unhashed      unhashed {@link String}
 	 * @param salt          salt to use
 	 * @param pepper        pepper to use
-	 * @param hashseperator character used to seperate salt and hash
+	 * @param hashseperator character used to separate salt and hash
 	 * @return hash as {@link String}
 	 */
 	public String hash(String unhashed, byte[] salt, byte[] pepper, String hashseperator);
@@ -28,7 +28,7 @@ public interface HashUtil {
 	 * @param length        length of the salt to be used. Should be at lest 32
 	 *                      (Bytes).
 	 * @param pepper        pepper to use
-	 * @param hashseperator character used to seperate salt and hash
+	 * @param hashseperator character used to separate salt and hash
 	 * @return hash as {@link String}
 	 */
 	public String hash(String unhashed, int length, byte[] pepper, String hashseperator);
@@ -38,7 +38,7 @@ public interface HashUtil {
 	 *                      should be compared to
 	 * @param hashed        hashed String with salt
 	 * @param pepper        pepper
-	 * @param hashseperator character used to seperate salt and hash
+	 * @param hashseperator character used to separate salt and hash
 	 * @return <code>true</code>, if unhashed {@link String} can be hashed to equal
 	 *         the hashed string;<code>false</code>, if unhashed {@link String} is
 	 *         not equal to what the hashed string formerly was
