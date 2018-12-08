@@ -91,6 +91,17 @@ public class InputVerifyUtil {
 	}
 
 	@Test
+	public void testSentence() {
+		assertFalse(de.db.derPate.util.InputVerifyUtil.isSentence(null));
+		assertFalse(de.db.derPate.util.InputVerifyUtil.isSentence(" "));
+		assertFalse(de.db.derPate.util.InputVerifyUtil.isSentence("3xample"));
+
+		assertTrue(de.db.derPate.util.InputVerifyUtil.isSentence("Example text"));
+		assertTrue(de.db.derPate.util.InputVerifyUtil.isSentence("example"));
+		assertTrue(de.db.derPate.util.InputVerifyUtil.isSentence("examPLE"));
+	}
+
+	@Test
 	public void testUuid() {
 		assertFalse(de.db.derPate.util.InputVerifyUtil.isUuid(null));
 		assertFalse(de.db.derPate.util.InputVerifyUtil.isUuid("4-2-3"));
