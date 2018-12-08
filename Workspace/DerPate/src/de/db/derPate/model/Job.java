@@ -1,5 +1,10 @@
 package de.db.derPate.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 /**
@@ -9,10 +14,20 @@ import org.eclipse.jdt.annotation.NonNull;
  * @author MichelBlank
  *
  */
-public class Job {
-	private int id;
+@Entity
+@Table(name = "Job")
+@AttributeOverride(name = "id", column = @Column(name = "Id_Job"))
+public class Job extends Id {
 	@NonNull
+	@Column(name = "Job")
 	private String job = "";
+
+	/**
+	 * Constructor used for database connection. Id will be set to null!
+	 */
+	Job() {
+		super(null);
+	}
 
 	/**
 	 * Constructor
@@ -21,31 +36,13 @@ public class Job {
 	 * @param job Job name
 	 */
 	public Job(int id, @NonNull String job) {
-		this.setId(id);
+		super(id);
 		this.setJob(job);
 	}
 
 	/**
-	 * Returns id
-	 *
-	 * @return id
-	 */
-	public int getId() {
-		return this.id;
-	}
-
-	/**
-	 * Sets id
-	 * 
-	 * @param id id
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
 	 * Returns job name
-	 * 
+	 *
 	 * @return job name
 	 */
 	@NonNull
@@ -55,7 +52,7 @@ public class Job {
 
 	/**
 	 * Sets job name
-	 * 
+	 *
 	 * @param job job name
 	 */
 	public void setJob(@NonNull String job) {

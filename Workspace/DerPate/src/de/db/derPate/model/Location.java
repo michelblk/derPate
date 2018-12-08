@@ -1,5 +1,10 @@
 package de.db.derPate.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 /**
@@ -8,9 +13,20 @@ import org.eclipse.jdt.annotation.NonNull;
  * @author MichelBlank
  *
  */
+@Entity
+@Table(name = "Location")
+@AttributeOverride(name = "id", column = @Column(name = "Id_Location"))
 public class Location extends Id {
 	@NonNull
+	@Column(name = "Location")
 	private String location = "";
+
+	/**
+	 * Constructor used for database connection. Id will be set to null!
+	 */
+	Location() {
+		super(null);
+	}
 
 	/**
 	 * Constructor
@@ -35,7 +51,7 @@ public class Location extends Id {
 
 	/**
 	 * Sets {@link #location}
-	 * 
+	 *
 	 * @param location location (city)
 	 */
 	private void setLocation(@NonNull String location) {

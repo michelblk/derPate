@@ -1,16 +1,12 @@
 package de.db.derPate.model;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-import org.hibernate.annotations.NaturalId;
 
 import de.db.derPate.manager.LoginManager;
 
@@ -24,13 +20,17 @@ import de.db.derPate.manager.LoginManager;
  */
 @Entity
 @Table(name = "admin")
+@AttributeOverride(name = "id", column = @Column(name = "Id_Admin"))
+// FIXME change username column in database to email
+@AttributeOverride(name = "email", column = @Column(name = "Username"))
+@AttributeOverride(name = "password", column = @Column(name = "Password"))
 public class Admin extends EmailPasswordLoginUser {
 
 	/**
-	 * Default constructor used by Hibernate
+	 * Constructor used for database connection. Id will be set to null!
 	 */
-	private Admin() {
-		super(-1, "");
+	Admin() {
+		super(null);
 	}
 
 	/**
@@ -41,35 +41,5 @@ public class Admin extends EmailPasswordLoginUser {
 	 */
 	public Admin(int id, @NonNull String email) {
 		super(id, email);
-	}
-
-	/**
-	 * @see LoginUser#getId()
-	 */
-	@Override
-	@Id
-	@Column(name = "Id_Admin")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int getId() {
-		return super.getId();
-	}
-
-	/**
-	 * @see EmailPasswordLoginUser#getEmail()
-	 */
-	@Override
-	@NaturalId(mutable = true)
-	@Column(name = "Username", nullable = false, unique = true)
-	public @NonNull String getEmail() {
-		return super.getEmail();
-	}
-
-	/**
-	 * @see EmailPasswordLoginUser#getPassword()
-	 */
-	@Override
-	@Column(name = "Password")
-	public @Nullable String getPassword() {
-		return super.getPassword();
 	}
 }

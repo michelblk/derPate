@@ -1,7 +1,10 @@
 package de.db.derPate.model;
 
+import javax.persistence.MappedSuperclass;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.hibernate.annotations.NaturalId;
 
 import de.db.derPate.manager.LoginManager;
 
@@ -12,11 +15,22 @@ import de.db.derPate.manager.LoginManager;
  * @author MichelBlank
  * @see LoginUser
  */
+@MappedSuperclass
 public abstract class EmailPasswordLoginUser extends LoginUser {
 	@NonNull
+	@NaturalId(mutable = true)
 	private String email = "";
 	@Nullable
 	private String password = null;
+
+	/**
+	 * Constructor used for database connection
+	 *
+	 * @param id id
+	 */
+	EmailPasswordLoginUser(@Nullable Integer id) {
+		super(id);
+	}
 
 	/**
 	 * Constructor used, when object should not be used for login
@@ -31,7 +45,7 @@ public abstract class EmailPasswordLoginUser extends LoginUser {
 
 	/**
 	 * Constructor used, when object is used for login
-	 * 
+	 *
 	 * @param id       id
 	 * @param email    email
 	 * @param password hashed password

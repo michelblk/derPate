@@ -1,7 +1,15 @@
 package de.db.derPate.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.hibernate.annotations.NaturalId;
 
 import de.db.derPate.manager.LoginManager;
 
@@ -11,11 +19,25 @@ import de.db.derPate.manager.LoginManager;
  * @author MichelBlank
  * @see LoginUser
  */
+@Entity
+@Table(name = "Trainee")
+@AttributeOverride(name = "id", column = @Column(name = "Id_Trainee"))
 public class Trainee extends LoginUser {
 	@Nullable
+	@Column(name = "Login_Code")
+	@NaturalId(mutable = true)
 	private String loginToken;
 	@Nullable
+	@ManyToOne
+	@JoinColumn(name = "Id_Godfather")
 	private Godfather godfather = null;
+
+	/**
+	 * Constructor used for database connection. Id will be set to null!
+	 */
+	Trainee() {
+		super(null);
+	}
 
 	/**
 	 * Constructor that sets the loginToken and the {@link Godfather}.

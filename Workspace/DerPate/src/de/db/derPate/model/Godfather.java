@@ -1,7 +1,14 @@
 package de.db.derPate.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import org.hibernate.annotations.NaturalId;
 
 import de.db.derPate.manager.LoginManager;
 
@@ -11,9 +18,19 @@ import de.db.derPate.manager.LoginManager;
  *
  * @author MichelBlank
  */
+@Entity
+@Table(name = "Godfather")
+@AttributeOverride(name = "id", column = @Column(name = "Id_Godfather"))
 public class Godfather extends EmailPasswordLoginUser {
 	@Nullable
 	private GodfatherInformation information;
+
+	/**
+	 * Default constructor used for Database connections. Id will be set to null!
+	 */
+	Godfather() {
+		super(null);
+	}
 
 	/**
 	 * Constructor used by godfather login
@@ -45,6 +62,25 @@ public class Godfather extends EmailPasswordLoginUser {
 	}
 
 	/**
+	 * @see de.db.derPate.model.EmailPasswordLoginUser#getEmail()
+	 */
+	@Override
+	@NaturalId(mutable = true)
+	@Column(name = "Email", nullable = false, unique = true)
+	public @NonNull String getEmail() {
+		return super.getEmail();
+	}
+
+	/**
+	 * @see de.db.derPate.model.EmailPasswordLoginUser#getPassword()
+	 */
+	@Override
+	@Column(name = "Password", nullable = false)
+	public @Nullable String getPassword() {
+		return super.getPassword();
+	}
+
+	/**
 	 * Returns further informations in a {@link GodfatherInformation}-Object about
 	 * this {@link Godfather}.<br>
 	 * Might be <b>null</b>, if this object was intended for login uses only.
@@ -52,6 +88,7 @@ public class Godfather extends EmailPasswordLoginUser {
 	 * @return {@link GodfatherInformation} or <b>null</b>
 	 */
 	@Nullable
+	@Embedded
 	public GodfatherInformation getInformation() {
 		return this.information;
 	}

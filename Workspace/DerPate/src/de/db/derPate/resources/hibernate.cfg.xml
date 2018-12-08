@@ -27,6 +27,11 @@
          
       </property>
       
+      <mapping class="de.db.derPate.model.Job" />
+      <mapping class="de.db.derPate.model.Location" />
+      <mapping class="de.db.derPate.model.TeachingType" />
       <mapping class="de.db.derPate.model.Admin" />
+      <mapping class="de.db.derPate.model.Godfather" />
+      <mapping class="de.db.derPate.model.Trainee" />
    </session-factory>
 </hibernate-configuration>

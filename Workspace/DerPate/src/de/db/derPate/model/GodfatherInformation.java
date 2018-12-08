@@ -2,6 +2,13 @@ package de.db.derPate.model;
 
 import java.sql.Date;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -13,51 +20,74 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author MichelBlank
  * @see Godfather
  */
+@Embeddable
+@Access(AccessType.FIELD)
 public class GodfatherInformation {
 	@Nullable
+	@Column(name = "Last_Name", nullable = false)
 	private String lastName;
 	@Nullable
+	@Column(name = "First_Name", nullable = false)
 	private String firstName;
 	@Nullable
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "Id_Location", nullable = false)
 	private Location location;
 	@Nullable
+	@Column(name = "Description", nullable = false)
 	private String description;
-	// @Nullable
-	// TODO picture
 	@Nullable
+	@Column(name = "Picture", nullable = true)
+	private String picture;
+	@Nullable
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "Id_Teaching_Type", nullable = false)
 	private TeachingType teachingType;
 	@Nullable
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "Id_Job", nullable = false)
 	private Job job;
 	@Nullable
+	@Column(name = "Hiring_Date", nullable = false)
 	private Date hiringDate;
 	@Nullable
+	@Column(name = "Birthday", nullable = true)
 	private Date birthday;
 	@Nullable
+	@Column(name = "Pick_Text", nullable = true)
 	private String pickText;
+
+	/**
+	 * Constructor used for database connection.
+	 */
+	GodfatherInformation() {
+
+	}
 
 	/**
 	 * Constructor
 	 *
-	 * @param lastName    Lastname
-	 * @param firstName   Firstname
-	 * @param location    Location
-	 * @param description Description
-	 * @param techingType Teching type
-	 * @param job         Job
-	 * @param hiringDate  Hiring date
-	 * @param birthday    Birthday
-	 * @param pickText    Text to display, after {@link Trainee} selected a
-	 *                    {@link Godfather}
+	 * @param lastName     Lastname
+	 * @param firstName    Firstname
+	 * @param location     Location
+	 * @param description  Description
+	 * @param teachingType Teaching type
+	 * @param job          Job
+	 * @param hiringDate   Hiring date
+	 * @param birthday     Birthday
+	 * @param pickText     Text to display, after {@link Trainee} selected a
+	 *                     {@link Godfather}
 	 */
 	public GodfatherInformation(@NonNull final String lastName, @NonNull final String firstName,
-			@NonNull final Location location, @NonNull final String description,
-			@NonNull final TeachingType techingType, @NonNull final Job job, @NonNull final Date hiringDate,
+			@NonNull final Location location, @NonNull final String description, @Nullable String picture,
+			@NonNull final TeachingType teachingType, @NonNull final Job job, @NonNull final Date hiringDate,
 			@Nullable Date birthday, @Nullable String pickText) {
 		this.setLastName(lastName);
 		this.setFirstName(firstName);
 		this.setLocation(location);
 		this.setDescription(description);
-		this.setTeachingType(techingType);
+		this.setPicture(picture);
+		this.setTeachingType(teachingType);
 		this.setJob(job);
 		this.setHiringDate(hiringDate);
 		this.setBirthday(birthday);
@@ -138,6 +168,24 @@ public class GodfatherInformation {
 	 */
 	public void setDescription(@NonNull String description) {
 		this.description = description;
+	}
+
+	/**
+	 * Returns the path to the picture
+	 *
+	 * @return the picture path
+	 */
+	public String getPicture() {
+		return this.picture;
+	}
+
+	/**
+	 * Sets the path to the picture
+	 *
+	 * @param picture the picture path to set
+	 */
+	public void setPicture(String picture) {
+		this.picture = picture;
 	}
 
 	/**

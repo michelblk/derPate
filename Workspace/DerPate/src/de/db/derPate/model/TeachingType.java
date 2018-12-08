@@ -1,5 +1,10 @@
 package de.db.derPate.model;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 /**
@@ -8,9 +13,20 @@ import org.eclipse.jdt.annotation.NonNull;
  * @author MichelBlank
  *
  */
+@Entity
+@Table(name = "Teaching_Type")
+@AttributeOverride(name = "id", column = @Column(name = "Id_Teaching_Type"))
 public class TeachingType extends Id {
 	@NonNull
-	private String techingType = "";
+	@Column(name = "Teaching_Type")
+	private String teachingType = "";
+
+	/**
+	 * Constructor used for database connection. Id will be set to null!
+	 */
+	TeachingType() {
+		super(null);
+	}
 
 	/**
 	 * Constructor
@@ -20,25 +36,25 @@ public class TeachingType extends Id {
 	 */
 	public TeachingType(int id, @NonNull String teachingType) {
 		super(id);
-		this.setTechingType(this.techingType);
+		this.setTeachingType(this.teachingType);
 	}
 
 	/**
-	 * Returns {@link #techingType}
+	 * Returns {@link #teachingType}
 	 *
 	 * @return name of teaching type
 	 */
 	@NonNull
-	public String getTechingType() {
-		return this.techingType;
+	public String getTeachingType() {
+		return this.teachingType;
 	}
 
 	/**
-	 * Sets {@link #techingType}
+	 * Sets {@link #teachingType}
 	 *
 	 * @param teachingType name of teaching type
 	 */
-	private void setTechingType(@NonNull String teachingType) {
-		this.techingType = teachingType;
+	private void setTeachingType(@NonNull String teachingType) {
+		this.teachingType = teachingType;
 	}
 }

@@ -19,7 +19,8 @@ public class HibernateSessionFactoryUtil {
 
 	static {
 		try {
-			sessionFactory = new Configuration().configure().buildSessionFactory();
+			sessionFactory = new Configuration().configure("/de/db/derPate/resources/hibernate.cfg.xml")
+					.buildSessionFactory();
 		} catch (HibernateException e) {
 			LoggingManager.log(Level.SEVERE, "Could not create Hibernate session factory:\n" + e.getMessage());
 			throw e; // stop program
@@ -28,7 +29,7 @@ public class HibernateSessionFactoryUtil {
 
 	/**
 	 * Returns the {@link SessionFactory} of this project
-	 * 
+	 *
 	 * @return {@link SessionFactory}
 	 */
 	public static SessionFactory getSessionFactory() {

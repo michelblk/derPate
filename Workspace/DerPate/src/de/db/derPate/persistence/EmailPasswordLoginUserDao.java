@@ -40,6 +40,7 @@ abstract class EmailPasswordLoginUserDao extends IdDao {
 	 * @return Object that is or extends from {@link EmailPasswordLoginUser} or
 	 *         <code>null</code>, if user was not found
 	 */
+	@SuppressWarnings("unchecked")
 	@Nullable
 	public <@Nullable T extends EmailPasswordLoginUser> T byEmail(@NonNull String email) {
 		T result = null;
