@@ -15,4 +15,25 @@
 	<error-page>
 	    <location>/WEB-INF/page/error.jsp</location>
 	</error-page>
+	
+	<!-- Servlets -->
+	<!-- Login -->
+	<servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>de.db.derPate.servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Logout -->
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>de.db.derPate.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
 </web-app>

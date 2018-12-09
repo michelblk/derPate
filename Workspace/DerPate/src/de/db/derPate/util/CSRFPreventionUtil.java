@@ -23,6 +23,11 @@ public class CSRFPreventionUtil {
 	 */
 	public static final String FIELD_NAME = "csrf_token";
 	/**
+	 * Header that can be used alternatively (or is sent by server, if old one got
+	 * invalidated)
+	 */
+	public static final String HEADER_FIELD = "X-Csrf-Token";
+	/**
 	 * key, which is used to store the {@link Map} in {@link HttpSession}'s
 	 * attributes
 	 */
@@ -120,7 +125,7 @@ public class CSRFPreventionUtil {
 	 * @param maxTokens the maximum count of entries
 	 */
 	private static void checkLimit(LinkedHashMap<String, Long> map, int maxTokens) {
-		if (map.size() >= maxTokens) {
+		while (map.size() >= maxTokens) {
 			kickOldestToken(map);
 		}
 	}
@@ -179,5 +184,40 @@ public class CSRFPreventionUtil {
 		}
 		// no tokens found or token not in list
 		return false;
+	}
+
+	/**
+	 * Invalidates token
+	 *
+	 * @param session        client's {@link HttpSession}
+	 * @param formidentifier form identifier
+	 * @param token          token given by the user
+	 */
+	public static void invalidateToken(HttpSession session, String formidentifier, String token) {
+		LinkedHashMap<String, Long> map = getFormTokens(session, formidentifier);
+		map.remove(token);
+		saveToSession(session, formidentifier, map);
+	}
+
+	/**
+	 * Checks if token is valid (using
+	 * {@link #checkToken(HttpSession, String, String, int)}) and invalidates it
+	 * (using {@link #invalidateToken(HttpSession, String, String)}), so the token
+	 * can be used just one time.
+	 *
+	 * @param session          client's {@link HttpSession}
+	 * @param formidentifier   form identifier
+	 * @param token            token given by the user
+	 * @param timeoutInSeconds timeout in seconds
+	 * @return <code>true</code>, if token was registered for the given form
+	 *         beforehand and is still valid; <code>false</code>, if token wasn't
+	 *         registered or isn't valid anymore due to a timeout
+	 * @see #checkToken(HttpSession, String, String, int)
+	 */
+	public static boolean checkAndInvalidateToken(HttpSession session, String formidentifier, String token,
+			int timeoutInSeconds) {
+		boolean isvalid = checkToken(session, formidentifier, token, timeoutInSeconds);
+		invalidateToken(session, formidentifier, token);
+		return isvalid;
 	}
 }

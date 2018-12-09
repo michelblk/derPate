@@ -25,7 +25,7 @@ public final class Constants {
 		 * {@link CSRFPreventionUtil}. If the number of tokens is exceeded, the oldest
 		 * one will be invalidated.
 		 */
-		public static final int CSRF_MAX_TOKENS = 10;
+		public static final int CSRF_DEFAULT_MAX_TOKENS = 10;
 		/**
 		 * The time in seconds, a csrf prevention token is valid. This has to be greater
 		 * that the time, the user can be expected to fill in a form.
@@ -46,6 +46,12 @@ public final class Constants {
 		 * Seperator used to split hash and salt
 		 */
 		public static final String hashSeperator = ".";
+
+		/**
+		 * Pepper. TO BE FIXED
+		 */
+		public static final byte[] hashPepper = { 0x2F, 0x00, (byte) 0xFF, 0x32, (byte) 0xAB, 0x56, 0x32, (byte) 0x99,
+				0x43, 0x22, 0x21, 0x20, (byte) 0xAC }; // FIXME temporary test solution. Move to save place
 
 		/**
 		 * Length (in bytes) of the salt to use
