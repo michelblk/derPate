@@ -33,6 +33,8 @@ public class GodfatherInformation {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "Id_Location", nullable = false)
 	private Location location;
+	@Column(name = "Max_Trainees", nullable = false)
+	private int maxTrainees;
 	@Nullable
 	@Column(name = "Description", nullable = false)
 	private String description;
@@ -79,9 +81,9 @@ public class GodfatherInformation {
 	 *                     {@link Godfather}
 	 */
 	public GodfatherInformation(@NonNull final String lastName, @NonNull final String firstName,
-			@NonNull final Location location, @NonNull final String description, @Nullable String picture,
-			@NonNull final TeachingType teachingType, @NonNull final Job job, @NonNull final Date hiringDate,
-			@Nullable Date birthday, @Nullable String pickText) {
+			@NonNull final Location location, int maxTrainees, @NonNull final String description,
+			@Nullable String picture, @NonNull final TeachingType teachingType, @NonNull final Job job,
+			@NonNull final Date hiringDate, @Nullable Date birthday, @Nullable String pickText) {
 		this.setLastName(lastName);
 		this.setFirstName(firstName);
 		this.setLocation(location);
@@ -149,6 +151,21 @@ public class GodfatherInformation {
 	 */
 	public void setLocation(@NonNull Location location) {
 		this.location = location;
+	}
+
+	/**
+	 * @return the max number of trainees, the godfather wants to accept.
+	 */
+	public int getMaxTrainees() {
+		return this.maxTrainees;
+	}
+
+	/**
+	 * @param maxTrainees the max number of trainees, the godfather wants to accept.
+	 *                    charge for.
+	 */
+	public void setMaxTrainees(int maxTrainees) {
+		this.maxTrainees = maxTrainees;
 	}
 
 	/**

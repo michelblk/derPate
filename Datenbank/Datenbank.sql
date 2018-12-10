@@ -32,6 +32,7 @@ CREATE TABLE Godfather (
   Last_Name varchar(50) NOT NULL,
   First_Name varchar(50) NOT NULL,
   Id_Location int(10) NOT NULL,
+  Max_Trainees int(2) NOT NULL,
   Description varchar(5000) NOT NULL, 
   Picture varchar(20) NOT NULL,
   Id_Teaching_Type int(10) NOT NULL,
