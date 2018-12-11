@@ -3,7 +3,8 @@ package de.db.derPate.persistence;
 import de.db.derPate.model.Admin;
 
 /**
- * Admin database object used to execute requests to the database
+ * Database object providing methods to get {@link Admin} objects out of the
+ * Database
  *
  * @author MichelBlank
  *

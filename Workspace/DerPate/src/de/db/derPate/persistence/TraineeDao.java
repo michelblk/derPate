@@ -11,6 +11,12 @@ import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.model.DatabaseEntity;
 import de.db.derPate.model.Trainee;
 
+/**
+ * Database object providing methods to get {@link Trainee}s out of the Database
+ *
+ * @author MichelBlank
+ *
+ */
 public class TraineeDao extends IdDao {
 	private static TraineeDao instance;
 
@@ -18,6 +24,11 @@ public class TraineeDao extends IdDao {
 		super(Trainee.class);
 	}
 
+	/**
+	 * Returns current instance
+	 *
+	 * @return instance
+	 */
 	public static TraineeDao getInstance() {
 		if (instance == null) {
 			instance = new TraineeDao();
@@ -25,6 +36,13 @@ public class TraineeDao extends IdDao {
 		return instance;
 	}
 
+	/**
+	 * Returns the Trainee with the given token.
+	 * 
+	 * @param token the Login token
+	 * @return the {@link Trainee} or <code>null</code>, if no {@link Trainee} was
+	 *         found with the given token
+	 */
 	public Trainee byToken(String token) {
 		Trainee result = null;
 		try {
