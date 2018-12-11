@@ -9,5 +9,5 @@ package de.db.derPate.model;
  *
  */
 public abstract class DatabaseEntity {
-
+	/* no attributes yet. */
 }

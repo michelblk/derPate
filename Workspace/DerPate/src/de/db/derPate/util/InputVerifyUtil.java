@@ -21,11 +21,11 @@ public class InputVerifyUtil {
 	/**
 	 * Pattern used to check if string is just one single word
 	 */
-	private static final Pattern WORD_PATTERN = Pattern.compile("^([a-zäöüß]*)$", Pattern.CASE_INSENSITIVE);
+	private static final Pattern WORD_PATTERN = Pattern.compile("^([a-zÃ¤Ã¶Ã¼ÃŸ]*)$", Pattern.CASE_INSENSITIVE);
 	/**
 	 * Pattern used to check if string is just one single word
 	 */
-	private static final Pattern SENTENCE_PATTERN = Pattern.compile("^([a-zäöüß\\s]*)$", Pattern.CASE_INSENSITIVE);
+	private static final Pattern SENTENCE_PATTERN = Pattern.compile("^([a-zÃ¤Ã¶Ã¼ÃŸ\\s]*)$", Pattern.CASE_INSENSITIVE);
 	/**
 	 * Pattern to validate a Universally Unique Identifier.<br>
 	 * A uuid may follow the following pattern: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -54,7 +54,7 @@ public class InputVerifyUtil {
 	 *         <code>false</code>, otherwise.
 	 */
 	public static boolean isNotBlank(@Nullable String string) {
-		return string != null && !string.isBlank();
+		return string != null && !string.trim().isEmpty();
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class InputVerifyUtil {
 
 	/**
 	 * Checks if string is just one single word, that does only contain characters
-	 * from A to Z and Ä, Ö, Ü, ß (not case sensitive). {@link String} may not be
+	 * from A to Z and Ã¤, Ã¶, Ã¼, ÃŸ (not case sensitive). {@link String} may not be
 	 * blank.
 	 *
 	 * @param string {@link String}
@@ -143,7 +143,7 @@ public class InputVerifyUtil {
 
 	/**
 	 * Method that checks if a given {@link String} does not contain any other
-	 * characters than A-Z and Ä, Ö, Ü, ß and spaces (not case sensitive).
+	 * characters than A-Z and Ã¤, Ã¶, Ã¼, ÃŸ and spaces (not case sensitive).
 	 *
 	 * @param string {@link String}
 	 * @return <code>true</code>, if string contains just words and spaces;
