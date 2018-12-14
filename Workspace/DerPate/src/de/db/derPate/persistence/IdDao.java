@@ -44,7 +44,7 @@ abstract class IdDao extends Dao {
 			result = (T) session.get(this.cls, id);
 			session.close();
 		} catch (HibernateException e) {
-			LoggingManager.log(Level.WARNING, "");
+			LoggingManager.log(Level.WARNING, "Could not get database element by id: " + e.getMessage()); //$NON-NLS-1$
 		}
 
 		return result;

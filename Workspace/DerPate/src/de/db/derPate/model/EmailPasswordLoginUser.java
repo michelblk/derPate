@@ -19,17 +19,16 @@ import de.db.derPate.manager.LoginManager;
 public abstract class EmailPasswordLoginUser extends LoginUser {
 	@NonNull
 	@NaturalId(mutable = true)
-	private String email = "";
+	private String email;
 	@Nullable
 	private String password = null;
 
 	/**
-	 * Constructor used for database connection
-	 *
-	 * @param id id
+	 * Default constructor used for hibernate
 	 */
-	EmailPasswordLoginUser(@Nullable Integer id) {
-		super(id);
+	public EmailPasswordLoginUser() {
+		super();
+		this.email = ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -40,7 +39,7 @@ public abstract class EmailPasswordLoginUser extends LoginUser {
 	 */
 	public EmailPasswordLoginUser(int id, @NonNull String email) {
 		super(id);
-		this.setEmail(email);
+		this.email = email;
 	}
 
 	/**
@@ -98,8 +97,8 @@ public abstract class EmailPasswordLoginUser extends LoginUser {
 	}
 
 	/**
-	 * Removes the {@link #password} from this object to ensure, that it cannot be
-	 * read afterwards. This method is used by the
+	 * Removes the password from this object to ensure, that it cannot be read
+	 * afterwards. This method is used by the
 	 * {@link LoginManager#login(javax.servlet.http.HttpServletRequest, LoginUser)}.
 	 *
 	 * @see LoginManager#login(javax.servlet.http.HttpServletRequest, LoginUser)

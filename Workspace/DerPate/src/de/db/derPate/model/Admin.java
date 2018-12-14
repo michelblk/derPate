@@ -27,10 +27,10 @@ import de.db.derPate.manager.LoginManager;
 public class Admin extends EmailPasswordLoginUser {
 
 	/**
-	 * Constructor used for database connection. Id will be set to null!
+	 * Default constructor used for hibernate
 	 */
 	Admin() {
-		super(null);
+		super();
 	}
 
 	/**

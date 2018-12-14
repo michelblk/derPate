@@ -16,6 +16,11 @@ import de.db.derPate.util.SHA256Util;
  */
 public final class Constants {
 	/**
+	 * Charset to use for encodings
+	 */
+	public static final String CHARSET = "UTF-8"; //$NON-NLS-1$
+
+	/**
 	 * This class contains all static attributes that have influence about the
 	 * security of this application.
 	 */
@@ -45,7 +50,7 @@ public final class Constants {
 		/**
 		 * Seperator used to split hash and salt
 		 */
-		public static final String hashSeperator = ".";
+		public static final String hashSeperator = "."; //$NON-NLS-1$
 
 		/**
 		 * Pepper. TO BE FIXED
@@ -80,16 +85,16 @@ public final class Constants {
 			 * Inputfield used by {@link Admin}s and {@link Godfather}s to provide their
 			 * email address
 			 */
-			LOGIN_EMAIL("email"),
+			LOGIN_EMAIL("email"), //$NON-NLS-1$
 			/**
 			 * Inputfield used by {@link Admin}s and {@link Godfather}s to provide their
 			 * password
 			 */
-			LOGIN_PASSWORD("password"),
+			LOGIN_PASSWORD("password"), //$NON-NLS-1$
 			/**
 			 * Inputfield used by {@link Trainee}s to provide their token
 			 */
-			LOGIN_TOKEN("token");
+			LOGIN_TOKEN("token"); //$NON-NLS-1$
 
 			private final String frontendName;
 

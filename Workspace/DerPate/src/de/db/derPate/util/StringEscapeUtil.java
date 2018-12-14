@@ -1,7 +1,13 @@
 package de.db.derPate.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.logging.Level;
+
 import org.apache.commons.text.StringEscapeUtils;
 import org.eclipse.jdt.annotation.Nullable;
+
+import de.db.derPate.manager.LoggingManager;
 
 /**
  * This util escapes and unescapes {@link String}s for HTML and JSON.<br>
@@ -11,6 +17,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class StringEscapeUtil {
+	private static final String URL_CHARSET = "UTF-8"; //$NON-NLS-1$
 
 	/**
 	 * Escapes the characters in a String using HTML entities.<br>
@@ -34,8 +41,8 @@ public class StringEscapeUtil {
 	}
 
 	/**
-	 * Unescapes a string containing entity escapes to a string containing the
-	 * actual Unicode characters corresponding to the escapes.<br>
+	 * Unescapes a {@link String} containing entity escapes to a string containing
+	 * the actual Unicode characters corresponding to the escapes.<br>
 	 * For example:<br>
 	 * <code>{@literal &quot;max&quot; &amp; &quot;mustermann&quot;}</code><br>
 	 * becomes:<br>
@@ -43,8 +50,8 @@ public class StringEscapeUtil {
 	 * If an entity is unrecognized, it is left alone, and inserted verbatim into
 	 * the result string.
 	 *
-	 * @param html
-	 * @return
+	 * @param html the escaped {@link String}
+	 * @return unescaped html
 	 * @see StringEscapeUtils#unescapeHtml4(String)
 	 */
 	@Nullable
@@ -85,7 +92,7 @@ public class StringEscapeUtil {
 	 * For example, it will turn a sequence of '\' and 'n' into a newline character,
 	 * unless the '\' is preceded by another '\'.
 	 *
-	 * @param json the {@link} String to unescape
+	 * @param json the {@link String} to unescape
 	 * @return unescaped {@link String} or <code>null</code>, if string was null
 	 *         beforehand
 	 * @see StringEscapeUtils#unescapeJson(String)
@@ -95,6 +102,26 @@ public class StringEscapeUtil {
 		String result = null;
 		if (json != null) {
 			result = StringEscapeUtils.unescapeJson(json);
+		}
+		return result;
+	}
+
+	/**
+	 * Escapes characters for use in a URL
+	 *
+	 * @param url the string
+	 * @return the translated string or <code>null</code>, if url was null or
+	 *         charset {@value #URL_CHARSET} was not found
+	 */
+	@Nullable
+	public static String toURL(@Nullable String url) {
+		String result = null;
+		if (url != null) {
+			try {
+				result = URLEncoder.encode(url, URL_CHARSET);
+			} catch (UnsupportedEncodingException e) {
+				LoggingManager.log(Level.SEVERE, "StringEscapeUtil could not find charset " + URL_CHARSET);
+			}
 		}
 		return result;
 	}

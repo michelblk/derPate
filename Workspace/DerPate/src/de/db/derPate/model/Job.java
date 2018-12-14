@@ -19,14 +19,15 @@ import org.eclipse.jdt.annotation.NonNull;
 @AttributeOverride(name = "id", column = @Column(name = "Id_Job"))
 public class Job extends Id {
 	@NonNull
-	@Column(name = "Job")
-	private String job = "";
+	@Column(name = "Job", nullable = false)
+	private String job;
 
 	/**
-	 * Constructor used for database connection. Id will be set to null!
+	 * Default constructor used for hibernate
 	 */
 	Job() {
-		super(null);
+		super();
+		this.job = ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -37,7 +38,7 @@ public class Job extends Id {
 	 */
 	public Job(int id, @NonNull String job) {
 		super(id);
-		this.setJob(job);
+		this.job = job;
 	}
 
 	/**

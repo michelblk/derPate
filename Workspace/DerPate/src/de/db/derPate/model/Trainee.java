@@ -24,19 +24,19 @@ import de.db.derPate.manager.LoginManager;
 @AttributeOverride(name = "id", column = @Column(name = "Id_Trainee"))
 public class Trainee extends LoginUser {
 	@Nullable
-	@Column(name = "Login_Code")
+	@Column(name = "Login_Code", nullable = false)
 	@NaturalId(mutable = true)
 	private String loginToken;
 	@Nullable
 	@ManyToOne
-	@JoinColumn(name = "Id_Godfather")
+	@JoinColumn(name = "Id_Godfather", nullable = true)
 	private Godfather godfather = null;
 
 	/**
-	 * Constructor used for database connection. Id will be set to null!
+	 * Default constructor used for hibernate
 	 */
 	Trainee() {
-		super(null);
+		super();
 	}
 
 	/**
@@ -48,12 +48,12 @@ public class Trainee extends LoginUser {
 	 */
 	public Trainee(int id, @NonNull String loginToken, @Nullable Godfather godfather) {
 		super(id);
-		this.setLoginToken(loginToken);
+		this.loginToken = loginToken;
 		this.setGodfather(godfather);
 	}
 
 	/**
-	 * Returns {@link #loginToken}<br>
+	 * Returns the loginToken<br>
 	 * Might be <code>null</code>, if {@link #removeSecret()} was called.
 	 *
 	 * @return the loginToken
@@ -64,20 +64,20 @@ public class Trainee extends LoginUser {
 	}
 
 	/**
-	 * Sets the {@link #loginToken}.
+	 * Sets the login token
 	 *
 	 * @param loginToken the loginToken to set
 	 */
-	private void setLoginToken(@Nullable String loginToken) {
+	public void setLoginToken(@Nullable String loginToken) {
 		this.loginToken = loginToken;
 	}
 
 	/**
-	 * Returns the {@link #godfather}, if {@link Trainee} already selected one.<br>
+	 * Returns the {@link Godfather}, if {@link Trainee} already selected one.<br>
 	 * Might be <code>null</code>, if {@link Trainee} didn't select a
 	 * {@link Godfather}.
 	 *
-	 * @return the {@link #godfather}
+	 * @return the {@link Godfather}
 	 */
 	@Nullable
 	public Godfather getGodfather() {
@@ -85,9 +85,9 @@ public class Trainee extends LoginUser {
 	}
 
 	/**
-	 * Sets the {@link #godfather}.
+	 * Sets the {@link Godfather}.
 	 *
-	 * @param godfather the godfather to set
+	 * @param godfather the {@link Godfather} to set
 	 */
 	public void setGodfather(@Nullable Godfather godfather) {
 		this.godfather = godfather;

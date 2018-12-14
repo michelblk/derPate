@@ -1,7 +1,5 @@
 package de.db.derPate.model;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
  * Baseclass of all classes, that can store data, which you can use to log on.
  *
@@ -9,13 +7,12 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public abstract class LoginUser extends Id {
+
 	/**
-	 * Constructor used for database connection
-	 *
-	 * @param id id
+	 * Default constructor used for hibernate
 	 */
-	LoginUser(@Nullable Integer id) {
-		super(id);
+	LoginUser() {
+		super();
 	}
 
 	/**

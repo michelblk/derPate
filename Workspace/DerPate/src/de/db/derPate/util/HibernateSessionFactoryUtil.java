@@ -19,10 +19,10 @@ public class HibernateSessionFactoryUtil {
 
 	static {
 		try {
-			sessionFactory = new Configuration().configure("/de/db/derPate/resources/hibernate.cfg.xml")
+			sessionFactory = new Configuration().configure("/de/db/derPate/resources/hibernate.cfg.xml") //$NON-NLS-1$
 					.buildSessionFactory();
 		} catch (HibernateException e) {
-			LoggingManager.log(Level.SEVERE, "Could not create Hibernate session factory:\n" + e.getMessage());
+			LoggingManager.log(Level.SEVERE, "Could not create Hibernate session factory:\n" + e.getMessage()); //$NON-NLS-1$
 			throw e; // stop program
 		}
 	}

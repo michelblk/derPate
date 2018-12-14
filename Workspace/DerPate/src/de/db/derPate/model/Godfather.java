@@ -26,10 +26,10 @@ public class Godfather extends EmailPasswordLoginUser {
 	private GodfatherInformation information;
 
 	/**
-	 * Default constructor used for Database connections. Id will be set to null!
+	 * Default constructor used for hibernate
 	 */
 	Godfather() {
-		super(null);
+		super();
 	}
 
 	/**

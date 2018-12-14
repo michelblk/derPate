@@ -48,13 +48,13 @@ abstract class EmailPasswordLoginUserDao extends IdDao {
 			Session session = sessionFactory.openSession();
 
 			NaturalIdLoadAccess<? extends DatabaseEntity> loader = session.byNaturalId(this.cls).with(LockOptions.READ);
-			loader = loader.using("email", email); // TODO find better way
+			loader = loader.using("email", email); // TODO find better way //$NON-NLS-1$
 			DatabaseEntity entity = loader.load();
 			result = (T) entity;
 
 			session.close();
 		} catch (HibernateException e) {
-			LoggingManager.log(Level.WARNING, "An error occurred while finding user by email:\n" + e.getMessage());
+			LoggingManager.log(Level.WARNING, "An error occurred while finding user by email:\n" + e.getMessage()); //$NON-NLS-1$
 		}
 
 		return result;

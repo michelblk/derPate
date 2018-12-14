@@ -53,7 +53,7 @@ abstract class Dao {
 	 */
 	public <T extends DatabaseEntity> List<T> list() {
 		Session session = sessionFactory.openSession();
-		List<T> list = session.createQuery("FROM " + this.cls.getName()).list();
+		List<T> list = session.createQuery("FROM " + this.cls.getName()).list(); //$NON-NLS-1$
 		session.close();
 		return list;
 	}

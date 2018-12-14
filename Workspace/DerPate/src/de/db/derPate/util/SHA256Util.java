@@ -15,7 +15,7 @@ import java.util.Random;
  */
 public class SHA256Util implements HashUtil {
 	private static SHA256Util instance;
-	private static final String ALGORITHM = "SHA-256";
+	private static final String ALGORITHM = "SHA-256"; //$NON-NLS-1$
 	private final Random RANDOM = new SecureRandom();
 	private final MessageDigest MESSAGEDIGEST;
 
@@ -66,7 +66,7 @@ public class SHA256Util implements HashUtil {
 	 * @param bytes2 Byte array
 	 * @return concatenated array
 	 */
-	private byte[] combineBytes(byte[] bytes1, byte[] bytes2) {
+	private static byte[] combineBytes(byte[] bytes1, byte[] bytes2) {
 		byte[] combined = new byte[bytes1.length + bytes2.length];
 
 		System.arraycopy(bytes1, 0, combined, 0, bytes1.length);
@@ -81,7 +81,7 @@ public class SHA256Util implements HashUtil {
 	 * @param bytes byte array
 	 * @return {@link String} representing bytes
 	 */
-	private String bytesToBase64(byte[] bytes) {
+	private static String bytesToBase64(byte[] bytes) {
 		return Base64.getEncoder().encodeToString(bytes);
 	}
 
@@ -91,7 +91,7 @@ public class SHA256Util implements HashUtil {
 	 * @param base64 base64 string
 	 * @return bytes
 	 */
-	private byte[] base64ToBytes(String base64) {
+	private static byte[] base64ToBytes(String base64) {
 		return Base64.getDecoder().decode(base64);
 	}
 
@@ -103,7 +103,7 @@ public class SHA256Util implements HashUtil {
 	 * @param hashseperator character used to seperate salt and hash
 	 * @return String in format "hash.salt"
 	 */
-	private String hashToBase64(String hash, String salt, String hashseperator) {
+	private static String hashToBase64(String hash, String salt, String hashseperator) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(salt);
 		sb.append(hashseperator);
@@ -119,25 +119,25 @@ public class SHA256Util implements HashUtil {
 	@Override
 	public String hash(String unhashed, byte[] saltBytes, byte[] pepper, String hashseperator) {
 		byte[] unhashedBytes = unhashed.getBytes();
-		String salt = this.bytesToBase64(saltBytes);
+		String salt = bytesToBase64(saltBytes);
 
 		this.MESSAGEDIGEST.reset();
 		this.MESSAGEDIGEST.update(saltBytes);
 
-		byte[] unhashedWithPepper = this.combineBytes(unhashedBytes, pepper); // add pepper to input
-		byte[] unhashedWithPepperAndSalt = this.combineBytes(unhashedWithPepper, saltBytes);
+		byte[] unhashedWithPepper = combineBytes(unhashedBytes, pepper); // add pepper to input
+		byte[] unhashedWithPepperAndSalt = combineBytes(unhashedWithPepper, saltBytes);
 		byte[] hashedBytes = this.MESSAGEDIGEST.digest(unhashedWithPepperAndSalt); // hash
-		String hash = this.bytesToBase64(hashedBytes);
+		String hash = bytesToBase64(hashedBytes);
 
-		return this.hashToBase64(hash, salt, hashseperator);
+		return hashToBase64(hash, salt, hashseperator);
 	}
 
 	@Override
 	public boolean isEqual(final String unhashedString, final String completeHash, byte[] pepper,
 			String hashseperator) {
-		String[] saltHash = completeHash.split("\\" + hashseperator);
+		String[] saltHash = completeHash.split("\\" + hashseperator); //$NON-NLS-1$
 		if (saltHash.length == 2) {
-			byte[] salt = this.base64ToBytes(saltHash[0]);
+			byte[] salt = base64ToBytes(saltHash[0]);
 
 			String compareWithHash = this.hash(unhashedString, salt, pepper, hashseperator);
 

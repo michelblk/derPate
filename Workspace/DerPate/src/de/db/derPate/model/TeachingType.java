@@ -18,14 +18,15 @@ import org.eclipse.jdt.annotation.NonNull;
 @AttributeOverride(name = "id", column = @Column(name = "Id_Teaching_Type"))
 public class TeachingType extends Id {
 	@NonNull
-	@Column(name = "Teaching_Type")
-	private String teachingType = "";
+	@Column(name = "Teaching_Type", nullable = false)
+	private String teachingType;
 
 	/**
-	 * Constructor used for database connection. Id will be set to null!
+	 * Default constructor used for hibernate
 	 */
 	TeachingType() {
-		super(null);
+		super();
+		this.teachingType = ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -36,25 +37,16 @@ public class TeachingType extends Id {
 	 */
 	public TeachingType(int id, @NonNull String teachingType) {
 		super(id);
-		this.setTeachingType(this.teachingType);
+		this.teachingType = teachingType;
 	}
 
 	/**
-	 * Returns {@link #teachingType}
+	 * Returns the {@link TeachingType}
 	 *
 	 * @return name of teaching type
 	 */
 	@NonNull
 	public String getTeachingType() {
 		return this.teachingType;
-	}
-
-	/**
-	 * Sets {@link #teachingType}
-	 *
-	 * @param teachingType name of teaching type
-	 */
-	private void setTeachingType(@NonNull String teachingType) {
-		this.teachingType = teachingType;
 	}
 }

@@ -18,14 +18,15 @@ import org.eclipse.jdt.annotation.NonNull;
 @AttributeOverride(name = "id", column = @Column(name = "Id_Location"))
 public class Location extends Id {
 	@NonNull
-	@Column(name = "Location")
-	private String location = "";
+	@Column(name = "Location", nullable = false)
+	private String location;
 
 	/**
-	 * Constructor used for database connection. Id will be set to null!
+	 * Default constructor used for hibernate
 	 */
 	Location() {
-		super(null);
+		super();
+		this.location = ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -36,25 +37,16 @@ public class Location extends Id {
 	 */
 	public Location(int id, @NonNull String location) {
 		super(id);
-		this.setLocation(location);
+		this.location = location;
 	}
 
 	/**
 	 * Returns location
 	 *
-	 * @return {@link #location}
+	 * @return {@link Location}
 	 */
 	@NonNull
 	public String getLocation() {
 		return this.location;
-	}
-
-	/**
-	 * Sets {@link #location}
-	 *
-	 * @param location location (city)
-	 */
-	private void setLocation(@NonNull String location) {
-		this.location = location;
 	}
 }

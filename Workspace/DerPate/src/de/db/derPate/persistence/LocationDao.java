@@ -2,6 +2,13 @@ package de.db.derPate.persistence;
 
 import de.db.derPate.model.Location;
 
+/**
+ * Database object providing methods to get {@link Location}s out of the
+ * Database
+ *
+ * @author MichelBlank
+ *
+ */
 public class LocationDao extends IdDao {
 	private static LocationDao instance;
 
@@ -9,6 +16,11 @@ public class LocationDao extends IdDao {
 		super(Location.class);
 	}
 
+	/**
+	 * Returns current instance
+	 *
+	 * @return instance
+	 */
 	public static LocationDao getInstance() {
 		if (instance == null) {
 			instance = new LocationDao();

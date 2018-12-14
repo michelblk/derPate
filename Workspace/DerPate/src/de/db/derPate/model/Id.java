@@ -1,10 +1,9 @@
 package de.db.derPate.model;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.MappedSuperclass;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Used for all {@link DatabaseEntity}s, that have a numeric id field
@@ -16,15 +15,14 @@ import org.eclipse.jdt.annotation.Nullable;
 public abstract class Id extends DatabaseEntity {
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@Column(nullable = false)
+	private int id = -1;
 
 	/**
-	 * Constructor used for database connection
-	 *
-	 * @param id id
+	 * Default constructor used for hibernate
 	 */
-	Id(@Nullable Integer id) {
-		this.id = id;
+	Id() {
+
 	}
 
 	/**
@@ -37,7 +35,7 @@ public abstract class Id extends DatabaseEntity {
 	}
 
 	/**
-	 * Returns the database {@link #id}
+	 * Returns the id
 	 *
 	 * @return id
 	 */

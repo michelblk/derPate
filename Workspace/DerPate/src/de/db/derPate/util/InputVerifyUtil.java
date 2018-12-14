@@ -1,8 +1,11 @@
 package de.db.derPate.util;
 
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import de.db.derPate.manager.LoggingManager;
 
 /**
  * This util can be used to verify inputs, especially when the data is given by
@@ -16,23 +19,23 @@ public class InputVerifyUtil {
 	 * Pattern validating a email address.<br>
 	 * Example: max.mustermann@subdomain.domain.org
 	 */
-	private static final Pattern EMAIL_PATTERN = Pattern.compile("^(\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b)$",
+	public static final Pattern EMAIL_PATTERN = Pattern.compile("^(\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b)$", //$NON-NLS-1$
 			Pattern.CASE_INSENSITIVE);
 	/**
 	 * Pattern used to check if string is just one single word
 	 */
-	private static final Pattern WORD_PATTERN = Pattern.compile("^([a-z‰ˆ¸ﬂ]*)$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern WORD_PATTERN = Pattern.compile("^([a-z√§√∂√º√ü]*)$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 	/**
 	 * Pattern used to check if string is just one single word
 	 */
-	private static final Pattern SENTENCE_PATTERN = Pattern.compile("^([a-z‰ˆ¸ﬂ\\s]*)$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern SENTENCE_PATTERN = Pattern.compile("^([a-z√§√∂√º√ü\\s]*)$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 	/**
 	 * Pattern to validate a Universally Unique Identifier.<br>
 	 * A uuid may follow the following pattern: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	 * (x standing for hexadecimal characters)
 	 */
-	private static final Pattern UUID_PATTERN = Pattern.compile(
-			"^(\\b[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}\\b)$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern UUID_PATTERN = Pattern.compile(
+			"^(\\b[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}\\b)$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 
 	/**
 	 * Returns, whether a {@link String} is not null and not empty.
@@ -54,7 +57,7 @@ public class InputVerifyUtil {
 	 *         <code>false</code>, otherwise.
 	 */
 	public static boolean isNotBlank(@Nullable String string) {
-		return string != null && !string.isBlank();
+		return string != null && !string.trim().isEmpty();
 	}
 
 	/**
@@ -97,13 +100,20 @@ public class InputVerifyUtil {
 	 */
 	public static boolean isInteger(@Nullable String string) {
 		boolean isInteger = false;
-		if (isNotBlank(string)) {
-			try {
-				Integer.parseInt(string);
-				isInteger = true;
-			} catch (NumberFormatException e) {
-				// do nothing, as isFloat is already false
+		if (string != null && isNotBlank(string)) {
+			for (int i = 0; i < string.length(); i++) {
+				if (i == 0 && (string.charAt(0) == '-' || string.charAt(0) == '+')) {
+					// negative numbers
+					if (string.length() == 1) {
+						// int cannot only be "-"
+						break;
+					}
+				} else if (!Character.isDigit(string.charAt(i))) {
+					// no digit found
+					break;
+				}
 			}
+			return true;
 		}
 		return isInteger;
 	}
@@ -121,8 +131,8 @@ public class InputVerifyUtil {
 			try {
 				Float.parseFloat(string);
 				isFloat = true;
-			} catch (NumberFormatException e) {
-				// do nothing, as isFloat is already false
+			} catch (NumberFormatException e) { // TODO find way to avoid using exceptions
+				LoggingManager.log(Level.INFO, "Could not parse '" + string + "' to float: " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		return isFloat;
@@ -130,7 +140,7 @@ public class InputVerifyUtil {
 
 	/**
 	 * Checks if string is just one single word, that does only contain characters
-	 * from A to Z and ƒ, ÷, ‹, ﬂ (not case sensitive). {@link String} may not be
+	 * from A to Z and √§, √∂, √º, √ü (not case sensitive). {@link String} may not be
 	 * blank.
 	 *
 	 * @param string {@link String}
@@ -143,7 +153,7 @@ public class InputVerifyUtil {
 
 	/**
 	 * Method that checks if a given {@link String} does not contain any other
-	 * characters than A-Z and ƒ, ÷, ‹, ﬂ and spaces (not case sensitive).
+	 * characters than A-Z and √§, √∂, √º, √ü and spaces (not case sensitive).
 	 *
 	 * @param string {@link String}
 	 * @return <code>true</code>, if string contains just words and spaces;

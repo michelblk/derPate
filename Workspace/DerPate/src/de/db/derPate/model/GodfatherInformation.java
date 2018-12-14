@@ -72,7 +72,9 @@ public class GodfatherInformation {
 	 * @param lastName     Lastname
 	 * @param firstName    Firstname
 	 * @param location     Location
+	 * @param maxTrainees  Maximum number of accepted trainees
 	 * @param description  Description
+	 * @param picture      Path to picture
 	 * @param teachingType Teaching type
 	 * @param job          Job
 	 * @param hiringDate   Hiring date
