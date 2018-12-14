@@ -3,13 +3,13 @@ package de.db.derPate.servlet;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import de.db.derPate.Userform;
 import de.db.derPate.manager.LoginManager;
 import de.db.derPate.model.LoginUser;
 
@@ -23,14 +23,14 @@ import de.db.derPate.model.LoginUser;
  * @author MichelBlank
  * @see LoginManager
  */
-public class LogoutServlet extends HttpServlet {
+public class LogoutServlet extends CSRFCheckServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor
 	 */
 	public LogoutServlet() {
-		super();
+		super(Userform.LOGOUT);
 	}
 
 	/**
@@ -42,6 +42,9 @@ public class LogoutServlet extends HttpServlet {
 	protected void doGet(@Nullable HttpServletRequest request, @Nullable HttpServletResponse response)
 			throws ServletException, IOException {
 		if (request == null || response == null) {
+			return;
+		}
+		if (!this.handleCSRFToken(request, response)) {
 			return;
 		}
 

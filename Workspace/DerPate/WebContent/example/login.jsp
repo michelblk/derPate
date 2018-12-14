@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<%@page import="de.db.derPate.util.CSRFPreventionUtil"%>
+<%@page import="de.db.derPate.manager.LoginManager"%>
+<%@page import="de.db.derPate.servlet.LoginServlet"%>
 <%@page import="de.db.derPate.Userform"%>
 <%@page import="de.db.derPate.msc.CSRFPrevention"%>
 <%@page import="de.db.derPate.Constants"%>
@@ -18,30 +21,31 @@
 						method: $(form).attr("method"),
 						data: $(form).serialize(),
 						complete: function(e, text) {
-							if(e.status === 204) {
+							if(e.status === <%= LoginServlet.SC_LOGIN_SUCCESS %>) {
 								// success
 								alert("Successfully logged in");
+								location.reload();// just an example
 							}else
-							if(e.status === 410) {
+							if(e.status === <%= CSRFPreventionUtil.SC_INVALID_TOKEN %>) {
 								// CSRF token was gone
 								alert("Please try again");
 								// reload to generate a new token
 								location.reload();
 							}else
-							if(e.status === 400) {
+							if(e.status === <%= LoginServlet.SC_LOGIN_INCOMPLETE %>) {
 								// logindata was not correctly submitted
 								alert("You have to fill in all required fields");
 							}else
-							if(e.status === 403) {
+							if(e.status === <%= LoginServlet.SC_LOGIN_ERROR %>) {
 								// login failed
 								alert("Login failed");
 							}else{
 								// unknown
 								alert("Unknown error");
 							}
-							var newToken = e.getResponseHeader("<%= CSRFPrevention.HEADER_FIELD %>");
+							var newToken = e.getResponseHeader("<%= CSRFPreventionUtil.HEADER_FIELD %>");
 							if(newToken != null && newToken.length > 0) {
-								$(form).find("input[type='hidden'][name = '<%= CSRFPrevention.FIELD_NAME %>']").val(newToken);
+								$(form).find("input[type='hidden'][name = '<%= CSRFPreventionUtil.FIELD_NAME %>']").val(newToken);
 							}
 						}
 					});
@@ -69,11 +73,15 @@
 						<input id="input_password" name="<%= Constants.Ui.Inputs.LOGIN_PASSWORD %>" type="password" value="" placeholder="Passwort" />
 					</div>
 					<div class="input-group">
-						<input type="hidden" name="<%= CSRFPrevention.FIELD_NAME %>" value="<%= CSRFPrevention.generateToken(session, Userform.LOGIN) %>" />
+						<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPrevention.generateToken(session, Userform.LOGIN) %>" />
 						<input type="submit" value="Anmelden" />
 					</div>
 				</form>
 			</div>
+			<%=
+			LoginManager.getInstance().isLoggedIn(session) ?
+					"<a href=\"../logout?"+CSRFPreventionUtil.FIELD_NAME + "=" + CSRFPrevention.generateToken(session, Userform.LOGOUT) +"\">Logout</a>"
+					: "" %>
 		</div>
 	</body>
 </html>
