@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+validateFragments=true
 validation.actions-missing-required-attribute=1
 validation.actions-non-empty-inline-tag=2
 validation.actions-unexpected-rtexprvalue=2
@@ -10,7 +11,7 @@ validation.directive-taglib-duplicate-prefixes-different-uris=1
 validation.directive-taglib-duplicate-prefixes-same-uris=-1
 validation.directive-taglib-missing-prefix=1
 validation.directive-taglib-missing-uri-or-tagdir=1
-validation.directive-taglib-unresolvable-uri-or-tagdir=1
+validation.directive-taglib-unresolvable-uri-or-tagdir=-1
 validation.el-function-undefined=1
 validation.el-general-syntax=1
 validation.el-lexical-failure=-1
