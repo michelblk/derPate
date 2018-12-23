@@ -19,7 +19,7 @@ public enum Userform {
 	 *
 	 * @see LoginServlet
 	 */
-	LOGIN(-1),
+	LOGIN(1),
 	/**
 	 * Logout<br>
 	 * A token is valid till the session ends (session based)

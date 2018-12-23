@@ -27,14 +27,15 @@ public class CSRFPreventionUtil {
 
 	@Test
 	public void testTokenLimit() {
-		String firstToken = de.db.derPate.util.CSRFPreventionUtil.generateToken(this.session, this.form, this.limit);
+		String firstToken = de.db.derPate.util.CSRFPreventionUtil.generateToken(this.session, this.form, this.limit,
+				true);
 		try {
 			TimeUnit.MILLISECONDS.sleep(1); // wait 1 millisecond, so future tokens will be older
 		} catch (InterruptedException e) {
 			// do nothing
 		}
 		for (int i = 0; i < this.limit; i++) {
-			de.db.derPate.util.CSRFPreventionUtil.generateToken(this.session, this.form, this.limit);
+			de.db.derPate.util.CSRFPreventionUtil.generateToken(this.session, this.form, this.limit, true);
 		}
 
 		boolean isFirstTokenStillValid = de.db.derPate.util.CSRFPreventionUtil.checkToken(this.session, this.form,
@@ -44,7 +45,7 @@ public class CSRFPreventionUtil {
 
 	@Test
 	public void testValidity() {
-		String token = de.db.derPate.util.CSRFPreventionUtil.generateToken(this.session, this.form, this.limit);
+		String token = de.db.derPate.util.CSRFPreventionUtil.generateToken(this.session, this.form, this.limit, false);
 		boolean hasToBeTrue = de.db.derPate.util.CSRFPreventionUtil.checkToken(this.session, this.form, token,
 				this.timeout);
 		assertTrue(hasToBeTrue);

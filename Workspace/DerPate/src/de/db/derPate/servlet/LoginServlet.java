@@ -46,6 +46,11 @@ public class LoginServlet extends CSRFCheckServlet {
 	 * sent.
 	 */
 	public static final int SC_LOGIN_INCOMPLETE = HttpServletResponse.SC_BAD_REQUEST;
+	/**
+	 * Http status codes used to indicate that the session is already registered
+	 * with a user and therefore cannot be used by another user.
+	 */
+	public static final int SC_ALREADY_LOGGED_IN = HttpServletResponse.SC_CONFLICT;
 
 	/**
 	 * Constructor
@@ -69,6 +74,11 @@ public class LoginServlet extends CSRFCheckServlet {
 			return;
 		}
 
+		if (LoginManager.getInstance().isLoggedIn(request.getSession())) {
+			response.setStatus(SC_ALREADY_LOGGED_IN);
+			return;
+		}
+
 		String email = request.getParameter(Inputs.LOGIN_EMAIL.toString());
 		String password = request.getParameter(Inputs.LOGIN_PASSWORD.toString());
 		String token = request.getParameter(Inputs.LOGIN_TOKEN.toString());
@@ -81,7 +91,7 @@ public class LoginServlet extends CSRFCheckServlet {
 				// try to login as admin
 				String dbPassword = admin.getPassword();
 				if (Constants.Login.hashUtil.isEqual(password, dbPassword, Constants.Login.hashPepper,
-						Constants.Login.hashSeperator)) {
+						Constants.Login.hashSeparator)) {
 					LoginManager.getInstance().login(request, admin);
 					response.setStatus(SC_LOGIN_SUCCESS);
 					return;
@@ -93,7 +103,7 @@ public class LoginServlet extends CSRFCheckServlet {
 					// try to login as godfather
 					String dbPassword = godfather.getPassword();
 					if (Constants.Login.hashUtil.isEqual(password, dbPassword, Constants.Login.hashPepper,
-							Constants.Login.hashSeperator)) {
+							Constants.Login.hashSeparator)) {
 						LoginManager.getInstance().login(request, godfather);
 						response.setStatus(SC_LOGIN_SUCCESS);
 						return;

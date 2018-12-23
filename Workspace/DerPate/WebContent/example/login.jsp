@@ -20,6 +20,7 @@
 						url: $(form).attr("action"),
 						method: $(form).attr("method"),
 						data: $(form).serialize(),
+						cache: false,
 						complete: function(e, text) {
 							if(e.status === <%= LoginServlet.SC_LOGIN_SUCCESS %>) {
 								// success
@@ -39,6 +40,10 @@
 							if(e.status === <%= LoginServlet.SC_LOGIN_ERROR %>) {
 								// login failed
 								alert("Login failed");
+							}else
+							if(e.status === <%= LoginServlet.SC_ALREADY_LOGGED_IN %>) {
+								// already logged in
+								alert("Already logged in");	
 							}else{
 								// unknown
 								alert("Unknown error");

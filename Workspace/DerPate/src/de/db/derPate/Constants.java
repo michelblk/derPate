@@ -5,6 +5,7 @@ import de.db.derPate.model.Godfather;
 import de.db.derPate.model.Trainee;
 import de.db.derPate.util.CSRFPreventionUtil;
 import de.db.derPate.util.HashUtil;
+import de.db.derPate.util.PropertyUtil;
 import de.db.derPate.util.SHA256Util;
 
 /**
@@ -21,6 +22,16 @@ public final class Constants {
 	public static final String CHARSET = "UTF-8"; //$NON-NLS-1$
 
 	/**
+	 * Properties containing information regarding this application's safety
+	 */
+	public static final PropertyUtil SECURITY_PROPERTIES = new PropertyUtil("security");
+	/**
+	 * Properties containing information, that should not be publicly available
+	 * (e.g. server-tokens).
+	 */
+	public static final PropertyUtil SECRET_PROPERTIES = new PropertyUtil("secret");
+
+	/**
 	 * This class contains all static attributes that have influence about the
 	 * security of this application.
 	 */
@@ -28,14 +39,22 @@ public final class Constants {
 		/**
 		 * The number of tokens that can be generated per session per form, used in the
 		 * {@link CSRFPreventionUtil}. If the number of tokens is exceeded, the oldest
-		 * one will be invalidated.
+		 * one will be invalidated.<br>
+		 * Default value, if property not found: 10
+		 *
+		 * @see CSRFPreventionUtil
 		 */
-		public static final int CSRF_DEFAULT_MAX_TOKENS = 10;
+		public static final int CSRF_DEFAULT_MAX_TOKENS = SECURITY_PROPERTIES.getIntProperty("csrf.default_max_tokens",
+				10);
 		/**
 		 * The time in seconds, a csrf prevention token is valid. This has to be greater
-		 * that the time, the user can be expected to fill in a form.
+		 * than the time, the user can be expected to fill in a form.<br>
+		 * Default value, if property not found: 600s
+		 *
+		 * @see CSRFPreventionUtil
 		 */
-		public static final int CSRF_TIMEOUT_IN_SECONDS = 10 * 60;
+		public static final int CSRF_TIMEOUT_IN_SECONDS = SECURITY_PROPERTIES.getIntProperty("csrf.timeout_in_seconds",
+				600);
 	}
 
 	/**
@@ -48,25 +67,26 @@ public final class Constants {
 		public static final HashUtil hashUtil = SHA256Util.getInstance();
 
 		/**
-		 * Seperator used to split hash and salt
+		 * Separator used to split hash and salt
 		 */
-		public static final String hashSeperator = "."; //$NON-NLS-1$
+		public static final String hashSeparator = SECURITY_PROPERTIES.getProperty("encryption.separator");
 
 		/**
-		 * Pepper. TO BE FIXED
+		 * Pepper.
 		 */
-		public static final byte[] hashPepper = { 0x2F, 0x00, (byte) 0xFF, 0x32, (byte) 0xAB, 0x56, 0x32, (byte) 0x99,
-				0x43, 0x22, 0x21, 0x20, (byte) 0xAC }; // FIXME temporary test solution. Move to save place
+		public static final byte[] hashPepper = SECRET_PROPERTIES.getProperty("encryption.pepper").getBytes();
 
 		/**
-		 * Length (in bytes) of the salt to use
+		 * Length (in bytes) of the salt to use<br>
+		 * Default value, if property not found: 64
 		 */
-		public static final int hashSaltLength = 64;
+		public static final int hashSaltLength = SECURITY_PROPERTIES.getIntProperty("encryption.salt_length", 64);
 
 		/**
-		 * max time the user stays logged in, while inactive
+		 * max time the user stays logged in, while inactive<br>
+		 * Default value, if property not found: 600
 		 */
-		public static final int MAX_INACTIVE_SECONDS = 600;
+		public static final int MAX_INACTIVE_SECONDS = SECURITY_PROPERTIES.getIntProperty("login.timeout", 600);
 	}
 
 	/**

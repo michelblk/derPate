@@ -20,7 +20,7 @@ public class SHA256Util {
 		this.saltPepperLength = de.db.derPate.Constants.Login.hashSaltLength;
 		this.pepper = this.util.getRandomBytes(this.saltPepperLength);
 		this.input = "test";
-		this.hashseperator = de.db.derPate.Constants.Login.hashSeperator;
+		this.hashseperator = de.db.derPate.Constants.Login.hashSeparator;
 	}
 
 	@Test
