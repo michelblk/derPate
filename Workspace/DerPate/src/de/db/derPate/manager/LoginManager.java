@@ -24,16 +24,29 @@ import de.db.derPate.model.Trainee;
  * @see LoginUser
  */
 public class LoginManager {
+	/**
+	 * Stores static instance
+	 */
 	@NonNull
-	private static LoginManager instance = new LoginManager();
+	private static LoginManager instance;
+	/**
+	 * Key used to store the user in the session
+	 */
 	@NonNull
 	private final String userKey;
+
+	/**
+	 * Static constructor
+	 */
+	static {
+		instance = new LoginManager(); // create instance
+	}
 
 	/**
 	 * Default constructor used for initializing attributes.
 	 */
 	private LoginManager() {
-		this.userKey = "user";
+		this.userKey = "user"; //$NON-NLS-1$
 	}
 
 	/**
@@ -61,7 +74,7 @@ public class LoginManager {
 			try {
 				user = (LoginUser) session.getAttribute(this.userKey);
 			} catch (IllegalStateException | ClassCastException e) {
-				LoggingManager.log(Level.INFO, "Could not get user due to an session error");
+				LoggingManager.log(Level.INFO, "Could not get user due to an session error: " + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return user;
@@ -80,7 +93,7 @@ public class LoginManager {
 
 		if (request != null) {
 			try {
-				HttpSession session = this.newSession(request); // creates new session to prevent session hijacking
+				HttpSession session = newSession(request); // creates new session to prevent session hijacking
 				if (session != null) {
 					user.removeSecret(); // remove password from user to prevent unwanted use
 					session.setAttribute(this.userKey, user);
@@ -89,7 +102,7 @@ public class LoginManager {
 					success = true;
 				}
 			} catch (IllegalStateException e) {
-				LoggingManager.log(Level.INFO, "Could not login user due to an session error");
+				LoggingManager.log(Level.INFO, "Could not login user due to an session error: " + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return success;
@@ -107,10 +120,9 @@ public class LoginManager {
 		if (session != null) {
 			try {
 				success = (session.getAttribute(this.userKey) != null); // user is logged in, when session contains an
-																		// user
-																		// object
+																		// user object
 			} catch (IllegalStateException e) {
-				LoggingManager.log(Level.INFO, "Could not read login status out of session");
+				LoggingManager.log(Level.INFO, "Could not read login status out of session: " + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return success;
@@ -152,7 +164,7 @@ public class LoginManager {
 				session.invalidate(); // destroy session
 				success = true;
 			} catch (IllegalStateException e) {
-				LoggingManager.log(Level.INFO, "Could not logout user due to an session error");
+				LoggingManager.log(Level.INFO, "Could not logout user due to an session error: " + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return success;
@@ -168,7 +180,7 @@ public class LoginManager {
 	 *         {@link HttpServletRequest} was null
 	 */
 	@Nullable
-	private HttpSession newSession(@Nullable HttpServletRequest request) {
+	private static HttpSession newSession(@Nullable HttpServletRequest request) {
 		HttpSession newSession = null;
 		if (request != null) {
 			HttpSession session = request.getSession(true); // true means, that a new session should be initiated if

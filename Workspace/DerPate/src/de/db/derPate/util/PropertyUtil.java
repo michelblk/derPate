@@ -30,12 +30,12 @@ public class PropertyUtil {
 	 * @param filename Filename without ".properties" extension
 	 */
 	public PropertyUtil(@NonNull String filename) {
-		InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(filename + ".properties");
+		InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(filename + ".properties"); //$NON-NLS-1$
 		try {
 			this.properties.load(inStream);
 		} catch (IOException e) {
-			LoggingManager.log(Level.SEVERE, "main properties file not found: " + e.getMessage());
-			throw new RuntimeException("main properties file not found", e);
+			LoggingManager.log(Level.SEVERE, "main properties file not found: " + e.getMessage()); //$NON-NLS-1$
+			throw new RuntimeException("main properties file not found", e); //$NON-NLS-1$
 		}
 	}
 
@@ -61,7 +61,7 @@ public class PropertyUtil {
 	@NonNull
 	public String getProperty(@NonNull String key) {
 		String result = this.getProperty(key, null);
-		return (result != null ? result : "");
+		return (result != null ? result : ""); //$NON-NLS-1$
 	}
 
 	/**

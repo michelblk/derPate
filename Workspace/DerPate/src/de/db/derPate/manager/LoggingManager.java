@@ -20,7 +20,7 @@ import de.db.derPate.util.TimeUtil;
  */
 public class LoggingManager {
 	private static Logger logger;
-	private static final String LOGGER_NAME = "derPateLogger";
+	private static final String LOGGER_NAME = "derPateLogger"; //$NON-NLS-1$
 
 	/**
 	 * Constructor
@@ -40,7 +40,7 @@ public class LoggingManager {
 			try {
 				logger = java.util.logging.Logger.getLogger(LOGGER_NAME);
 			} catch (NullPointerException e) {
-				System.err.println("Could not get java util logger! Logs will be skipped");
+				System.err.println("Could not get java util logger! Logs will be skipped: " + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return logger;
@@ -55,7 +55,7 @@ public class LoggingManager {
 	public static void log(@Nullable Level level, @NonNull String description) {
 		Date currentTime = TimeUtil.getCurrentTime();
 		String currentTimeString = TimeUtil.dateToReadableString(currentTime, Locale.getDefault());
-		String output = currentTimeString + ": " + description;
+		String output = currentTimeString + ": " + description; //$NON-NLS-1$
 		Logger logg = getLogger();
 		if (logg != null && level != null) {
 			logg.log(level, output);

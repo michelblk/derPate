@@ -32,7 +32,7 @@ public class CSRFPrevention extends CSRFPreventionUtil {
 	@NonNull
 	public static String generateToken(@Nullable HttpSession session, @NonNull Userform form) {
 		if (session == null) {
-			return "";
+			return new String();
 		}
 		return CSRFPreventionUtil.generateToken(session, form.toString(), form.getMaxTokens(), form.isRequestBased());
 	}

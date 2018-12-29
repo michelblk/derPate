@@ -120,7 +120,8 @@ public class StringEscapeUtil {
 			try {
 				result = URLEncoder.encode(url, URL_CHARSET);
 			} catch (UnsupportedEncodingException e) {
-				LoggingManager.log(Level.SEVERE, "StringEscapeUtil could not find charset " + URL_CHARSET);
+				LoggingManager.log(Level.SEVERE,
+						"StringEscapeUtil could not find charset " + URL_CHARSET + ": " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 		return result;

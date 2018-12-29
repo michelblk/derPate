@@ -24,12 +24,12 @@ public final class Constants {
 	/**
 	 * Properties containing information regarding this application's safety
 	 */
-	public static final PropertyUtil SECURITY_PROPERTIES = new PropertyUtil("security");
+	public static final PropertyUtil SECURITY_PROPERTIES = new PropertyUtil("security"); //$NON-NLS-1$
 	/**
 	 * Properties containing information, that should not be publicly available
 	 * (e.g. server-tokens).
 	 */
-	public static final PropertyUtil SECRET_PROPERTIES = new PropertyUtil("secret");
+	public static final PropertyUtil SECRET_PROPERTIES = new PropertyUtil("secret"); //$NON-NLS-1$
 
 	/**
 	 * This class contains all static attributes that have influence about the
@@ -44,7 +44,7 @@ public final class Constants {
 		 *
 		 * @see CSRFPreventionUtil
 		 */
-		public static final int CSRF_DEFAULT_MAX_TOKENS = SECURITY_PROPERTIES.getIntProperty("csrf.default_max_tokens",
+		public static final int CSRF_DEFAULT_MAX_TOKENS = SECURITY_PROPERTIES.getIntProperty("csrf.default_max_tokens", //$NON-NLS-1$
 				10);
 		/**
 		 * The time in seconds, a csrf prevention token is valid. This has to be greater
@@ -53,7 +53,7 @@ public final class Constants {
 		 *
 		 * @see CSRFPreventionUtil
 		 */
-		public static final int CSRF_TIMEOUT_IN_SECONDS = SECURITY_PROPERTIES.getIntProperty("csrf.timeout_in_seconds",
+		public static final int CSRF_TIMEOUT_IN_SECONDS = SECURITY_PROPERTIES.getIntProperty("csrf.timeout_in_seconds", //$NON-NLS-1$
 				600);
 	}
 
@@ -69,24 +69,24 @@ public final class Constants {
 		/**
 		 * Separator used to split hash and salt
 		 */
-		public static final String hashSeparator = SECURITY_PROPERTIES.getProperty("encryption.separator");
+		public static final String hashSeparator = SECURITY_PROPERTIES.getProperty("encryption.separator"); //$NON-NLS-1$
 
 		/**
 		 * Pepper.
 		 */
-		public static final byte[] hashPepper = SECRET_PROPERTIES.getProperty("encryption.pepper").getBytes();
+		public static final byte[] hashPepper = SECRET_PROPERTIES.getProperty("encryption.pepper").getBytes(); //$NON-NLS-1$
 
 		/**
 		 * Length (in bytes) of the salt to use<br>
 		 * Default value, if property not found: 64
 		 */
-		public static final int hashSaltLength = SECURITY_PROPERTIES.getIntProperty("encryption.salt_length", 64);
+		public static final int hashSaltLength = SECURITY_PROPERTIES.getIntProperty("encryption.salt_length", 64); //$NON-NLS-1$
 
 		/**
 		 * max time the user stays logged in, while inactive<br>
 		 * Default value, if property not found: 600
 		 */
-		public static final int MAX_INACTIVE_SECONDS = SECURITY_PROPERTIES.getIntProperty("login.timeout", 600);
+		public static final int MAX_INACTIVE_SECONDS = SECURITY_PROPERTIES.getIntProperty("login.timeout", 600); //$NON-NLS-1$
 	}
 
 	/**
