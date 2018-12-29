@@ -1,10 +1,13 @@
+<%@page
+	import="de.db.derPate.util.CSRFPreventionUtil"
+	import="de.db.derPate.manager.LoginManager"
+	import="de.db.derPate.servlet.LoginServlet"
+	import="de.db.derPate.servlet.filter.CSRFServletFilter"
+	import="de.db.derPate.Userform"
+	import="de.db.derPate.msc.CSRFPrevention"
+	import="de.db.derPate.Constants"
+%>
 <!DOCTYPE html>
-<%@page import="de.db.derPate.util.CSRFPreventionUtil"%>
-<%@page import="de.db.derPate.manager.LoginManager"%>
-<%@page import="de.db.derPate.servlet.LoginServlet"%>
-<%@page import="de.db.derPate.Userform"%>
-<%@page import="de.db.derPate.msc.CSRFPrevention"%>
-<%@page import="de.db.derPate.Constants"%>
 <html>
 	<head>
 		<title>Login Example</title>
@@ -27,8 +30,8 @@
 								alert("Successfully logged in");
 								location.reload();// just an example
 							}else
-							if(e.status === <%= CSRFPreventionUtil.SC_INVALID_TOKEN %>) {
-								// CSRF token was gone
+							if(e.status === <%= Integer.toString((new CSRFServletFilter(Userform.LOGIN)).getErrorStatusCode()) %>) {
+								// CSRF token gone
 								alert("Please try again");
 								// reload to generate a new token
 								location.reload();

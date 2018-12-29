@@ -2,16 +2,17 @@ package de.db.derPate.servlet;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derPate.Userform;
 import de.db.derPate.manager.LoginManager;
 import de.db.derPate.model.LoginUser;
+import de.db.derPate.servlet.filter.CSRFServletFilter;
+import de.db.derPate.servlet.filter.LoginServletFilter;
 
 /**
  * This servlet is used to remove the relation between the client's
@@ -23,14 +24,14 @@ import de.db.derPate.model.LoginUser;
  * @author MichelBlank
  * @see LoginManager
  */
-public class LogoutServlet extends CSRFCheckServlet {
+public class LogoutServlet extends FilterServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Constructor
 	 */
 	public LogoutServlet() {
-		super(Userform.LOGOUT);
+		super(new CSRFServletFilter(Userform.LOGOUT), new LoginServletFilter());
 	}
 
 	/**
@@ -39,15 +40,8 @@ public class LogoutServlet extends CSRFCheckServlet {
 	 * redirects to the start page.
 	 */
 	@Override
-	protected void doGet(@Nullable HttpServletRequest request, @Nullable HttpServletResponse response)
-			throws ServletException, IOException {
-		if (request == null || response == null) {
-			return;
-		}
-		if (!this.handleCSRFToken(request, response)) {
-			return;
-		}
-
+	protected void onGet(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response)
+			throws IOException {
 		// get data
 		HttpSession session = request.getSession(true);
 
@@ -57,5 +51,4 @@ public class LogoutServlet extends CSRFCheckServlet {
 		// redirect back to start
 		response.sendRedirect(request.getContextPath());
 	}
-
 }

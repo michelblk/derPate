@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derPate.Constants;
 import de.db.derPate.Constants.Ui.Inputs;
@@ -17,9 +17,12 @@ import de.db.derPate.manager.LoginManager;
 import de.db.derPate.model.Admin;
 import de.db.derPate.model.Godfather;
 import de.db.derPate.model.Trainee;
+import de.db.derPate.msc.CSRFPrevention;
 import de.db.derPate.persistence.AdminDao;
 import de.db.derPate.persistence.GodfatherDao;
 import de.db.derPate.persistence.TraineeDao;
+import de.db.derPate.servlet.filter.CSRFServletFilter;
+import de.db.derPate.util.CSRFPreventionUtil;
 import de.db.derPate.util.InputVerifyUtil;
 
 /**
@@ -29,9 +32,12 @@ import de.db.derPate.util.InputVerifyUtil;
  * Allowed http methods: <code>POST</code>
  *
  * @author MichelBlank
- *
+ * @see LoginManager
  */
-public class LoginServlet extends CSRFCheckServlet {
+public class LoginServlet extends FilterServlet {
+	/**
+	 * Default serial version UID
+	 */
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Http status code used to indicate a successful login
@@ -51,29 +57,30 @@ public class LoginServlet extends CSRFCheckServlet {
 	 * with a user and therefore cannot be used by another user.
 	 */
 	public static final int SC_ALREADY_LOGGED_IN = HttpServletResponse.SC_CONFLICT;
+	/**
+	 * Userform, that this Servlet is for, used for the CSRF Filter and generating a
+	 * new token, if username or password was wrong (but csrf token was correct)
+	 */
+	@NonNull
+	public static final Userform USERFORM = Userform.LOGIN;
 
 	/**
 	 * Constructor
 	 */
 	public LoginServlet() {
-		super(Userform.LOGIN);
+		super(new CSRFServletFilter(USERFORM));
 	}
 
 	/**
 	 * This method serves the http post-method and receives the credentials provided
 	 * by the client, checks them and redirects to the next page (or sends an http
 	 * status code, to let the client know, that the login was not successful).
+	 *
+	 * @throws IOException if an input or output exception occurs
 	 */
 	@Override
-	protected void doPost(@Nullable HttpServletRequest request, @Nullable HttpServletResponse response)
+	protected void onPost(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response)
 			throws IOException {
-		if (request == null || response == null) {
-			return;
-		}
-		if (!this.handleCSRFToken(request, response)) {
-			return;
-		}
-
 		if (LoginManager.getInstance().isLoggedIn(request.getSession())) {
 			response.setStatus(SC_ALREADY_LOGGED_IN);
 			return;
@@ -129,7 +136,7 @@ public class LoginServlet extends CSRFCheckServlet {
 		// no valid login, but valid token. So request can be trusted again
 		HttpSession session = request.getSession();
 		if (session != null) {
-			this.respondWithNewToken(session, response);
+			response.setHeader(CSRFPreventionUtil.HEADER_FIELD, CSRFPrevention.generateToken(session, USERFORM));
 		}
 
 		// send error code
