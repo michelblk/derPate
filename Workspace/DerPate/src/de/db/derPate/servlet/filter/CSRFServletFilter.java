@@ -7,8 +7,8 @@ import javax.servlet.http.HttpSession;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
+import de.db.derPate.Constants;
 import de.db.derPate.Userform;
-import de.db.derPate.msc.CSRFPrevention;
 import de.db.derPate.servlet.FilterServlet;
 import de.db.derPate.util.CSRFPreventionUtil;
 
@@ -20,7 +20,6 @@ import de.db.derPate.util.CSRFPreventionUtil;
  * USAGE: SERVLET/REST only
  *
  * @author MichelBlank
- * @see CSRFPrevention
  */
 public class CSRFServletFilter implements ServletFilter {
 	/**
@@ -51,7 +50,8 @@ public class CSRFServletFilter implements ServletFilter {
 		String csrfToken = getCSRFToken(req);
 		HttpSession session = req.getSession();
 
-		return (csrfToken != null && session != null && CSRFPrevention.checkToken(session, this.userform, csrfToken));
+		return (csrfToken != null && session != null && CSRFPreventionUtil.checkToken(session, this.userform, csrfToken,
+				Constants.Security.CSRF_TIMEOUT_IN_SECONDS));
 	}
 
 	@Override

@@ -17,7 +17,6 @@ import de.db.derPate.manager.LoginManager;
 import de.db.derPate.model.Admin;
 import de.db.derPate.model.Godfather;
 import de.db.derPate.model.Trainee;
-import de.db.derPate.msc.CSRFPrevention;
 import de.db.derPate.persistence.AdminDao;
 import de.db.derPate.persistence.GodfatherDao;
 import de.db.derPate.persistence.TraineeDao;
@@ -79,7 +78,7 @@ public class LoginServlet extends FilterServlet {
 	 * @throws IOException if an input or output exception occurs
 	 */
 	@Override
-	protected void onPost(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response)
+	protected void onPost(@NonNull final HttpServletRequest request, @NonNull final HttpServletResponse response)
 			throws IOException {
 		if (LoginManager.getInstance().isLoggedIn(request.getSession())) {
 			response.setStatus(SC_ALREADY_LOGGED_IN);
@@ -130,18 +129,35 @@ public class LoginServlet extends FilterServlet {
 			// invalid login attempt
 			LoggingManager.log(Level.INFO,
 					"Client with IP " + request.getRemoteAddr() + " tried to login with no credentials"); //$NON-NLS-1$ //$NON-NLS-2$
+			attachCSRFHeader(request, response); // attach new token
 			response.sendError(SC_LOGIN_INCOMPLETE);
+			return;
 		}
 
+		// send error code, when login was wrong
+		attachCSRFHeader(request, response); // attach new token
+		response.sendError(SC_LOGIN_ERROR);
+		return;
+	}
+
+	/**
+	 * Attaches a header to the given {@link HttpServletResponse}, that the client
+	 * can use for a new request
+	 *
+	 * @param request  the {@link HttpServletRequest} containing the
+	 *                 {@link HttpSession} of client
+	 * @param response the {@link HttpServletResponse}
+	 *
+	 * @see CSRFPreventionUtil#attachNewTokenToHttpResponse(HttpSession,
+	 *      HttpServletResponse, Userform)
+	 */
+	private static void attachCSRFHeader(@NonNull final HttpServletRequest request,
+			@NonNull final HttpServletResponse response) {
 		// no valid login, but valid token. So request can be trusted again
 		HttpSession session = request.getSession();
 		if (session != null) {
-			response.setHeader(CSRFPreventionUtil.HEADER_FIELD, CSRFPrevention.generateToken(session, USERFORM));
+			CSRFPreventionUtil.attachNewTokenToHttpResponse(session, response, USERFORM);
 		}
-
-		// send error code
-		response.setStatus(SC_LOGIN_ERROR);
-		return;
 	}
 
 }

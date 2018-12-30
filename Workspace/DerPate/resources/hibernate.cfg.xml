@@ -1,7 +1,8 @@
 <?xml version = "1.0" encoding = "utf-8"?>
 <!--
 
-DO NOT UPLOAD THIS FILE WITH REAL USERNAME, PASSWORD OR URL TO A PUBLIC INSTANCE (e.g. github)
+URL, USERNAME and PASSWORD can be found in the secret.properties file.
+DO NOT UPLOAD THE secret.properties FILE INTO A PUBLICLY AVAILABLE SHARE!
 
  -->
 <!DOCTYPE hibernate-configuration SYSTEM 
@@ -18,18 +19,6 @@ DO NOT UPLOAD THIS FILE WITH REAL USERNAME, PASSWORD OR URL TO A PUBLIC INSTANCE
       
       <property name="hibernate.current_session_context_class">
       	thread
-      </property>
-      
-      <property name = "hibernate.connection.url">
-         jdbc:mysql://localhost/derpate
-      </property>
-      
-      <property name = "hibernate.connection.username">
-         root
-      </property>
-      
-      <property name = "hibernate.connection.password">
-         
       </property>
       
       <mapping class="de.db.derPate.model.Job" />

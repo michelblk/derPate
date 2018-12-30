@@ -4,7 +4,6 @@
 	import="de.db.derPate.servlet.LoginServlet"
 	import="de.db.derPate.servlet.filter.CSRFServletFilter"
 	import="de.db.derPate.Userform"
-	import="de.db.derPate.msc.CSRFPrevention"
 	import="de.db.derPate.Constants"
 %>
 <!DOCTYPE html>
@@ -81,14 +80,14 @@
 						<input id="input_password" name="<%= Constants.Ui.Inputs.LOGIN_PASSWORD %>" type="password" value="" placeholder="Passwort" />
 					</div>
 					<div class="input-group">
-						<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPrevention.generateToken(session, Userform.LOGIN) %>" />
+						<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, Userform.LOGIN) %>" />
 						<input type="submit" value="Anmelden" />
 					</div>
 				</form>
 			</div>
 			<%=
 			LoginManager.getInstance().isLoggedIn(session) ?
-					"<a href=\"../logout?"+CSRFPreventionUtil.FIELD_NAME + "=" + CSRFPrevention.generateToken(session, Userform.LOGOUT) +"\">Logout</a>"
+					"<a href=\"../logout?"+CSRFPreventionUtil.FIELD_NAME + "=" + CSRFPreventionUtil.generateToken(session, Userform.LOGOUT) +"\">Logout</a>"
 					: "" %>
 		</div>
 	</body>

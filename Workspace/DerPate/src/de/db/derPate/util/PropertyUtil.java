@@ -1,6 +1,5 @@
 package de.db.derPate.util;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -30,12 +29,13 @@ public class PropertyUtil {
 	 * @param filename Filename without ".properties" extension
 	 */
 	public PropertyUtil(@NonNull String filename) {
-		InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(filename + ".properties"); //$NON-NLS-1$
+		String path = filename + ".properties"; //$NON-NLS-1$
+		InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(path); // $NON-NLS-1$
 		try {
 			this.properties.load(inStream);
-		} catch (IOException e) {
-			LoggingManager.log(Level.SEVERE, "main properties file not found: " + e.getMessage()); //$NON-NLS-1$
-			throw new RuntimeException("main properties file not found", e); //$NON-NLS-1$
+		} catch (Exception e) {
+			LoggingManager.log(Level.SEVERE, "main properties file not found (" + path + "): " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new RuntimeException("properties file not found: " + path); //$NON-NLS-1$
 		}
 	}
 

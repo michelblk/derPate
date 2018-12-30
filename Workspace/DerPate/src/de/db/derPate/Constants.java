@@ -58,6 +58,24 @@ public final class Constants {
 	}
 
 	/**
+	 * This class contains all static attributes related to the database
+	 */
+	public static final class Database {
+		/**
+		 *
+		 */
+		public static final String URL = SECRET_PROPERTIES.getProperty("database.url"); //$NON-NLS-1$
+		/**
+		 *
+		 */
+		public static final String USERNAME = SECRET_PROPERTIES.getProperty("database.username"); //$NON-NLS-1$
+		/**
+		 *
+		 */
+		public static final String PASSWORD = SECRET_PROPERTIES.getProperty("database.password"); //$NON-NLS-1$
+	}
+
+	/**
 	 * This class contains all static attributes related with the login.
 	 */
 	public static final class Login {

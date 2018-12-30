@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import de.db.derPate.Constants;
 import de.db.derPate.manager.LoggingManager;
 
 /**
@@ -19,9 +20,16 @@ public class HibernateSessionFactoryUtil {
 
 	static {
 		try {
-			sessionFactory = new Configuration().configure().buildSessionFactory();
+			Configuration config = new Configuration().configure();
+			config.setProperty("hibernate.connection.url", Constants.Database.URL); //$NON-NLS-1$
+			config.setProperty("hibernate.connection.username", Constants.Database.USERNAME); //$NON-NLS-1$
+			config.setProperty("hibernate.connection.password", Constants.Database.PASSWORD); //$NON-NLS-1$
+
+			sessionFactory = config.buildSessionFactory();
 		} catch (HibernateException e) {
-			LoggingManager.log(Level.SEVERE, "Could not create Hibernate session factory:\n" + e.getMessage()); //$NON-NLS-1$
+			LoggingManager.log(Level.SEVERE,
+					"\n\n-------------Could not create Hibernate session factory:-------------\n--> Check Database: " //$NON-NLS-1$
+							+ e.getMessage() + "\n\n"); //$NON-NLS-1$
 			throw e; // stop program
 		}
 	}
