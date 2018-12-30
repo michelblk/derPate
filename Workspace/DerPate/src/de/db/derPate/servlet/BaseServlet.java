@@ -1,8 +1,6 @@
 package de.db.derPate.servlet;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import de.db.derPate.Constants;
-import de.db.derPate.manager.LoggingManager;
+import de.db.derPate.util.ServletUtil;
 
 /**
  * This abstract {@link HttpServlet} should be used for all created servlets, as
@@ -31,24 +28,6 @@ public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Sets default character encoding ({@value Constants#CHARSET}) to request and
-	 * response
-	 *
-	 * @param request  {@link HttpServletRequest}
-	 * @param response {@link HttpServletResponse}
-	 */
-	protected static void setCharacterEncoding(@NonNull HttpServletRequest request,
-			@NonNull HttpServletResponse response) {
-		try {
-			request.setCharacterEncoding(Constants.CHARSET);
-			response.setCharacterEncoding(Constants.CHARSET);
-		} catch (UnsupportedEncodingException e) {
-			LoggingManager.log(Level.WARNING,
-					"Servlet could not set charset " + Constants.CHARSET + ": " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-	}
-
-	/**
 	 * Handles get request, sets character encoding and calls custom get method
 	 * ({@link #get(HttpServletRequest, HttpServletResponse)}
 	 */
@@ -56,7 +35,7 @@ public abstract class BaseServlet extends HttpServlet {
 	protected final void doGet(@Nullable HttpServletRequest req, @Nullable HttpServletResponse resp)
 			throws ServletException, IOException {
 		if (req != null && resp != null) {
-			setCharacterEncoding(req, resp);
+			ServletUtil.setCharacterEncoding(req, resp);
 			this.get(req, resp);
 		}
 	}
@@ -84,7 +63,7 @@ public abstract class BaseServlet extends HttpServlet {
 	protected final void doPost(@Nullable HttpServletRequest req, @Nullable HttpServletResponse resp)
 			throws ServletException, IOException {
 		if (req != null && resp != null) {
-			setCharacterEncoding(req, resp);
+			ServletUtil.setCharacterEncoding(req, resp);
 			this.post(req, resp);
 		}
 	}

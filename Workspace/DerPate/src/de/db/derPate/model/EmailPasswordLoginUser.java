@@ -6,6 +6,8 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.hibernate.annotations.NaturalId;
 
+import com.google.gson.annotations.Expose;
+
 import de.db.derPate.manager.LoginManager;
 
 /**
@@ -19,8 +21,10 @@ import de.db.derPate.manager.LoginManager;
 public abstract class EmailPasswordLoginUser extends LoginUser {
 	@NonNull
 	@NaturalId(mutable = true)
+	@Expose
 	private String email;
 	@Nullable
+	@Expose(serialize = false, deserialize = false)
 	private String password = null;
 
 	/**

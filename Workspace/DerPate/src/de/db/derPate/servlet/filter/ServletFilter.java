@@ -11,15 +11,17 @@ import de.db.derPate.servlet.FilterServlet;
 /**
  * Interface used for ServletFilters, that are used in the
  * {@link FilterServlet}.<br>
- * It cannot be used by the native filter servlet mechanism, as it does not
- * extend {@link Filter}.
+ * It cannot be used by the native filter servlet mechanism (for jsp), as it
+ * does not extend {@link Filter}.
  *
  * @author MichelBlank
  */
 public interface ServletFilter {
 
 	/**
-	 * @param req {@link HttpServletRequest}
+	 * Method, that returns if the filter applies.
+	 *
+	 * @param req the {@link HttpServletRequest}
 	 * @return <code>true</code>, if request is valid;<code>false</code>, if request
 	 *         is missing required informations or is not valid
 	 */

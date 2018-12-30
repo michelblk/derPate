@@ -11,6 +11,8 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.hibernate.annotations.NaturalId;
 
+import com.google.gson.annotations.Expose;
+
 import de.db.derPate.manager.LoginManager;
 
 /**
@@ -26,10 +28,12 @@ public class Trainee extends LoginUser {
 	@Nullable
 	@Column(name = "Login_Code", nullable = false)
 	@NaturalId(mutable = true)
+	@Expose
 	private String loginToken;
 	@Nullable
 	@ManyToOne
 	@JoinColumn(name = "Id_Godfather", nullable = true)
+	@Expose
 	private Godfather godfather = null;
 
 	/**

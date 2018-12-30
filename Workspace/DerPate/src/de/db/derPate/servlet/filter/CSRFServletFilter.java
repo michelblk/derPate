@@ -17,7 +17,7 @@ import de.db.derPate.util.CSRFPreventionUtil;
  * token.<br>
  * It can only be used by the {@link FilterServlet} and cannot be used by the
  * native filter servlet mechanism, as it does not implement {@link Filter}.<br>
- * USAGE: SERVLETS only
+ * USAGE: SERVLET/REST only
  *
  * @author MichelBlank
  * @see CSRFPrevention

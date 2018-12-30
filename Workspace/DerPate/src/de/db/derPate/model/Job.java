@@ -7,6 +7,8 @@ import javax.persistence.Table;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * This dataclass contains informations regarding the different job types (for
  * example "Auszubildender")
@@ -20,6 +22,7 @@ import org.eclipse.jdt.annotation.NonNull;
 public class Job extends Id {
 	@NonNull
 	@Column(name = "Job", nullable = false)
+	@Expose
 	private String job;
 
 	/**

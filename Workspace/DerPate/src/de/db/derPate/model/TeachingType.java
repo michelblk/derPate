@@ -7,6 +7,8 @@ import javax.persistence.Table;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * This dataclass contains field to hold information about the teaching types
  *
@@ -19,6 +21,7 @@ import org.eclipse.jdt.annotation.NonNull;
 public class TeachingType extends Id {
 	@NonNull
 	@Column(name = "Teaching_Type", nullable = false)
+	@Expose
 	private String teachingType;
 
 	/**

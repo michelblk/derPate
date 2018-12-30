@@ -10,6 +10,8 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.hibernate.annotations.NaturalId;
 
+import com.google.gson.annotations.Expose;
+
 import de.db.derPate.manager.LoginManager;
 
 /**
@@ -23,6 +25,7 @@ import de.db.derPate.manager.LoginManager;
 @AttributeOverride(name = "id", column = @Column(name = "Id_Godfather"))
 public class Godfather extends EmailPasswordLoginUser {
 	@Nullable
+	@Expose
 	private GodfatherInformation information;
 
 	/**

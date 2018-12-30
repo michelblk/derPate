@@ -7,6 +7,8 @@ import javax.persistence.Table;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * This dataclass contains informations regarding a location
  *
@@ -19,6 +21,7 @@ import org.eclipse.jdt.annotation.NonNull;
 public class Location extends Id {
 	@NonNull
 	@Column(name = "Location", nullable = false)
+	@Expose
 	private String location;
 
 	/**

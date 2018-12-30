@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * This dataclass is used to hold all informations used for displaying a list of
  * {@link Godfather}s to the trainee. The {@link Godfather} itself may change
@@ -25,38 +27,49 @@ import org.eclipse.jdt.annotation.Nullable;
 public class GodfatherInformation {
 	@Nullable
 	@Column(name = "Last_Name", nullable = false)
+	@Expose
 	private String lastName;
 	@Nullable
 	@Column(name = "First_Name", nullable = false)
+	@Expose
 	private String firstName;
 	@Nullable
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "Id_Location", nullable = false)
+	@Expose
 	private Location location;
 	@Column(name = "Max_Trainees", nullable = false)
+	@Expose
 	private int maxTrainees;
 	@Nullable
 	@Column(name = "Description", nullable = false)
+	@Expose
 	private String description;
 	@Nullable
 	@Column(name = "Picture", nullable = true)
+	@Expose(serialize = false, deserialize = false)
 	private String picture;
 	@Nullable
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "Id_Teaching_Type", nullable = false)
+	@Expose
 	private TeachingType teachingType;
 	@Nullable
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "Id_Job", nullable = false)
+	@Expose
 	private Job job;
 	@Nullable
 	@Column(name = "Hiring_Date", nullable = false)
+	@Expose
 	private Date hiringDate;
 	@Nullable
 	@Column(name = "Birthday", nullable = true)
+	@Expose
 	private Date birthday;
 	@Nullable
 	@Column(name = "Pick_Text", nullable = true)
+	@Expose
 	private String pickText;
 
 	/**

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import de.db.derPate.handler.ServletFilterHandler;
 import de.db.derPate.servlet.filter.ServletFilter;
 
 /**
@@ -25,11 +26,8 @@ public abstract class FilterServlet extends BaseServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Filters set by constructor
-	 */
 	@NonNull
-	private ServletFilter[] filters;
+	private ServletFilterHandler filterHandler;
 
 	/**
 	 * Constructor, that expects {@link ServletFilter}s, that get stored and used
@@ -38,29 +36,7 @@ public abstract class FilterServlet extends BaseServlet {
 	 * @param filters array of {@link ServletFilter}s. May not be null.
 	 */
 	public FilterServlet(@NonNull ServletFilter... filters) {
-		this.filters = filters;
-	}
-
-	/**
-	 * Uses the filters to check, if a request was valid and responds with an error,
-	 * if one of the filters forbids request.
-	 *
-	 * @param req  {@link HttpServletRequest}
-	 * @param resp {@link HttpServletResponse}
-	 * @return <code>true</code>, if all filters applied; <code>false</code>, if at
-	 *         least one filter forbids the request
-	 * @throws IOException if an input or output exception occurs, while sending
-	 *                     error
-	 */
-	private boolean handleFilter(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp)
-			throws IOException {
-		for (ServletFilter filter : this.filters) {
-			if (!filter.filter(req)) {
-				resp.sendError(filter.getErrorStatusCode());
-				return false;
-			}
-		}
-		return true;
+		this.filterHandler = new ServletFilterHandler(filters);
 	}
 
 	/**
@@ -69,7 +45,7 @@ public abstract class FilterServlet extends BaseServlet {
 	 */
 	@Override
 	protected final void get(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		if (this.handleFilter(req, resp)) {
+		if (this.filterHandler.handleFilter(req, resp)) {
 			this.onGet(req, resp);
 		}
 	}
@@ -97,10 +73,9 @@ public abstract class FilterServlet extends BaseServlet {
 	 */
 	@Override
 	protected final void post(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		if (!this.handleFilter(req, resp)) {
-			return;
+		if (this.filterHandler.handleFilter(req, resp)) {
+			this.onPost(req, resp);
 		}
-		this.onPost(req, resp);
 	}
 
 	/**

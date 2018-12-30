@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.MappedSuperclass;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * Used for all {@link DatabaseEntity}s, that have a numeric id field
  *
@@ -16,6 +18,7 @@ public abstract class Id extends DatabaseEntity {
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
+	@Expose
 	private int id = -1;
 
 	/**
