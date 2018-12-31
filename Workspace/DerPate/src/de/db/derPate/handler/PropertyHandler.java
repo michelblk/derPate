@@ -1,4 +1,4 @@
-package de.db.derPate.util;
+package de.db.derPate.handler;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -8,6 +8,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.db.derPate.manager.LoggingManager;
+import de.db.derPate.util.InputVerifyUtil;
 
 /**
  * This util offers methods to read out of an ".properties" file stored in the
@@ -17,9 +18,14 @@ import de.db.derPate.manager.LoggingManager;
  * @author MichelBlank
  * @see Properties
  */
-public class PropertyUtil {
+public class PropertyHandler {
 	@NonNull
 	private Properties properties = new Properties();
+	/**
+	 * Filename, stored for logging
+	 */
+	@NonNull
+	private String file;
 
 	/**
 	 * Constructor reading file and loading it into a {@link Properties} object.<br>
@@ -28,14 +34,13 @@ public class PropertyUtil {
 	 *
 	 * @param filename Filename without ".properties" extension
 	 */
-	public PropertyUtil(@NonNull String filename) {
-		String path = filename + ".properties"; //$NON-NLS-1$
-		InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(path); // $NON-NLS-1$
+	public PropertyHandler(@NonNull String filename) {
+		this.file = filename + ".properties"; //$NON-NLS-1$
+		InputStream inStream = this.getClass().getClassLoader().getResourceAsStream(this.file); // $NON-NLS-1$
 		try {
 			this.properties.load(inStream);
 		} catch (Exception e) {
-			LoggingManager.log(Level.SEVERE, "main properties file not found (" + path + "): " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new RuntimeException("properties file not found: " + path); //$NON-NLS-1$
+			LoggingManager.log(Level.WARNING, "properties file not found (" + this.file + "): " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -51,17 +56,24 @@ public class PropertyUtil {
 	}
 
 	/**
-	 * Reading property value as String and returns an empty {@link String}, if key
-	 * was not found
+	 * Reading property value as String.<br>
+	 * Throws a {@link RuntimeException}, if key was not found! Therefore, should
+	 * only be used, when value is mandatory for application
 	 *
 	 * @param key Key
-	 * @return value or an empty string, if property was not found
+	 * @return value if property was not found
+	 * @throws RuntimeException if key was not found
 	 * @see Properties#getProperty(String)
 	 */
 	@NonNull
-	public String getProperty(@NonNull String key) {
+	public String getProperty(@NonNull String key) throws RuntimeException {
 		String result = this.getProperty(key, null);
-		return (result != null ? result : ""); //$NON-NLS-1$
+		if (result == null) {
+			LoggingManager.log(Level.SEVERE, "Application stopped, as mandatory property was not set: " + key); //$NON-NLS-1$
+			throw new RuntimeException("Property " + key + " of file " + this.file + " was not found"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+
+		return result;
 	}
 
 	/**

@@ -75,7 +75,8 @@ public class InputVerifyUtil {
 	 * Returns if float is greater than or equal to 0.
 	 *
 	 * @param flt float
-	 * @return <code>true</code>, if float is >= 0;<code>false</code>, if not.
+	 * @return <code>true</code>, if float is {@literal >= 0};<code>false</code>, if
+	 *         not.
 	 */
 	public static boolean isPositiveNumber(float flt) {
 		return flt >= 0;
@@ -85,7 +86,8 @@ public class InputVerifyUtil {
 	 * Returns if double is greater than or equal to 0.
 	 *
 	 * @param dbl double
-	 * @return <code>true</code>, if double is >= 0; <code>false</code>, if not.
+	 * @return <code>true</code>, if double is {@literal >= 0}; <code>false</code>,
+	 *         if not.
 	 */
 	public static boolean isPositiveNumber(double dbl) {
 		return dbl >= 0;
@@ -110,10 +112,11 @@ public class InputVerifyUtil {
 					}
 				} else if (!Character.isDigit(string.charAt(i))) {
 					// no digit found
+					isInteger = false;
 					break;
 				}
+				isInteger = true;
 			}
-			return true;
 		}
 		return isInteger;
 	}

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import de.db.derPate.Userform;
+import de.db.derPate.CSRFForm;
 import de.db.derPate.manager.LoginManager;
 import de.db.derPate.model.LoginUser;
 import de.db.derPate.servlet.filter.CSRFServletFilter;
@@ -31,7 +31,7 @@ public class LogoutServlet extends FilterServlet {
 	 * Constructor
 	 */
 	public LogoutServlet() {
-		super(new CSRFServletFilter(Userform.LOGOUT), new LoginServletFilter());
+		super(new CSRFServletFilter(CSRFForm.LOGOUT), new LoginServletFilter());
 	}
 
 	/**

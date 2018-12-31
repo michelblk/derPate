@@ -19,7 +19,7 @@ import de.db.derPate.manager.LoggingManager;
  */
 public class ServletUtil {
 	/**
-	 * Sets default character encoding ({@value Constants#CHARSET}) to request and
+	 * Sets default character encoding ({link Constants#CHARSET}) to request and
 	 * response.
 	 *
 	 * @param request  the {@link HttpServletRequest}

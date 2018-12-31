@@ -3,7 +3,7 @@
 	import="de.db.derPate.manager.LoginManager"
 	import="de.db.derPate.servlet.LoginServlet"
 	import="de.db.derPate.servlet.filter.CSRFServletFilter"
-	import="de.db.derPate.Userform"
+	import="de.db.derPate.CSRFForm"
 	import="de.db.derPate.Constants"
 %>
 <!DOCTYPE html>
@@ -29,7 +29,7 @@
 								alert("Successfully logged in");
 								location.reload();// just an example
 							}else
-							if(e.status === <%= Integer.toString((new CSRFServletFilter(Userform.LOGIN)).getErrorStatusCode()) %>) {
+							if(e.status === <%= Integer.toString((new CSRFServletFilter(CSRFForm.LOGIN)).getErrorStatusCode()) %>) {
 								// CSRF token gone
 								alert("Please try again");
 								// reload to generate a new token
@@ -80,14 +80,14 @@
 						<input id="input_password" name="<%= Constants.Ui.Inputs.LOGIN_PASSWORD %>" type="password" value="" placeholder="Passwort" />
 					</div>
 					<div class="input-group">
-						<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, Userform.LOGIN) %>" />
+						<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN) %>" />
 						<input type="submit" value="Anmelden" />
 					</div>
 				</form>
 			</div>
 			<%=
 			LoginManager.getInstance().isLoggedIn(session) ?
-					"<a href=\"../logout?"+CSRFPreventionUtil.FIELD_NAME + "=" + CSRFPreventionUtil.generateToken(session, Userform.LOGOUT) +"\">Logout</a>"
+					"<a href=\"../logout?"+CSRFPreventionUtil.FIELD_NAME + "=" + CSRFPreventionUtil.generateToken(session, CSRFForm.LOGOUT) +"\">Logout</a>"
 					: "" %>
 		</div>
 	</body>

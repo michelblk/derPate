@@ -6,16 +6,18 @@ import de.db.derPate.servlet.LoginServlet;
 import de.db.derPate.servlet.LogoutServlet;
 
 /**
- * Enum used to identify a frontend-form and set's how many tokens are valid at
- * the same time (for example when a user opens a page multiple times)
+ * Enum used to identify a frontend-form, that uses csrf tokens. It set's how
+ * many tokens are valid at the same time (for example when a user opens a page
+ * multiple times)
  *
  * @author MichelBlank
  *
  */
-public enum Userform {
+public enum CSRFForm {
 	/**
 	 * Login for all user types<br>
-	 * A token should only be used once (request based)
+	 * A token should only be used once (request based), as only one login screen
+	 * should be open at a time
 	 *
 	 * @see LoginServlet
 	 */
@@ -34,7 +36,7 @@ public enum Userform {
 	/**
 	 * Default: a session based CSRF token
 	 */
-	private Userform() {
+	private CSRFForm() {
 		this.maxCSRFTokens = 1;
 		this.requestBased = false;
 	}
@@ -42,9 +44,10 @@ public enum Userform {
 	/**
 	 * If the maximum number of tokens is given, the token is request based.
 	 *
-	 * @param maxCSRFTokens
+	 * @param maxCSRFTokens the maximum number of tokens, that can be generated for
+	 *                      this form per session
 	 */
-	private Userform(int maxCSRFTokens) {
+	private CSRFForm(int maxCSRFTokens) {
 		if (maxCSRFTokens < 1) {
 			maxCSRFTokens = Constants.Security.CSRF_DEFAULT_MAX_TOKENS;
 		}

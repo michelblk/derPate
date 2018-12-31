@@ -7,8 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SHA256Util {
-	private de.db.derPate.util.SHA256Util util;
+import de.db.derPate.Constants;
+import de.db.derPate.util.SHA256Util;
+
+public class SHA256UtilTest {
+	private SHA256Util util;
 	private int saltPepperLength;
 	private byte[] pepper;
 	private String input;
@@ -16,11 +19,11 @@ public class SHA256Util {
 
 	@Before
 	public void init() {
-		this.util = de.db.derPate.util.SHA256Util.getInstance();
-		this.saltPepperLength = de.db.derPate.Constants.Login.hashSaltLength;
+		this.util = SHA256Util.getInstance();
+		this.saltPepperLength = Constants.Login.hashSaltLength;
 		this.pepper = this.util.getRandomBytes(this.saltPepperLength);
 		this.input = "test";
-		this.hashseperator = de.db.derPate.Constants.Login.hashSeparator;
+		this.hashseperator = Constants.Login.hashSeparator;
 	}
 
 	@Test

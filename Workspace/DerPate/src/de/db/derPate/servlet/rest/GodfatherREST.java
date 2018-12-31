@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.inject.Singleton;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -26,6 +27,7 @@ import de.db.derPate.servlet.filter.LoginServletFilter;
  * @author MichelBlank
  */
 @Stateless
+@Singleton
 @Path("/godfather")
 public class GodfatherREST extends FilterREST {
 	/**

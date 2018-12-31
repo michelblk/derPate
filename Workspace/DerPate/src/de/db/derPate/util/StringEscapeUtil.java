@@ -22,7 +22,7 @@ public class StringEscapeUtil {
 	/**
 	 * Escapes the characters in a String using HTML entities.<br>
 	 * For example:<br>
-	 * <code>"max" & "mustermann"</code><br>
+	 * <code>"max" &amp; "mustermann"</code><br>
 	 * becomes:<br>
 	 * <code>{@literal &quot;max&quot; &amp; &quot;mustermann&quot;}</code>
 	 *
@@ -46,7 +46,7 @@ public class StringEscapeUtil {
 	 * For example:<br>
 	 * <code>{@literal &quot;max&quot; &amp; &quot;mustermann&quot;}</code><br>
 	 * becomes:<br>
-	 * <code>"max" & "mustermann"</code><br>
+	 * <code>"max" &amp; "mustermann"</code><br>
 	 * If an entity is unrecognized, it is left alone, and inserted verbatim into
 	 * the result string.
 	 *

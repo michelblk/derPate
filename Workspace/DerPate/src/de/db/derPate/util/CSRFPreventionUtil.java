@@ -9,8 +9,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
-import de.db.derPate.Userform;
+import de.db.derPate.CSRFForm;
 
 /**
  * This util should be used to prevent cross-site request forgery. It creates
@@ -46,18 +47,24 @@ public class CSRFPreventionUtil {
 
 	/**
 	 * This method generates a token and registers it in the user's
-	 * {@link HttpSession}.
+	 * {@link HttpSession}.<br>
+	 * The session should not be null, as the token cannot be persisted without
 	 *
 	 * @param session client's {@link HttpSession}
-	 * @param form    {@link Userform} used to limit token to this specific form
+	 * @param form    {@link CSRFForm} used to limit token to this specific form
 	 * @return random string
 	 */
 	@SuppressWarnings("null")
 	@NonNull
-	public static String generateToken(@NonNull final HttpSession session, @NonNull final Userform form) {
-		LinkedHashMap<@NonNull String, @NonNull Long> formTokens = getFormTokens(session, form);
-		String randomToken;
+	public static String generateToken(@Nullable final HttpSession session, @NonNull final CSRFForm form) {
+		LinkedHashMap<@NonNull String, @NonNull Long> formTokens;
+		if (session != null) {
+			formTokens = getFormTokens(session, form);
+		} else {
+			formTokens = new LinkedHashMap<>();
+		}
 
+		String randomToken;
 		if (!form.isRequestBased() && formTokens.size() >= 1) {
 			// a token per session and form
 			randomToken = formTokens.entrySet().iterator().next().getKey(); // return first entry
@@ -71,7 +78,9 @@ public class CSRFPreventionUtil {
 			formTokens.put(randomToken, System.currentTimeMillis());
 
 			// save token to session
-			saveToSession(session, form, formTokens);
+			if (session != null) {
+				saveToSession(session, form, formTokens);
+			}
 		}
 		return randomToken;
 	}
@@ -93,12 +102,12 @@ public class CSRFPreventionUtil {
 
 	/**
 	 * Returns the name of the session attribute (prefix
-	 * ({@value #SESSION_ATTRIBUTE_PREFIX}) + {@link Userform#toString()}).
+	 * ({@value #SESSION_ATTRIBUTE_PREFIX}) + {@link CSRFForm#toString()}).
 	 *
-	 * @param form the {@link Userform}
+	 * @param form the {@link CSRFForm}
 	 * @return name
 	 */
-	private static String getSessionAttributeName(@NonNull final Userform form) {
+	private static String getSessionAttributeName(@NonNull final CSRFForm form) {
 		return SESSION_ATTRIBUTE_PREFIX + form.toString();
 	}
 
@@ -107,14 +116,14 @@ public class CSRFPreventionUtil {
 	 * {@link HttpSession}.
 	 *
 	 * @param session client's {@link HttpSession}
-	 * @param form    {@link Userform}
+	 * @param form    {@link CSRFForm}
 	 * @return a {@link LinkedHashMap} of Tokens generated for the given form and
 	 *         user
 	 */
 	@SuppressWarnings("unchecked")
 	@NonNull
 	private static LinkedHashMap<@NonNull String, @NonNull Long> getFormTokens(@NonNull final HttpSession session,
-			@NonNull final Userform form) {
+			@NonNull final CSRFForm form) {
 		LinkedHashMap<@NonNull String, @NonNull Long> formTokens = new LinkedHashMap<>();
 
 		// load from session
@@ -130,10 +139,10 @@ public class CSRFPreventionUtil {
 	 * Sets the session attributes based on the given form
 	 *
 	 * @param session client's {@link HttpSession}
-	 * @param form    {@link Userform}
+	 * @param form    {@link CSRFForm}
 	 * @param map     {@link LinkedHashMap} to set
 	 */
-	private static void saveToSession(@NonNull final HttpSession session, @NonNull final Userform form,
+	private static void saveToSession(@NonNull final HttpSession session, @NonNull final CSRFForm form,
 			@NonNull final LinkedHashMap<String, Long> map) {
 		// reset session
 		session.setAttribute(getSessionAttributeName(form), map);
@@ -185,14 +194,14 @@ public class CSRFPreventionUtil {
 	 * {@link HttpSession} and if it's not older than the given seconds
 	 *
 	 * @param session          client's {@link HttpSession}
-	 * @param form             {@link Userform}
+	 * @param form             {@link CSRFForm}
 	 * @param token            token given by the user
 	 * @param timeoutInSeconds defines how long a token is valid (in seconds)
 	 * @return <code>true</code>, if token was registered for the given form
 	 *         beforehand and is still valid; <code>false</code>, if token wasn't
 	 *         registered or isn't valid anymore due to a timeout
 	 */
-	public static boolean checkToken(@NonNull final HttpSession session, @NonNull final Userform form,
+	public static boolean checkToken(@NonNull final HttpSession session, @NonNull final CSRFForm form,
 			@NonNull final String token, final int timeoutInSeconds) {
 		LinkedHashMap<String, Long> formTokens = getFormTokens(session, form);
 		return (formTokens.containsKey(token)
@@ -203,10 +212,10 @@ public class CSRFPreventionUtil {
 	 * Invalidates token
 	 *
 	 * @param session client's {@link HttpSession}
-	 * @param form    {@link Userform}
+	 * @param form    {@link CSRFForm}
 	 * @param token   token given by the user
 	 */
-	public static void invalidateToken(@NonNull final HttpSession session, @NonNull final Userform form,
+	public static void invalidateToken(@NonNull final HttpSession session, @NonNull final CSRFForm form,
 			@NonNull final String token) {
 		LinkedHashMap<String, Long> map = getFormTokens(session, form);
 		map.remove(token);
@@ -220,10 +229,10 @@ public class CSRFPreventionUtil {
 	 *
 	 * @param session  the {@link HttpSession}
 	 * @param response the {@link HttpServletResponse}
-	 * @param form     the {@link Userform}
+	 * @param form     the {@link CSRFForm}
 	 */
 	public static void attachNewTokenToHttpResponse(@NonNull final HttpSession session,
-			@NonNull final HttpServletResponse response, @NonNull final Userform form) {
+			@NonNull final HttpServletResponse response, @NonNull final CSRFForm form) {
 		response.setHeader(HEADER_FIELD, generateToken(session, form));
 	}
 }

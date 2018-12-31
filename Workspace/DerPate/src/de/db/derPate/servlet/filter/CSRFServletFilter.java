@@ -8,7 +8,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.db.derPate.Constants;
-import de.db.derPate.Userform;
+import de.db.derPate.CSRFForm;
 import de.db.derPate.servlet.FilterServlet;
 import de.db.derPate.util.CSRFPreventionUtil;
 
@@ -23,18 +23,18 @@ import de.db.derPate.util.CSRFPreventionUtil;
  */
 public class CSRFServletFilter implements ServletFilter {
 	/**
-	 * {@link Userform} the CSRF check is for
+	 * {@link CSRFForm} the CSRF check is for
 	 */
 	@NonNull
-	private Userform userform;
+	private CSRFForm csrfForm;
 
 	/**
 	 * Constructor
 	 *
-	 * @param userform {@link Userform} the token is valid for
+	 * @param csrfForm {@link CSRFForm} the token is valid for
 	 */
-	public CSRFServletFilter(@NonNull Userform userform) {
-		this.userform = userform;
+	public CSRFServletFilter(@NonNull CSRFForm csrfForm) {
+		this.csrfForm = csrfForm;
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class CSRFServletFilter implements ServletFilter {
 		String csrfToken = getCSRFToken(req);
 		HttpSession session = req.getSession();
 
-		return (csrfToken != null && session != null && CSRFPreventionUtil.checkToken(session, this.userform, csrfToken,
+		return (csrfToken != null && session != null && CSRFPreventionUtil.checkToken(session, this.csrfForm, csrfToken,
 				Constants.Security.CSRF_TIMEOUT_IN_SECONDS));
 	}
 

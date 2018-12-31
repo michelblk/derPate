@@ -11,7 +11,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derPate.Constants;
 import de.db.derPate.Constants.Ui.Inputs;
-import de.db.derPate.Userform;
+import de.db.derPate.CSRFForm;
 import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.manager.LoginManager;
 import de.db.derPate.model.Admin;
@@ -57,11 +57,11 @@ public class LoginServlet extends FilterServlet {
 	 */
 	public static final int SC_ALREADY_LOGGED_IN = HttpServletResponse.SC_CONFLICT;
 	/**
-	 * Userform, that this Servlet is for, used for the CSRF Filter and generating a
+	 * CSRFForm, that this Servlet is for, used for the CSRF Filter and generating a
 	 * new token, if username or password was wrong (but csrf token was correct)
 	 */
 	@NonNull
-	public static final Userform USERFORM = Userform.LOGIN;
+	public static final CSRFForm USERFORM = CSRFForm.LOGIN;
 
 	/**
 	 * Constructor
@@ -149,7 +149,7 @@ public class LoginServlet extends FilterServlet {
 	 * @param response the {@link HttpServletResponse}
 	 *
 	 * @see CSRFPreventionUtil#attachNewTokenToHttpResponse(HttpSession,
-	 *      HttpServletResponse, Userform)
+	 *      HttpServletResponse, CSRFForm)
 	 */
 	private static void attachCSRFHeader(@NonNull final HttpServletRequest request,
 			@NonNull final HttpServletResponse response) {

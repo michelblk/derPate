@@ -1,11 +1,11 @@
 package de.db.derPate;
 
+import de.db.derPate.handler.PropertyHandler;
 import de.db.derPate.model.Admin;
 import de.db.derPate.model.Godfather;
 import de.db.derPate.model.Trainee;
 import de.db.derPate.util.CSRFPreventionUtil;
 import de.db.derPate.util.HashUtil;
-import de.db.derPate.util.PropertyUtil;
 import de.db.derPate.util.SHA256Util;
 
 /**
@@ -13,23 +13,28 @@ import de.db.derPate.util.SHA256Util;
  * backend, so that a standard is guaranteed.
  *
  * @author MichelBlank
- *
+ * @see PropertyHandler
  */
 public final class Constants {
 	/**
-	 * Charset to use for encodings
+	 * Properties containing information regarding general aspects of this
+	 * application
 	 */
-	public static final String CHARSET = "UTF-8"; //$NON-NLS-1$
-
+	public static final PropertyHandler APPLICATION_PROPERTIES = new PropertyHandler("app"); //$NON-NLS-1$
 	/**
 	 * Properties containing information regarding this application's safety
 	 */
-	public static final PropertyUtil SECURITY_PROPERTIES = new PropertyUtil("security"); //$NON-NLS-1$
+	public static final PropertyHandler SECURITY_PROPERTIES = new PropertyHandler("security"); //$NON-NLS-1$
 	/**
 	 * Properties containing information, that should not be publicly available
 	 * (e.g. server-tokens).
 	 */
-	public static final PropertyUtil SECRET_PROPERTIES = new PropertyUtil("secret"); //$NON-NLS-1$
+	public static final PropertyHandler SECRET_PROPERTIES = new PropertyHandler("secret"); //$NON-NLS-1$
+
+	/**
+	 * Charset to use for encodings
+	 */
+	public static final String CHARSET = APPLICATION_PROPERTIES.getProperty("app.charset", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * This class contains all static attributes that have influence about the
@@ -62,17 +67,19 @@ public final class Constants {
 	 */
 	public static final class Database {
 		/**
-		 *
+		 * The URL to the Database (e.g. jdbc:mysql://localhost/database)
 		 */
-		public static final String URL = SECRET_PROPERTIES.getProperty("database.url"); //$NON-NLS-1$
+		public static final String URL = SECRET_PROPERTIES.getProperty("database.url", //$NON-NLS-1$
+				"jdbc:mysql://localhost/derpate"); //$NON-NLS-1$
 		/**
-		 *
+		 * The username used for the database connection
 		 */
-		public static final String USERNAME = SECRET_PROPERTIES.getProperty("database.username"); //$NON-NLS-1$
+		public static final String USERNAME = SECRET_PROPERTIES.getProperty("database.username", //$NON-NLS-1$
+				"jdbc:mysql://localhost/root"); //$NON-NLS-1$
 		/**
-		 *
+		 * The password
 		 */
-		public static final String PASSWORD = SECRET_PROPERTIES.getProperty("database.password"); //$NON-NLS-1$
+		public static final String PASSWORD = SECRET_PROPERTIES.getProperty("database.password", ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -87,10 +94,12 @@ public final class Constants {
 		/**
 		 * Separator used to split hash and salt
 		 */
-		public static final String hashSeparator = SECURITY_PROPERTIES.getProperty("encryption.separator"); //$NON-NLS-1$
+		public static final String hashSeparator = SECURITY_PROPERTIES.getProperty("encryption.separator", "."); //$NON-NLS-1$ //$NON-NLS-2$
 
 		/**
-		 * Pepper.
+		 * Pepper<br>
+		 * <b>Has to be set in secret.properties!</b> Will cause a RuntimeException
+		 * otherwise.
 		 */
 		public static final byte[] hashPepper = SECRET_PROPERTIES.getProperty("encryption.pepper").getBytes(); //$NON-NLS-1$
 
