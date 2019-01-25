@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -38,7 +39,9 @@ public abstract class FilterREST extends BaseREST implements ContainerRequestFil
 	 * Filters all requests, that do not apply to the filters, the object was
 	 * initialized with.<br>
 	 * Aborts the request, if at least one filter does not apply, and sends the http
-	 * status code set in {@link ServletFilter#getErrorStatusCode()}.
+	 * status code set in {@link ServletFilter#getErrorStatusCode()}.<br>
+	 * Furthermore, the request gets aborted, if {@link BaseREST#request} or
+	 * {@link BaseREST#response} is not set (may return http status code 400).
 	 *
 	 * @see FilterServletHandler#isValid(javax.servlet.http.HttpServletRequest)
 	 */
@@ -50,6 +53,8 @@ public abstract class FilterREST extends BaseREST implements ContainerRequestFil
 				// request got filtered, so abort it (as response already sent by handleFilter)
 				requestContext.abortWith(Response.status(filter.getErrorStatusCode()).build());
 			}
+		} else {
+			requestContext.abortWith(Response.status(Status.BAD_REQUEST).build());
 		}
 	}
 }

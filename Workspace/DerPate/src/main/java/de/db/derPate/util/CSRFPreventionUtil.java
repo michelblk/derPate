@@ -65,7 +65,7 @@ public class CSRFPreventionUtil {
 		}
 
 		String randomToken;
-		if (!form.isRequestBased() && formTokens.size() >= 1) {
+		if (!form.isRequestBased() && formTokens.size() >= 1) { // is session based and was already generated
 			// a token per session and form
 			randomToken = formTokens.entrySet().iterator().next().getKey(); // return first entry
 		} else {

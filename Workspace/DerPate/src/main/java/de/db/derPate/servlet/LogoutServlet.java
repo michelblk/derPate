@@ -45,7 +45,7 @@ public class LogoutServlet extends FilterServlet {
 	protected void onGet(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response)
 			throws IOException {
 		// get data
-		HttpSession session = request.getSession(true);
+		HttpSession session = request.getSession();
 
 		// logout
 		LoginManager.getInstance().logout(session);

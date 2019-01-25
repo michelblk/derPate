@@ -119,8 +119,10 @@ public class LoginManager {
 		boolean success = false;
 		if (session != null) {
 			try {
-				success = (session.getAttribute(this.userKey) != null); // user is logged in, when session contains an
-																		// user object
+				Object potentialUser = session.getAttribute(this.userKey);
+				success = (potentialUser != null && potentialUser instanceof LoginUser); // user is logged in, when
+																							// session contains an user
+																							// object
 			} catch (IllegalStateException e) {
 				LoggingManager.log(Level.INFO, "Could not read login status out of session: " + e.getMessage()); //$NON-NLS-1$
 			}
