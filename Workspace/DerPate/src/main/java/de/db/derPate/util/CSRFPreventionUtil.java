@@ -193,19 +193,24 @@ public class CSRFPreventionUtil {
 	 * This method checks if the given token was registered in the user's
 	 * {@link HttpSession} and if it's not older than the given seconds
 	 *
-	 * @param session          client's {@link HttpSession}
-	 * @param form             {@link CSRFForm}
-	 * @param token            token given by the user
-	 * @param timeoutInSeconds defines how long a token is valid (in seconds)
+	 * @param session client's {@link HttpSession}
+	 * @param form    {@link CSRFForm}
+	 * @param token   token given by the user
 	 * @return <code>true</code>, if token was registered for the given form
 	 *         beforehand and is still valid; <code>false</code>, if token wasn't
-	 *         registered or isn't valid anymore due to a timeout
+	 *         registered or got removed
 	 */
 	public static boolean checkToken(@NonNull final HttpSession session, @NonNull final CSRFForm form,
-			@NonNull final String token, final int timeoutInSeconds) {
+			@NonNull final String token) {
 		LinkedHashMap<String, Long> formTokens = getFormTokens(session, form);
-		return (formTokens.containsKey(token)
-				&& formTokens.get(token).longValue() > (System.currentTimeMillis() - (timeoutInSeconds * 1000)));
+
+		boolean isvalid = formTokens.containsKey(token);
+
+		if (isvalid && form.isRequestBased()) {
+			invalidateToken(session, form, token);
+		}
+
+		return isvalid;
 	}
 
 	/**

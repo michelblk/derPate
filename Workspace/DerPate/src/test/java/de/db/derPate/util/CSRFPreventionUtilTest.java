@@ -20,7 +20,6 @@ public class CSRFPreventionUtilTest {
 	@Before
 	public void init() {
 		this.session = new DefaultHttpSession().SESSION;
-		this.timeout = 10;
 	}
 
 	@Test
@@ -41,8 +40,7 @@ public class CSRFPreventionUtilTest {
 				CSRFPreventionUtil.generateToken(this.session, form);
 			}
 
-			boolean isFirstTokenStillValid = CSRFPreventionUtil.checkToken(this.session, form, firstToken,
-					this.timeout);
+			boolean isFirstTokenStillValid = CSRFPreventionUtil.checkToken(this.session, form, firstToken);
 			assertFalse(isFirstTokenStillValid);
 		}
 	}
@@ -51,7 +49,7 @@ public class CSRFPreventionUtilTest {
 	public void testValidity() {
 		for (CSRFForm form : CSRFForm.values()) {
 			String token = CSRFPreventionUtil.generateToken(this.session, form);
-			boolean hasToBeTrue = CSRFPreventionUtil.checkToken(this.session, form, token, this.timeout);
+			boolean hasToBeTrue = CSRFPreventionUtil.checkToken(this.session, form, token);
 			assertTrue(hasToBeTrue);
 		}
 	}
@@ -60,7 +58,7 @@ public class CSRFPreventionUtilTest {
 	public void testInvalidity() {
 		for (CSRFForm form : CSRFForm.values()) {
 			String token = "test";
-			boolean hasToBeFalse = CSRFPreventionUtil.checkToken(this.session, form, token, this.timeout);
+			boolean hasToBeFalse = CSRFPreventionUtil.checkToken(this.session, form, token);
 			assertFalse(hasToBeFalse);
 		}
 	}

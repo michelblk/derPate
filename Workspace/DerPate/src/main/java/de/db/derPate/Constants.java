@@ -1,5 +1,11 @@
 package de.db.derPate;
 
+import java.nio.charset.Charset;
+import java.util.logging.Level;
+
+import org.eclipse.jdt.annotation.NonNull;
+
+import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.model.Admin;
 import de.db.derPate.model.Godfather;
 import de.db.derPate.model.Trainee;
@@ -34,7 +40,20 @@ public final class Constants {
 	/**
 	 * Charset to use for encodings
 	 */
-	public static final String CHARSET = APPLICATION_PROPERTIES.getProperty("app.charset", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final Charset CHARSET;
+
+	static {
+		String charset_string = APPLICATION_PROPERTIES.getProperty("app.charset", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+		Charset charset;
+		try {
+			charset = Charset.forName(charset_string);
+		} catch (IllegalArgumentException e) {
+			charset = Charset.defaultCharset();
+			LoggingManager.log(Level.WARNING, "Charset " + charset_string //$NON-NLS-1$
+					+ " cannot be used. Switching to default charset (" + charset.name() + ")."); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		CHARSET = charset;
+	}
 
 	/**
 	 * This class contains all static attributes that have influence about the
@@ -51,15 +70,20 @@ public final class Constants {
 		 */
 		public static final int CSRF_DEFAULT_MAX_TOKENS = SECURITY_PROPERTIES.getIntProperty("csrf.default_max_tokens", //$NON-NLS-1$
 				10);
+
 		/**
-		 * The time in seconds, a csrf prevention token is valid. This has to be greater
-		 * than the time, the user can be expected to fill in a form.<br>
-		 * Default value, if property not found: 600s
-		 *
-		 * @see CSRFPreventionUtil
+		 * The password used for the default AES256 encryption.
 		 */
-		public static final int CSRF_TIMEOUT_IN_SECONDS = SECURITY_PROPERTIES.getIntProperty("csrf.timeout_in_seconds", //$NON-NLS-1$
-				600);
+		@NonNull
+		public static final String ENCRYPTION_AES256_PASSWORD = SECRET_PROPERTIES
+				.getProperty("encryption.aes256.password"); //$NON-NLS-1$
+
+		/**
+		 * The salt used for the default AES256 encryption.
+		 */
+		@NonNull
+		public static final String ENCRYPTION_AES256_SALT = SECRET_PROPERTIES.getProperty("encryption.aes256.salt"); //$NON-NLS-1$
+
 	}
 
 	/**

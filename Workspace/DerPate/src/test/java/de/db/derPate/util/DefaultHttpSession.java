@@ -2,14 +2,34 @@ package de.db.derPate.util;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
+import org.eclipse.jdt.annotation.NonNull;
+
+import de.db.derPate.Constants;
+
 @SuppressWarnings("deprecation")
 public class DefaultHttpSession {
+	private static final int RANDOM_SESSION_ID_LENGTH = 20;
+
+	/**
+	 * generate session id (used for {@link URIParamterEncryptionUtilTest})
+	 */
+	final String sessionID;
+
+	public DefaultHttpSession() {
+		byte[] randomArray = new byte[RANDOM_SESSION_ID_LENGTH];
+		new Random().nextBytes(randomArray);
+		this.sessionID = new String(randomArray, Constants.CHARSET);
+	}
+
+	@NonNull
 	public final HashMap<String, Object> attributes = new HashMap<>();
+	@NonNull
 	public final HttpSession SESSION = new HttpSession() {
 
 		@Override
@@ -87,8 +107,7 @@ public class DefaultHttpSession {
 
 		@Override
 		public String getId() {
-
-			return null;
+			return DefaultHttpSession.this.sessionID;
 		}
 
 		@Override

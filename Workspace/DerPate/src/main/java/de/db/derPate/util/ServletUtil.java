@@ -28,8 +28,8 @@ public class ServletUtil {
 	public static void setCharacterEncoding(@NonNull final HttpServletRequest request,
 			@NonNull final HttpServletResponse response) {
 		try {
-			request.setCharacterEncoding(Constants.CHARSET);
-			response.setCharacterEncoding(Constants.CHARSET);
+			request.setCharacterEncoding(Constants.CHARSET.name());
+			response.setCharacterEncoding(Constants.CHARSET.name());
 		} catch (UnsupportedEncodingException e) {
 			LoggingManager.log(Level.WARNING,
 					"Servlet could not set charset " + Constants.CHARSET + ": " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
