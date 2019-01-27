@@ -1,6 +1,7 @@
 package de.db.derPate.util;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.logging.Level;
 
@@ -114,11 +115,32 @@ public class StringEscapeUtil {
 	 *         charset {@value #URL_CHARSET} was not found
 	 */
 	@Nullable
-	public static String toURL(@Nullable String url) {
+	public static String encodeURL(@Nullable String url) {
 		String result = null;
 		if (url != null) {
 			try {
 				result = URLEncoder.encode(url, URL_CHARSET);
+			} catch (UnsupportedEncodingException e) {
+				LoggingManager.log(Level.SEVERE,
+						"StringEscapeUtil could not find charset " + URL_CHARSET + ": " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Unescapes characters for further use (e.g. {@literal "+" -> blank space})
+	 *
+	 * @param url the url
+	 * @return the translated string or <code>null</code>, if url was null or
+	 *         charset {@value #URL_CHARSET} was not found
+	 */
+	@Nullable
+	public static String decodeURL(@Nullable String url) {
+		String result = null;
+		if (url != null) {
+			try {
+				result = URLDecoder.decode(url, URL_CHARSET);
 			} catch (UnsupportedEncodingException e) {
 				LoggingManager.log(Level.SEVERE,
 						"StringEscapeUtil could not find charset " + URL_CHARSET + ": " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
