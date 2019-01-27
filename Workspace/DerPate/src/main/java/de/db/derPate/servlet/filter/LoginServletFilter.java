@@ -1,7 +1,6 @@
 package de.db.derPate.servlet.filter;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,7 +16,6 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import de.db.derPate.Usermode;
 import de.db.derPate.manager.LoginManager;
-import de.db.derPate.model.LoginUser;
 import de.db.derPate.servlet.FilterServlet;
 
 /**
@@ -68,15 +66,8 @@ public class LoginServletFilter implements ServletFilter, Filter {
 	public boolean filter(@NonNull HttpServletRequest req) {
 		boolean isLoggedIn = LoginManager.getInstance().isLoggedIn(req.getSession());
 		boolean result = isLoggedIn;
-
 		if (result == true && this.requiredUsermode != null) {
-			LoginUser user = LoginManager.getInstance().getUserBySession(req.getSession());
-			if (user != null) {
-				Usermode usermode = LoginManager.getInstance().getUsermode(user);
-				if (usermode != null) {
-					result = Arrays.asList(this.requiredUsermode).contains(usermode);
-				}
-			}
+			result = LoginManager.getInstance().isUserOfSessionInUsermode(req.getSession(), this.requiredUsermode);
 		}
 
 		return isLoggedIn;

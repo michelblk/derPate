@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -28,13 +29,20 @@ public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * The request's {@link HttpSession}
+	 */
+	protected HttpSession session;
+
+	/**
 	 * Handles get request, sets character encoding and calls custom get method
 	 * ({@link #get(HttpServletRequest, HttpServletResponse)}
 	 */
 	@Override
 	protected final void doGet(@Nullable HttpServletRequest req, @Nullable HttpServletResponse resp)
 			throws ServletException, IOException {
+
 		if (req != null && resp != null) {
+			this.session = req.getSession();
 			ServletUtil.setCharacterEncoding(req, resp);
 			this.get(req, resp);
 		}
@@ -63,6 +71,7 @@ public abstract class BaseServlet extends HttpServlet {
 	protected final void doPost(@Nullable HttpServletRequest req, @Nullable HttpServletResponse resp)
 			throws ServletException, IOException {
 		if (req != null && resp != null) {
+			this.session = req.getSession();
 			ServletUtil.setCharacterEncoding(req, resp);
 			this.post(req, resp);
 		}

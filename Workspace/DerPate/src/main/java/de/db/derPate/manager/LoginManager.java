@@ -1,5 +1,6 @@
 package de.db.derPate.manager;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,7 +69,7 @@ public class LoginManager {
 	 *         was null or user was not properly logged in
 	 */
 	@Nullable
-	public LoginUser getUserBySession(@Nullable HttpSession session) {
+	public LoginUser getUserBySession(final @Nullable HttpSession session) {
 		LoginUser user = null;
 		if (session != null) {
 			try {
@@ -126,6 +127,25 @@ public class LoginManager {
 			} catch (IllegalStateException e) {
 				LoggingManager.log(Level.INFO, "Could not read login status out of session: " + e.getMessage()); //$NON-NLS-1$
 			}
+		}
+		return success;
+	}
+
+	/**
+	 * Checks if the user, that is logged in with the given HttpSession, is a user
+	 * of the given Usermode.
+	 *
+	 * @param session  the {@link HttpSession}
+	 * @param usermode the allowed {@link Usermode}s
+	 * @return <code>true</code>, if the found {@link LoginUser} is a user of the
+	 *         given {@link Usermode}; <code>false</code>, if not or no
+	 *         {@link Usermode} was set.
+	 */
+	public boolean isUserOfSessionInUsermode(@Nullable HttpSession session, @Nullable Usermode... usermode) {
+		boolean success = false;
+		LoginUser user = this.getUserBySession(session);
+		if (user != null && usermode != null) {
+			success = Arrays.asList(usermode).contains(this.getUsermode(user));
 		}
 		return success;
 	}
