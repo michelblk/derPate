@@ -21,8 +21,7 @@ import de.db.derPate.manager.LoginManager;
 @Entity
 @Table(name = "admin")
 @AttributeOverride(name = "id", column = @Column(name = "Id_Admin"))
-// FIXME change username column in database to email
-@AttributeOverride(name = "email", column = @Column(name = "Username"))
+@AttributeOverride(name = "email", column = @Column(name = "Email"))
 @AttributeOverride(name = "password", column = @Column(name = "Password"))
 public class Admin extends EmailPasswordLoginUser {
 

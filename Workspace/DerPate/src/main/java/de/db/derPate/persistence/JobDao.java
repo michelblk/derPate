@@ -1,7 +1,6 @@
 package de.db.derPate.persistence;
 
 import de.db.derPate.model.Job;
-import de.db.derPate.model.TeachingType;
 
 /**
  * Data Access Object providing methods to get {@link Job}s out of the Database
@@ -13,7 +12,7 @@ public class JobDao extends IdDao {
 	private static JobDao instance;
 
 	private JobDao() {
-		super(TeachingType.class);
+		super(Job.class);
 	}
 
 	/**

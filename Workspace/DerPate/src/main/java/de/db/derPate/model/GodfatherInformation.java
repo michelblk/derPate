@@ -46,10 +46,6 @@ public class GodfatherInformation {
 	@Expose
 	private String description;
 	@Nullable
-	@Column(name = "Picture", nullable = true)
-	@Expose(serialize = false, deserialize = false)
-	private String picture;
-	@Nullable
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "Id_Teaching_Type", nullable = false)
 	@Expose
@@ -87,7 +83,6 @@ public class GodfatherInformation {
 	 * @param location     Location
 	 * @param maxTrainees  Maximum number of accepted trainees
 	 * @param description  Description
-	 * @param picture      Path to picture
 	 * @param teachingType Teaching type
 	 * @param job          Job
 	 * @param hiringDate   Hiring date
@@ -97,13 +92,12 @@ public class GodfatherInformation {
 	 */
 	public GodfatherInformation(@NonNull final String lastName, @NonNull final String firstName,
 			@NonNull final Location location, int maxTrainees, @NonNull final String description,
-			@Nullable String picture, @NonNull final TeachingType teachingType, @NonNull final Job job,
-			@NonNull final Date hiringDate, @Nullable Date birthday, @Nullable String pickText) {
+			@NonNull final TeachingType teachingType, @NonNull final Job job, @NonNull final Date hiringDate,
+			@Nullable Date birthday, @Nullable String pickText) {
 		this.setLastName(lastName);
 		this.setFirstName(firstName);
 		this.setLocation(location);
 		this.setDescription(description);
-		this.setPicture(picture);
 		this.setTeachingType(teachingType);
 		this.setJob(job);
 		this.setHiringDate(hiringDate);
@@ -200,24 +194,6 @@ public class GodfatherInformation {
 	 */
 	public void setDescription(@NonNull String description) {
 		this.description = description;
-	}
-
-	/**
-	 * Returns the path to the picture
-	 *
-	 * @return the picture path
-	 */
-	public String getPicture() {
-		return this.picture;
-	}
-
-	/**
-	 * Sets the path to the picture
-	 *
-	 * @param picture the picture path to set
-	 */
-	public void setPicture(String picture) {
-		this.picture = picture;
 	}
 
 	/**

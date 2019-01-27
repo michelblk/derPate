@@ -1,6 +1,5 @@
 package de.db.derPate.persistence;
 
-import de.db.derPate.model.Job;
 import de.db.derPate.model.TeachingType;
 
 /**
@@ -14,7 +13,7 @@ public class TeachingTypeDao extends IdDao {
 	private static TeachingTypeDao instance;
 
 	private TeachingTypeDao() {
-		super(Job.class);
+		super(TeachingType.class);
 	}
 
 	/**
