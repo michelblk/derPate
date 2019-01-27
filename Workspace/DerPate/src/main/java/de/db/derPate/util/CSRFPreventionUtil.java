@@ -1,7 +1,7 @@
 package de.db.derPate.util;
 
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -43,7 +43,7 @@ public class CSRFPreventionUtil {
 	 * key, which is used to store the {@link Map} in {@link HttpSession}'s
 	 * attributes
 	 */
-	public static final String SESSION_ATTRIBUTE_PREFIX = "csrfTokenMap_"; //$NON-NLS-1$
+	public static final String SESSION_ATTRIBUTE_PREFIX = "csrfTokenList_"; //$NON-NLS-1$
 
 	/**
 	 * This method generates a token and registers it in the user's
@@ -57,32 +57,45 @@ public class CSRFPreventionUtil {
 	@SuppressWarnings("null")
 	@NonNull
 	public static String generateToken(@Nullable final HttpSession session, @NonNull final CSRFForm form) {
-		LinkedHashMap<@NonNull String, @NonNull Long> formTokens;
+		ArrayList<@NonNull String> list;
 		if (session != null) {
-			formTokens = getFormTokens(session, form);
+			list = getFormTokens(session, form);
 		} else {
-			formTokens = new LinkedHashMap<>();
+			list = new ArrayList<>();
 		}
 
 		String randomToken;
-		if (!form.isRequestBased() && formTokens.size() >= 1) { // is session based and was already generated
+		if (!form.isRequestBased() && list.size() >= 1) { // is session based and was already generated
 			// a token per session and form
-			randomToken = formTokens.entrySet().iterator().next().getKey(); // return first entry
+			randomToken = list.get(0); // return first entry
 		} else {
 			// a new token for each request
 			// check if limit is exceeded and remove oldest token, if necessary
-			checkLimit(formTokens, form.getMaxTokens());
+			checkLimit(list, form.getMaxTokens());
 
 			// set new token
-			randomToken = generateUniqueToken(formTokens);
-			formTokens.put(randomToken, System.currentTimeMillis());
+			randomToken = generateUniqueToken(list);
+			list.add(randomToken);
 
 			// save token to session
 			if (session != null) {
-				saveToSession(session, form, formTokens);
+				saveToSession(session, form, list);
 			}
 		}
 		return randomToken;
+	}
+
+	/**
+	 * Automatically escapes characters for use as a uri paramter.
+	 *
+	 * @param session client's {@link HttpSession}
+	 * @param form    {@link CSRFForm} used to limit token to this specific form
+	 * @return random string
+	 * @see #generateToken(HttpSession, CSRFForm)
+	 */
+	public static String generateTokenForGETParameter(@Nullable final HttpSession session,
+			@NonNull final CSRFForm form) {
+		return StringEscapeUtil.encodeURL(generateToken(session, form));
 	}
 
 	/**
@@ -117,19 +130,18 @@ public class CSRFPreventionUtil {
 	 *
 	 * @param session client's {@link HttpSession}
 	 * @param form    {@link CSRFForm}
-	 * @return a {@link LinkedHashMap} of Tokens generated for the given form and
-	 *         user
+	 * @return a {@link ArrayList} of Tokens generated for the given form and user
 	 */
 	@SuppressWarnings("unchecked")
 	@NonNull
-	private static LinkedHashMap<@NonNull String, @NonNull Long> getFormTokens(@NonNull final HttpSession session,
+	private static ArrayList<@NonNull String> getFormTokens(@NonNull final HttpSession session,
 			@NonNull final CSRFForm form) {
-		LinkedHashMap<@NonNull String, @NonNull Long> formTokens = new LinkedHashMap<>();
+		ArrayList<@NonNull String> formTokens = new ArrayList<>();
 
 		// load from session
 		Object sessionTokens = session.getAttribute(getSessionAttributeName(form));
-		if (sessionTokens != null && sessionTokens instanceof LinkedHashMap) {
-			formTokens = (LinkedHashMap<@NonNull String, @NonNull Long>) sessionTokens;
+		if (sessionTokens != null && sessionTokens instanceof ArrayList) {
+			formTokens = (ArrayList<@NonNull String>) sessionTokens;
 		}
 
 		return formTokens;
@@ -140,33 +152,35 @@ public class CSRFPreventionUtil {
 	 *
 	 * @param session client's {@link HttpSession}
 	 * @param form    {@link CSRFForm}
-	 * @param map     {@link LinkedHashMap} to set
+	 * @param list    {@link ArrayList} to set
 	 */
 	private static void saveToSession(@NonNull final HttpSession session, @NonNull final CSRFForm form,
-			@NonNull final LinkedHashMap<String, Long> map) {
+			@NonNull final ArrayList<String> list) {
 		// reset session
-		session.setAttribute(getSessionAttributeName(form), map);
+		session.setAttribute(getSessionAttributeName(form), list);
 	}
 
 	/**
 	 * Checks, if the limit is exceeded and removes the oldest entry, if necessary.
 	 *
-	 * @param map       Map, that should be checked
+	 * @param list      List, that should be checked
 	 * @param maxTokens the maximum count of entries
 	 */
-	private static void checkLimit(@NonNull final LinkedHashMap<String, Long> map, final int maxTokens) {
-		while (map.size() >= maxTokens) {
-			kickOldestToken(map);
+	private static void checkLimit(@NonNull final ArrayList<String> list, final int maxTokens) {
+		while (list.size() >= maxTokens) {
+			kickOldestToken(list);
 		}
 	}
 
 	/**
-	 * Removes the oldest(first) entry in {@link LinkedHashMap}
+	 * Removes the first (oldest) entry in {@link ArrayList}
 	 *
-	 * @param map {@link LinkedHashMap}
+	 * @param map {@link ArrayList}
 	 */
-	private static void kickOldestToken(@NonNull final LinkedHashMap<String, Long> map) {
-		map.remove(map.entrySet().iterator().next().getKey()); // removes first in iterator
+	private static void kickOldestToken(@NonNull final ArrayList<String> list) {
+		if (list.size() >= 1) {
+			list.remove(0);
+		}
 	}
 
 	/**
@@ -175,16 +189,16 @@ public class CSRFPreventionUtil {
 	 * form.<br>
 	 * The token will have a length of {@value #TOKEN_LENGTH} bytes.
 	 *
-	 * @param map {@link LinkedHashMap}, with token as key
+	 * @param map {@link ArrayList} of used tokens
 	 * @return random token
 	 */
 	@NonNull
-	private static String generateUniqueToken(@NonNull final LinkedHashMap<String, Long> map) {
+	private static String generateUniqueToken(@NonNull final ArrayList<String> list) {
 		boolean foundToken = false;
 		String randomToken;
 		do {
 			randomToken = generateRandomString(TOKEN_LENGTH);
-			foundToken = !map.containsKey(randomToken);
+			foundToken = !list.contains(randomToken);
 		} while (!foundToken);
 		return randomToken;
 	}
@@ -202,9 +216,9 @@ public class CSRFPreventionUtil {
 	 */
 	public static boolean checkToken(@NonNull final HttpSession session, @NonNull final CSRFForm form,
 			@NonNull final String token) {
-		LinkedHashMap<String, Long> formTokens = getFormTokens(session, form);
+		ArrayList<String> formTokens = getFormTokens(session, form);
 
-		boolean isvalid = formTokens.containsKey(token);
+		boolean isvalid = formTokens.contains(token);
 
 		if (isvalid && form.isRequestBased()) {
 			invalidateToken(session, form, token);
@@ -222,9 +236,13 @@ public class CSRFPreventionUtil {
 	 */
 	public static void invalidateToken(@NonNull final HttpSession session, @NonNull final CSRFForm form,
 			@NonNull final String token) {
-		LinkedHashMap<String, Long> map = getFormTokens(session, form);
-		map.remove(token);
-		saveToSession(session, form, map);
+		ArrayList<String> list = getFormTokens(session, form);
+		int listIndex = list.indexOf(token);
+		if (listIndex >= 0) {
+			list.remove(listIndex);
+			saveToSession(session, form, list);
+		}
+
 	}
 
 	/**

@@ -70,7 +70,7 @@ public class LoginServletFilter implements ServletFilter, Filter {
 			result = LoginManager.getInstance().isUserOfSessionInUsermode(req.getSession(), this.requiredUsermode);
 		}
 
-		return isLoggedIn;
+		return result;
 	}
 
 	/**

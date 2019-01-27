@@ -1,5 +1,8 @@
 package de.db.derPate.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -38,6 +41,21 @@ public class URIParameterEncryptionUtil {
 	@NonNull
 	public static String encrypt(@NonNull String parameterValue) {
 		return defaultEncrypter.encrypt(parameterValue);
+	}
+
+	/**
+	 * Returns a hexadecimal representation of the (with global password and salt)
+	 * AES256 encrypted int value.<br>
+	 * This encryption method should be used, when links are visible to the user.
+	 * The user may copy this link and use it some time later.
+	 *
+	 * @param parameterValue the int value of the parameter to encrypt
+	 * @return the encrypted value (hex {@link String})
+	 */
+	@SuppressWarnings("null")
+	@NonNull
+	public static String encrypt(int parameterValue) {
+		return defaultEncrypter.encrypt(Integer.toString(parameterValue));
 	}
 
 	/**
@@ -84,6 +102,35 @@ public class URIParameterEncryptionUtil {
 	@Nullable
 	public static String decrypt(@NonNull String parameterValue) {
 		return defaultEncrypter.decrypt(parameterValue);
+	}
+
+	/**
+	 * Takes a Array of encrypted AES256 values and returns those, who could get
+	 * decrypted.<br>
+	 * Useful for the evaluation of http parameters (e.g. for checkboxes).<br>
+	 * Returns <code>null</code>, if parameterValues was null or no value could get
+	 * decrypted.
+	 *
+	 * @param parameterValues the received values
+	 * @return a {@link List} of the decryped values ({@link String}s), or
+	 *         <code>null</code>, if parameterValues was null or no value could get
+	 *         decrypted
+	 */
+	@SuppressWarnings("null")
+	@Nullable
+	public static List<String> decrypt(@Nullable String[] parameterValues) {
+		List<String> decryptedValues = new ArrayList<>();
+		if (parameterValues != null) {
+			for (@NonNull
+			String parameterValue : parameterValues) {
+				String decryptedValue = decrypt(parameterValue);
+				if (decryptedValue != null) {
+					decryptedValues.add(decryptedValue);
+				}
+			}
+		}
+
+		return decryptedValues.size() > 0 ? decryptedValues : null;
 	}
 
 	/**

@@ -68,7 +68,7 @@ public class CSRFServletFilter implements ServletFilter {
 	@Nullable
 	private static String getCSRFToken(@NonNull HttpServletRequest request) {
 		String header = request.getHeader(CSRFPreventionUtil.HEADER_FIELD);
-		String attribute = request.getParameter(CSRFPreventionUtil.FIELD_NAME);
+		String attribute = request.getParameter(CSRFPreventionUtil.FIELD_NAME); // automatically unescaped characters
 
 		return (header != null ? header : attribute);
 	}

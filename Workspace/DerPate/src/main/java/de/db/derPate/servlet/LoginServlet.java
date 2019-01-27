@@ -91,7 +91,8 @@ public class LoginServlet extends FilterServlet {
 		String password = request.getParameter(Inputs.LOGIN_PASSWORD.toString());
 		String token = request.getParameter(Inputs.LOGIN_TOKEN.toString());
 
-		if (email != null && InputVerifyUtil.isNotBlank(email) && InputVerifyUtil.isNotBlank(password)) {
+		if (email != null && InputVerifyUtil.isNotBlank(email) && password != null
+				&& InputVerifyUtil.isNotBlank(password)) {
 
 			// find admin user
 			Admin admin = AdminDao.getInstance().byEmail(email);

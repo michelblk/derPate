@@ -1,10 +1,12 @@
 <%@page
+	contentType="text/html" pageEncoding="UTF-8"
 	import="de.db.derPate.util.CSRFPreventionUtil"
 	import="de.db.derPate.manager.LoginManager"
 	import="de.db.derPate.servlet.LoginServlet"
 	import="de.db.derPate.servlet.filter.CSRFServletFilter"
 	import="de.db.derPate.CSRFForm"
 	import="de.db.derPate.Constants"
+	import="de.db.derPate.util.URIParameterEncryptionUtil"
 %>
 <!DOCTYPE html>
 <html>
@@ -64,7 +66,7 @@
 	<body>
 		<div class="container">
 			<div class="form-group">
-				<form method="POST" action="../login">
+				<form action="../login" method="POST">
 					<h3>Nachwuchskraft</h3>
 					<div class="input-group">
 						<label for="input_token">Benutzerkennung</label>
@@ -87,7 +89,7 @@
 			</div>
 			<%=
 			LoginManager.getInstance().isLoggedIn(session) ?
-					"<a href=\"../logout?"+CSRFPreventionUtil.FIELD_NAME + "=" + CSRFPreventionUtil.generateToken(session, CSRFForm.LOGOUT) +"\">Logout</a>"
+					"<a href=\"../logout?"+CSRFPreventionUtil.FIELD_NAME + "=" + CSRFPreventionUtil.generateTokenForGETParameter(session, CSRFForm.LOGOUT) +"\">Logout</a>"
 					: "" %>
 		</div>
 	</body>
