@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import de.db.derPate.Constants;
 
+@SuppressWarnings({ "javadoc", "nls" })
 public class SHA256UtilTest {
 	private SHA256Util util;
 	private int saltPepperLength;

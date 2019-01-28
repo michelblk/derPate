@@ -15,13 +15,14 @@ import org.junit.Test;
 import de.db.derPate.model.LoginUser;
 import de.db.derPate.model.Trainee;
 
+@SuppressWarnings({ "javadoc", "nls" })
 public class URIParamterEncryptionUtilTest {
 	@NonNull
 	private HttpSession session = new DefaultHttpSession().SESSION;
 	@NonNull
 	private HttpSession secondSession = new DefaultHttpSession().SESSION;
 	@NonNull
-	private LoginUser user = new Trainee(Math.abs(new Random().nextInt()), "exampleToken", null); //$NON-NLS-1$
+	private LoginUser user = new Trainee(Math.abs(new Random().nextInt()), "exampleToken", null); 
 
 	@Before
 	public void init() {
@@ -30,7 +31,7 @@ public class URIParamterEncryptionUtilTest {
 
 	@Test
 	public void encryptDefault() {
-		String unencrypedString = "test"; //$NON-NLS-1$
+		String unencrypedString = "test"; 
 		String encryptedString = URIParameterEncryptionUtil.encrypt(unencrypedString);
 
 		assertNotEquals(unencrypedString, encryptedString);
@@ -38,7 +39,7 @@ public class URIParamterEncryptionUtilTest {
 
 	@Test
 	public void decryptDefault() {
-		String unencrypedString = "testText"; //$NON-NLS-1$
+		String unencrypedString = "testText"; 
 		String encrypedString = URIParameterEncryptionUtil.encrypt(unencrypedString);
 		String decryptedString = URIParameterEncryptionUtil.decrypt(encrypedString);
 
@@ -47,7 +48,7 @@ public class URIParamterEncryptionUtilTest {
 
 	@Test
 	public void encryptCustom() {
-		String unencrypedString = "test"; //$NON-NLS-1$
+		String unencrypedString = "test"; 
 		String encryptedString = URIParameterEncryptionUtil.encrypt(unencrypedString, this.session, this.user);
 
 		assertNotEquals(unencrypedString, encryptedString);
@@ -55,7 +56,7 @@ public class URIParamterEncryptionUtilTest {
 
 	@Test
 	public void decryptCustom() {
-		String unencrypedString = "testText"; //$NON-NLS-1$
+		String unencrypedString = "testText"; 
 		String encrypedString = URIParameterEncryptionUtil.encrypt(unencrypedString, this.session, this.user);
 		String decryptedString = URIParameterEncryptionUtil.decrypt(encrypedString, this.session, this.user);
 
@@ -64,7 +65,7 @@ public class URIParamterEncryptionUtilTest {
 
 	@Test
 	public void decryptCustomWithWrongPassword() {
-		String unencrypedString = "testText"; //$NON-NLS-1$
+		String unencrypedString = "testText"; 
 		String encrypedString = URIParameterEncryptionUtil.encrypt(unencrypedString, this.session, this.user);
 		String decryptedString = URIParameterEncryptionUtil.decrypt(encrypedString, this.secondSession, this.user);
 

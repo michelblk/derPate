@@ -12,7 +12,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derPate.Constants;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({ "deprecation", "javadoc" })
 public class DefaultHttpSession {
 	private static final int RANDOM_SESSION_ID_LENGTH = 20;
 

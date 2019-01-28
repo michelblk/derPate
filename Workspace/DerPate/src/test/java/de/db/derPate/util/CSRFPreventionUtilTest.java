@@ -12,10 +12,10 @@ import org.junit.Test;
 
 import de.db.derPate.CSRFForm;
 
+@SuppressWarnings({ "javadoc", "nls" })
 public class CSRFPreventionUtilTest {
 
 	private HttpSession session;
-	private int timeout;
 
 	@Before
 	public void init() {
