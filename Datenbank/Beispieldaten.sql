@@ -32,14 +32,6 @@ INSERT INTO `admin` (`Id_Admin`, `Email`, `Password`) VALUES
 (1, 'admin@deutschebahn.com', 'XzH4VPVLC/c3vRnhJ8vx9CYRJhdz4pacYuX6+knyDxzhLQ5HB1gCEfEGlzkxX0fOn5tZ8P3Y3MRmvwbr3OJNgA==.uBfDxuLMQskQSK6HqgVN0dnryJqLLL2yRsgSiEvlstQ=');
 
 --
--- Daten für Tabelle `godfather`
---
-
-INSERT INTO `godfather` (`Id_Godfather`, `Email`, `Password`, `Last_Name`, `First_Name`, `Id_Location`, `Max_Trainees`, `Description`, `Picture`, `Id_Teaching_Type`, `Id_Job`, `Hiring_Date`, `Birthday`, `Pick_Text`) VALUES
-(1, 'max.mustermann@deutschebahn.com', 'nb1nCk5vdbTSUKMqEht/TjVbpDKXlesDhUlxJMvK2PqLtYeso2avUmZITgfs4KH0jH4MAsNJKyV56E9Oy7oAvA==.R9nAAviFiQyLJP7efpyjYUJRJ/aVAa59d8tmmKJx2iY=', 'Mustermann', 'Max', 2, 1, 'Hallo,\r\nich bin Max und beantworte gern Deine Fragen rund um das Thema Duales Studium bei der Deutschen Bahn.', ' ', 2, 5, '2016-10-15', '1995-11-01', 'Ich freue mich, dass Du dich für mich entschieden hast.\r\nDu kannst mich gern über die oben stehende E-Mail-Adresse oder unter der Telefonnummer 069 666666 kontaktieren.'),
-(2, 'erika.mustermann@deutschebahn.com', 'IHmWGugFPGLwjUaWuE9Yqo2N1R4I/59nt9kApo4vDj5ZSklUggSvLNsSrtJRuVO25z4Obvf9V7JTsB4C0Aboyw==.QUWO8LhBpJegQXoHxh4a6Zr1f0qgBvBeRmzEjy5jn1s=', 'Mustermann', 'Erika', 1, 1, 'Hallo,\r\nich heiße Erika und bin Auszubildende Fachinformatikerin für Anwendungsentwicklung.\r\nIch freue mich, dass Du dich für die DB entschieden hast.', ' ', 1, 1, '2017-08-15', '1997-06-16', 'Danke, dass Du dich für mich entschieden hast.\r\nHier ist meine Telefonnummer 069 666666.');
-
---
 -- Daten für Tabelle `job`
 --
 
@@ -67,6 +59,15 @@ INSERT INTO `location` (`Id_Location`, `Location`) VALUES
 INSERT INTO `teaching_type` (`Id_Teaching_Type`, `Teaching_Type`) VALUES
 (1, 'Auszubildender'),
 (2, 'Dual-Student');
+
+--
+-- Daten für Tabelle `godfather`
+--
+
+INSERT INTO `godfather` (`Id_Godfather`, `Email`, `Password`, `Last_Name`, `First_Name`, `Id_Location`, `Max_Trainees`, `Description`, `Picture`, `Id_Teaching_Type`, `Id_Job`, `Hiring_Date`, `Birthday`, `Pick_Text`) VALUES
+(1, 'max.mustermann@deutschebahn.com', 'nb1nCk5vdbTSUKMqEht/TjVbpDKXlesDhUlxJMvK2PqLtYeso2avUmZITgfs4KH0jH4MAsNJKyV56E9Oy7oAvA==.R9nAAviFiQyLJP7efpyjYUJRJ/aVAa59d8tmmKJx2iY=', 'Mustermann', 'Max', 2, 1, 'Hallo,\r\nich bin Max und beantworte gern Deine Fragen rund um das Thema Duales Studium bei der Deutschen Bahn.', ' ', 2, 5, '2016-10-15', '1995-11-01', 'Ich freue mich, dass Du dich für mich entschieden hast.\r\nDu kannst mich gern über die oben stehende E-Mail-Adresse oder unter der Telefonnummer 069 666666 kontaktieren.'),
+(2, 'erika.mustermann@deutschebahn.com', 'IHmWGugFPGLwjUaWuE9Yqo2N1R4I/59nt9kApo4vDj5ZSklUggSvLNsSrtJRuVO25z4Obvf9V7JTsB4C0Aboyw==.QUWO8LhBpJegQXoHxh4a6Zr1f0qgBvBeRmzEjy5jn1s=', 'Mustermann', 'Erika', 1, 1, 'Hallo,\r\nich heiße Erika und bin Auszubildende Fachinformatikerin für Anwendungsentwicklung.\r\nIch freue mich, dass Du dich für die DB entschieden hast.', ' ', 1, 1, '2017-08-15', '1997-06-16', 'Danke, dass Du dich für mich entschieden hast.\r\nHier ist meine Telefonnummer 069 666666.');
+
 
 --
 -- Daten für Tabelle `trainee`
