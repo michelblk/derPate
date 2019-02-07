@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.entity.ContentType;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -95,31 +94,37 @@ public class GodfatherServlet extends FilterServlet {
 				}
 				resp.sendError(HttpServletResponse.SC_NOT_FOUND); // id was invalid -> 404 Not Found
 			} else { // no id was given -> list godfathers
-				@SuppressWarnings("null")
-				@Nullable
 				String[] wantedEncryptedLocations = req.getParameterValues(FILTER_PARAM_LOCATION);
-				@SuppressWarnings("null")
-				@Nullable
 				String[] wantedEncryptedJobs = req.getParameterValues(FILTER_PARAM_JOB);
-				@SuppressWarnings("null")
-				@Nullable
 				String[] wantedEncryptedTeachingTypes = req.getParameterValues(FILTER_PARAM_TEACHING_TYPE);
-				@SuppressWarnings("null")
-				@Nullable
 				String[] wantedEncryptedEducationalYears = req.getParameterValues(FILTER_PARAM_EDUCATIONAL_YEAR);
 
 				// decryption
-				List<String> wantedDecrypedLocations = URIParameterEncryptionUtil.decrypt(wantedEncryptedLocations);
-				List<String> wantedDecrypedJobs = URIParameterEncryptionUtil.decrypt(wantedEncryptedJobs);
-				List<String> wantedDecrypedTeachingTypes = URIParameterEncryptionUtil
-						.decrypt(wantedEncryptedTeachingTypes);
-				List<String> wantedDecrypedEducationalYears = URIParameterEncryptionUtil
-						.decrypt(wantedEncryptedEducationalYears);
+				List<String> wantedDecrypedLocations = null;
+				List<String> wantedDecrypedJobs = null;
+				List<String> wantedDecrypedTeachingTypes = null;
+				List<String> wantedDecrypedEducationalYears = null;
 
-				// TODO use ids to filter in database
+				if (wantedEncryptedLocations != null && wantedEncryptedLocations.length > 0) {
+					wantedDecrypedLocations = URIParameterEncryptionUtil.decrypt(wantedEncryptedLocations);
+				}
+
+				if (wantedEncryptedJobs != null && wantedEncryptedJobs.length > 0) {
+					wantedDecrypedJobs = URIParameterEncryptionUtil.decrypt(wantedEncryptedJobs);
+				}
+
+				if (wantedEncryptedTeachingTypes != null && wantedEncryptedTeachingTypes.length > 0) {
+					wantedDecrypedTeachingTypes = URIParameterEncryptionUtil.decrypt(wantedEncryptedTeachingTypes);
+				}
+
+				if (wantedEncryptedEducationalYears != null && wantedEncryptedEducationalYears.length > 0) {
+					wantedDecrypedEducationalYears = URIParameterEncryptionUtil
+							.decrypt(wantedEncryptedEducationalYears);
+				}
 
 				// TODO security: remove email, picktext, etc;
-				List<Godfather> all = GodfatherDao.getInstance().list();
+				List<Godfather> all = GodfatherDao.filterAvailable(wantedDecrypedLocations, wantedDecrypedJobs,
+						wantedDecrypedTeachingTypes, wantedDecrypedEducationalYears);
 				resp.getWriter().print(this.gson.toJson(all));
 				return;
 			}

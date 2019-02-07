@@ -7,6 +7,8 @@
 	import="de.db.derPate.persistence.TeachingTypeDao"
 	import="de.db.derPate.model.TeachingType"
 	import="de.db.derPate.persistence.JobDao"
+	import="org.eclipse.jdt.annotation.NonNull"
+	import="de.db.derPate.persistence.GodfatherDao"
 	import="de.db.derPate.model.Job"
 	import="de.db.derPate.Constants"
 	import="java.util.List"
@@ -15,7 +17,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Login Example</title>
+		<title>Filter Example</title>
 		<meta charset="<%= Constants.CHARSET.name() %>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" type="text/css" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" />
@@ -83,11 +85,18 @@
 								Lehrjahr
 							</button>
 							<ul class="dropdown-menu">
-							
+								<%
+								List<@NonNull Integer> educationalYears = GodfatherDao.getEducationalYears();
+								for(@NonNull Integer year : educationalYears) { %>
+									<li>
+										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_EDUCATIONAL_YEAR %>" value="<%= URIParameterEncryptionUtil.encrypt(year) %>" />
+										<%= year %>
+									</li>
+								<% } %>
 							</ul>
 						</div>
 						
-						<input class="btn btn-secondary" type="submit" value="Suchen" />
+						<input class="btn btn-secondary" id="filtering-form-submit" type="submit" value="Suchen" />
 					</div>
 				</form>
 			</div>

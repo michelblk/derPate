@@ -1,9 +1,12 @@
 $(document).ready(function () {
+	var submitButton = $("#filtering-form-submit");
+	
 	$("#filtering-form").submit(function (e) {
 		e.preventDefault();
 		
-		$("#async-results").empty();
+		$(submitButton).prop("disabled", true);
 		
+		$("#async-results").empty();
 		$.ajax({
 			url: '../godfather',
 			method: 'GET',
@@ -43,6 +46,9 @@ $(document).ready(function () {
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				
+			},
+			complete: function() {
+				$(submitButton).prop("disabled", false);
 			}
 		});
 		

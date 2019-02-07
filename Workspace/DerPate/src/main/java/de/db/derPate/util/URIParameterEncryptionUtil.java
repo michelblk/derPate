@@ -112,13 +112,13 @@ public class URIParameterEncryptionUtil {
 	 * decrypted.
 	 *
 	 * @param parameterValues the received values
-	 * @return a {@link List} of the decryped values ({@link String}s), or
-	 *         <code>null</code>, if parameterValues was null or no value could get
-	 *         decrypted
+	 * @return a {@link List} of the decryped values ({@link String}s or
+	 *         <code>null</code>, if parameter could not get decrypted), or
+	 *         <code>null</code>, if parameterValues was null
 	 */
 	@SuppressWarnings("null")
 	@Nullable
-	public static List<String> decrypt(@Nullable String[] parameterValues) {
+	public static List<String> decrypt(@NonNull String[] parameterValues) {
 		List<String> decryptedValues = new ArrayList<>();
 		if (parameterValues != null) {
 			for (@NonNull
