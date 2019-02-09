@@ -9,6 +9,8 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 
+import annotations.de.db.derPate.model.Id_;
+
 /**
  * This dataclass contains field to hold information about the teaching types
  *
@@ -17,7 +19,7 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table(name = "Teaching_Type")
-@AttributeOverride(name = "id", column = @Column(name = "Id_Teaching_Type"))
+@AttributeOverride(name = Id_.ID, column = @Column(name = "Id_Teaching_Type"))
 public class TeachingType extends Id {
 	@NonNull
 	@Column(name = "Teaching_Type", nullable = false)

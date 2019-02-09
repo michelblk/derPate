@@ -1,5 +1,6 @@
 package de.db.derPate.model;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -21,9 +22,11 @@ import de.db.derPate.manager.LoginManager;
 public abstract class EmailPasswordLoginUser extends LoginUser {
 	@NonNull
 	@NaturalId(mutable = true)
+	@Column(nullable = false)
 	@Expose
 	private String email;
 	@Nullable
+	@Column(nullable = false)
 	@Expose(serialize = false, deserialize = false)
 	private String password = null;
 

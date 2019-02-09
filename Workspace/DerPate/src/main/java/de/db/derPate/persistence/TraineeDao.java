@@ -3,10 +3,10 @@ package de.db.derPate.persistence;
 import java.util.logging.Level;
 
 import org.hibernate.HibernateException;
-import org.hibernate.LockOptions;
 import org.hibernate.NaturalIdLoadAccess;
 import org.hibernate.Session;
 
+import annotations.de.db.derPate.model.Trainee_;
 import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.model.DatabaseEntity;
 import de.db.derPate.model.Trainee;
@@ -49,8 +49,8 @@ public class TraineeDao extends IdDao {
 		try {
 			Session session = sessionFactory.openSession();
 
-			NaturalIdLoadAccess<? extends DatabaseEntity> loader = session.byNaturalId(this.cls).with(LockOptions.READ);
-			loader = loader.using("loginToken", token); // TODO find better way //$NON-NLS-1$
+			NaturalIdLoadAccess<? extends DatabaseEntity> loader = session.byNaturalId(this.cls);
+			loader = loader.using(Trainee_.LOGIN_TOKEN, token);
 			DatabaseEntity entity = loader.load();
 			result = (Trainee) entity;
 

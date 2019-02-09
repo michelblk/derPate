@@ -1,11 +1,14 @@
 package de.db.derPate.model;
 
+import javax.persistence.MappedSuperclass;
+
 /**
  * Baseclass of all classes, that can store data, which you can use to log on.
  *
  * @author MichelBlank
  *
  */
+@MappedSuperclass
 public abstract class LoginUser extends Id {
 
 	/**

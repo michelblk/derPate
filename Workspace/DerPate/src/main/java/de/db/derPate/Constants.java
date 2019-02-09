@@ -6,9 +6,6 @@ import java.util.logging.Level;
 import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derPate.manager.LoggingManager;
-import de.db.derPate.model.Admin;
-import de.db.derPate.model.Godfather;
-import de.db.derPate.model.Trainee;
 import de.db.derPate.util.CSRFPreventionUtil;
 import de.db.derPate.util.HashUtil;
 import de.db.derPate.util.PropertyUtil;
@@ -138,48 +135,5 @@ public final class Constants {
 		 * Default value, if property not found: 600
 		 */
 		public static final int MAX_INACTIVE_SECONDS = SECURITY_PROPERTIES.getIntProperty("login.timeout", 600); //$NON-NLS-1$
-	}
-
-	/**
-	 * This class contains all static attributes that are used in the frontend.
-	 * Their values may be used in the backend as well, when processing information
-	 * coming from the frontend.
-	 *
-	 */
-	public static final class Ui {
-		/**
-		 * Contains input field names for frontend use.<br>
-		 * Use {@link Inputs#toString()} to get the name.
-		 */
-		public static enum Inputs {
-			/**
-			 * Inputfield used by {@link Admin}s and {@link Godfather}s to provide their
-			 * email address
-			 */
-			LOGIN_EMAIL("email"), //$NON-NLS-1$
-			/**
-			 * Inputfield used by {@link Admin}s and {@link Godfather}s to provide their
-			 * password
-			 */
-			LOGIN_PASSWORD("password"), //$NON-NLS-1$
-			/**
-			 * Inputfield used by {@link Trainee}s to provide their token
-			 */
-			LOGIN_TOKEN("token"); //$NON-NLS-1$
-
-			private final String frontendName;
-
-			Inputs(String frontendName) {
-				this.frontendName = frontendName;
-			}
-
-			/**
-			 * Returns the name of the input field for frontend or backend use
-			 */
-			@Override
-			public String toString() {
-				return this.frontendName;
-			}
-		}
 	}
 }

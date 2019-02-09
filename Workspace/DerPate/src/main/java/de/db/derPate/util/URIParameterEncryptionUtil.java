@@ -116,7 +116,6 @@ public class URIParameterEncryptionUtil {
 	 *         <code>null</code>, if parameter could not get decrypted), or
 	 *         <code>null</code>, if parameterValues was null
 	 */
-	@SuppressWarnings("null")
 	@Nullable
 	public static List<String> decrypt(@NonNull String[] parameterValues) {
 		List<String> decryptedValues = new ArrayList<>();

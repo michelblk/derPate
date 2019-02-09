@@ -17,15 +17,15 @@ $(document).ready(function () {
 				$.each(godfathers, function (index, godfather) {
 					// for each godfather
 					var id = godfather["id"];
-					var otherInformations = godfather["information"];
-					var description = otherInformations["description"];
-					var firstName = otherInformations["firstName"];
-					var jobId = otherInformations["job"]["id"];
-					var job = otherInformations["job"]["job"];
-					var locationId = otherInformations["location"]["id"];
-					var location = otherInformations["location"]["location"];
-					var teachingTypeId = otherInformations["teachingType"]["id"];
-					var teachingType = otherInformations["teachingType"]["teachingType"];
+					var description = godfather["description"];
+					var firstName = godfather["firstName"];
+					var jobId = godfather["job"]["id"];
+					var job = godfather["job"]["job"];
+					var locationId = godfather["location"]["id"];
+					var location = godfather["location"]["location"];
+					var teachingTypeId = godfather["job"]["teachingType"]["id"];
+					var teachingType = godfather["job"]["teachingType"]["teachingType"];
+					var educationalYear = godfather["educationalYear"];
 					
 					var card = $("#godfahter-card-default").clone();
 					$(card).removeAttr("id").removeClass("default");
@@ -35,7 +35,7 @@ $(document).ready(function () {
 					$(card).find(".godfather-card-location").attr('data-id', locationId).text(location);
 					$(card).find(".godfather-card-teachingType").attr('data-id', teachingTypeId).text(teachingType);
 					$(card).find(".godfather-card-job").attr('data-id', jobId).text(job);
-					$(card).find(".godfather-card-year").text("TODO");
+					$(card).find(".godfather-card-year").text(educationalYear);
 					$(card).find(".godfather-card-description").text(description);
 					
 					

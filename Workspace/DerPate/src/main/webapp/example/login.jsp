@@ -5,7 +5,6 @@
 	import="de.db.derPate.servlet.LoginServlet"
 	import="de.db.derPate.servlet.filter.CSRFServletFilter"
 	import="de.db.derPate.CSRFForm"
-	import="de.db.derPate.Constants"
 	import="de.db.derPate.util.URIParameterEncryptionUtil"
 %>
 <!DOCTYPE html>
@@ -70,16 +69,16 @@
 					<h3>Nachwuchskraft</h3>
 					<div class="input-group">
 						<label for="input_token">Benutzerkennung</label>
-						<input id="input_token" name="<%= Constants.Ui.Inputs.LOGIN_TOKEN %>" type="text" value="" placeholder="z.B. abc-efg-hij" />
+						<input id="input_token" name="<%= LoginServlet.INPUT_FIELD_TOKEN %>" type="text" value="" placeholder="z.B. abc-efg-hij" />
 					</div>
 					<h3>Pate / Admin</h3>
 					<div class="input-group">
 						<label for="input_email">E-Mail</label>
-						<input id="input_email" name="<%= Constants.Ui.Inputs.LOGIN_EMAIL %>" type="text" value="" placeholder="E-Mail" />
+						<input id="input_email" name="<%= LoginServlet.INPUT_FIELD_EMAIL %>" type="text" value="" placeholder="E-Mail" />
 					</div>
 					<div class="input-group">
 						<label for="input_password">Passwort</label>
-						<input id="input_password" name="<%= Constants.Ui.Inputs.LOGIN_PASSWORD %>" type="password" value="" placeholder="Passwort" />
+						<input id="input_password" name="<%= LoginServlet.INPUT_FIELD_PASSWORD %>" type="password" value="" placeholder="Passwort" />
 					</div>
 					<div class="input-group">
 						<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN) %>" />

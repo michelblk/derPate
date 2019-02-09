@@ -1,10 +1,16 @@
 package de.db.derPate.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import de.db.derPate.model.DatabaseEntity;
 import de.db.derPate.util.HibernateSessionFactoryUtil;
@@ -51,10 +57,27 @@ abstract class Dao {
 	 * @param <T> type
 	 * @return {@link List} of objects
 	 */
+	@SuppressWarnings("unchecked")
+	@NonNull
 	public <T extends DatabaseEntity> List<T> list() {
+
 		Session session = sessionFactory.openSession();
-		List<T> list = session.createQuery("FROM " + this.cls.getName()).list(); //$NON-NLS-1$
-		session.close();
-		return list;
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+
+		// Build query
+		CriteriaQuery<T> query = (CriteriaQuery<T>) builder.createQuery(this.cls);
+		Root<T> root = (Root<T>) query.from(this.cls);
+		query.select(root);
+
+		// Execute query and get ResultList
+		Query<T> q = session.createQuery(query);
+		List<T> result = q.getResultList();
+
+		session.close(); // first close session, before returning result
+
+		if (result == null) {
+			result = new ArrayList<>();
+		}
+		return result;
 	}
 }

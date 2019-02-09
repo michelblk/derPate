@@ -17,4 +17,19 @@
 	<error-page>
 		<location>/WEB-INF/page/error.jsp</location>
 	</error-page>
+	
+	<!-- Filter -->
+	<filter>
+	   <filter-name>TraineeOnly</filter-name>
+	   <filter-class>de.db.derPate.servlet.filter.LoginServletFilter</filter-class>
+	   <init-param>
+	      <param-name>usermode</param-name>
+	      <param-value>TRAINEE</param-value>
+	   </init-param>
+	</filter>
+	
+	<filter-mapping>
+	   <filter-name>TraineeOnly</filter-name>
+	   <url-pattern>/example/filter.jsp</url-pattern>
+	</filter-mapping>
 </web-app>

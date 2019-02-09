@@ -1,6 +1,7 @@
 package de.db.derPate.servlet.filter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -83,7 +84,7 @@ public class LoginServletFilter implements ServletFilter, Filter {
 	public void doFilter(@Nullable ServletRequest request, @Nullable ServletResponse response,
 			@Nullable FilterChain chain) throws IOException, ServletException {
 		if (request != null && response != null && chain != null) {
-			if (this.filter((HttpServletRequest) request)) {
+			if (!this.filter((HttpServletRequest) request)) {
 				((HttpServletResponse) response).sendError(this.getErrorStatusCode());
 			} else {
 				chain.doFilter(request, response);
@@ -91,9 +92,21 @@ public class LoginServletFilter implements ServletFilter, Filter {
 		}
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// not used
+		if (filterConfig != null) {
+			String usermodes = filterConfig.getInitParameter("usermode"); //$NON-NLS-1$
+			String[] usermode = usermodes.split(","); //$NON-NLS-1$
+			ArrayList<Usermode> wantedUsermodes = new ArrayList<>();
+			for (String mode : usermode) {
+				Usermode modeToAdd = Usermode.valueOf(mode);
+				if (modeToAdd != null) {
+					wantedUsermodes.add(modeToAdd);
+				}
+			}
+			this.requiredUsermode = wantedUsermodes.toArray(new Usermode[0]);
+		}
 	}
 
 	@Override

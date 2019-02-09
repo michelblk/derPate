@@ -13,6 +13,7 @@ import org.hibernate.annotations.NaturalId;
 
 import com.google.gson.annotations.Expose;
 
+import annotations.de.db.derPate.model.Id_;
 import de.db.derPate.manager.LoginManager;
 
 /**
@@ -23,7 +24,7 @@ import de.db.derPate.manager.LoginManager;
  */
 @Entity
 @Table(name = "Trainee")
-@AttributeOverride(name = "id", column = @Column(name = "Id_Trainee"))
+@AttributeOverride(name = Id_.ID, column = @Column(name = "Id_Trainee"))
 public class Trainee extends LoginUser {
 	@Nullable
 	@Column(name = "Login_Code", nullable = false)

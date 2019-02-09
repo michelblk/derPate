@@ -16,7 +16,7 @@ public class TimeUtilTest {
 		long expected = new Date().getTime();
 		long actual = TimeUtil.getCurrentTime().getTime();
 
-		boolean same = expected < actual + 1000 && expected > actual - 1000; // one second tolerance
+		boolean same = expected < actual + 2000 && expected > actual - 2000; // two seconds tolerance
 		assertTrue(same);
 	}
 
@@ -24,7 +24,7 @@ public class TimeUtilTest {
 	public void dateToReadableString() {
 		Locale locale = Locale.GERMANY;
 		Date date = new Date(1548694489000L);
-		String expected = "28.01.2019, 17:54:49";
+		String expected = "28.01.2019 17:54:49";
 
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, locale);
 		String actual = dateFormat.format(date);

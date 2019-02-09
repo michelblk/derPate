@@ -4,10 +4,19 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
+import annotations.de.db.derPate.model.Godfather_;
+import annotations.de.db.derPate.model.Id_;
+import annotations.de.db.derPate.model.Job_;
 import de.db.derPate.model.Godfather;
 
 /**
@@ -36,38 +45,72 @@ public class GodfatherDao extends EmailPasswordLoginUserDao {
 		return instance;
 	}
 
-	public static List<Godfather> filterAvailable(@Nullable List<String> location, @Nullable List<String> jobs,
+	/**
+	 * Filters all Godfathers with the given id's for location, job, teachingType
+	 * and educationalYear, that have at least one free slot available for another
+	 * trainee. If multiple id's per type (location, job, etc.) are selected, only
+	 * one has to be true.
+	 *
+	 * @param location        the location ids
+	 * @param jobs            the job ids
+	 * @param teachingType    the teaching type ids
+	 * @param educationalYear the number of the educational year (1, 2, 3, ...)
+	 * @return a {@link List} of {@link Godfather}s, that the filter applies to
+	 */
+	@Nullable
+	public List<Godfather> filterAvailable(@Nullable List<String> location, @Nullable List<String> jobs,
 			@Nullable List<String> teachingType, @Nullable List<String> educationalYear) {
-		List<Godfather> result = new ArrayList<>();
-		List<String> where = new ArrayList<>();
-
-		if (location != null && location.size() > 0) {
-			where.add("Id_Location IN (" + String.join(", ", location) + ")");
-		}
-		if (jobs != null && jobs.size() > 0) {
-			where.add("Id_Job IN (" + String.join(", ", jobs) + ")");
-		}
-		if (teachingType != null && teachingType.size() > 0) {
-			where.add("Id_Teaching_Type IN (" + String.join(", ", teachingType) + ")");
-		}
-		if (educationalYear != null && educationalYear.size() > 0) {
-			where.add("TIMESTAMPDIFF(YEAR, Hiring_Date, CURDATE()) IN (" + String.join(", ", educationalYear) + ")");
-		}
 
 		Session session = sessionFactory.openSession();
-		result = session.createQuery("FROM Godfather" + (where.size() > 0 ? " WHERE " : "") + String.join(" AND ", //$NON-NLS-1$
-				where.toArray(new String[0]))).list();
-		session.close();
+		CriteriaBuilder builder = session.getCriteriaBuilder();
 
-		return result;
+		CriteriaQuery<Godfather> query = builder.createQuery(Godfather.class);
+		Root<Godfather> root = query.from(Godfather.class);
+
+		query.select(root);
+		query.orderBy(builder.asc(root.get(Godfather_.CURRENT_TRAINEES)), builder.asc(root.get(Godfather_.FIRST_NAME)));
+
+		Predicate predicate = builder.lt(root.get(Godfather_.CURRENT_TRAINEES), root.get(Godfather_.MAX_TRAINEES));
+		if (location != null && location.size() > 0) {
+			Predicate clause = root.get(Godfather_.LOCATION).get(Id_.ID).in(location);
+			predicate = builder.and(predicate, clause);
+		}
+		if (jobs != null && jobs.size() > 0) {
+			Predicate clause = root.get(Godfather_.JOB).get(Id_.ID).in(jobs);
+			predicate = builder.and(predicate, clause);
+		}
+		if (teachingType != null && teachingType.size() > 0) {
+			Predicate clause = root.get(Godfather_.JOB).get(Job_.TEACHING_TYPE).get(Id_.ID).in(teachingType);
+			predicate = builder.and(predicate, clause);
+		}
+		if (educationalYear != null && educationalYear.size() > 0) {
+			Predicate clause = root.get(Godfather_.EDUCATIONAL_YEAR).in(educationalYear);
+			predicate = builder.and(predicate, clause);
+		}
+
+		if (predicate != null) {
+			query.where(predicate);
+		}
+
+		Query<Godfather> q = session.createQuery(query);
+
+		return q.getResultList();
 	}
 
+	/**
+	 * Returns a {@link List} of the educational years, the godfathers are in.<br>
+	 * For example 1, 2, 3.
+	 *
+	 * @return a {@link List} of educational years
+	 */
+	@NonNull
 	public static List<@NonNull Integer> getEducationalYears() {
 		List<@NonNull Integer> result = new ArrayList<>();
 
 		Session session = sessionFactory.openSession();
+		// TODO avoid sql and use a hibernate query instead
 		List<@NonNull BigInteger> sqlResult = session
-				.createSQLQuery("SELECT DISTINCT TIMESTAMPDIFF(YEAR, Hiring_Date, CURDATE()) AS 'year' FROM Godfather")
+				.createSQLQuery("SELECT DISTINCT YEAR_DIFF(hiring_date) + 1 AS 'year' FROM Godfather") //$NON-NLS-1$
 				.list();
 		session.close();
 

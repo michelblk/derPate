@@ -12,7 +12,6 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derPate.CSRFForm;
 import de.db.derPate.Constants;
-import de.db.derPate.Constants.Ui.Inputs;
 import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.manager.LoginManager;
 import de.db.derPate.model.Admin;
@@ -58,6 +57,20 @@ public class LoginServlet extends FilterServlet {
 	 * with a user and therefore cannot be used by another user.
 	 */
 	public static final int SC_ALREADY_LOGGED_IN = HttpServletResponse.SC_CONFLICT;
+
+	/**
+	 * Input field name for user to submit mail (Godfather / Admin)
+	 */
+	public static final String INPUT_FIELD_EMAIL = "email"; //$NON-NLS-1$
+	/**
+	 * Input field name for user to submit password (Godfather / Admin)
+	 */
+	public static final String INPUT_FIELD_PASSWORD = "password"; //$NON-NLS-1$
+	/**
+	 * Input field name for user to submit token code (Trainees)
+	 */
+	public static final String INPUT_FIELD_TOKEN = "token"; //$NON-NLS-1$
+
 	/**
 	 * CSRFForm, that this Servlet is for, used for the CSRF Filter and generating a
 	 * new token, if username or password was wrong (but csrf token was correct)
@@ -87,9 +100,9 @@ public class LoginServlet extends FilterServlet {
 			return;
 		}
 
-		String email = request.getParameter(Inputs.LOGIN_EMAIL.toString());
-		String password = request.getParameter(Inputs.LOGIN_PASSWORD.toString());
-		String token = request.getParameter(Inputs.LOGIN_TOKEN.toString());
+		String email = request.getParameter(INPUT_FIELD_EMAIL);
+		String password = request.getParameter(INPUT_FIELD_PASSWORD);
+		String token = request.getParameter(INPUT_FIELD_TOKEN);
 
 		if (email != null && InputVerifyUtil.isNotBlank(email) && password != null
 				&& InputVerifyUtil.isNotBlank(password)) {
