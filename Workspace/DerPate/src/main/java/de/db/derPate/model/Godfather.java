@@ -17,8 +17,6 @@ import org.hibernate.annotations.NaturalId;
 
 import com.google.gson.annotations.Expose;
 
-import annotations.de.db.derPate.model.EmailPasswordLoginUser_;
-import annotations.de.db.derPate.model.Id_;
 import de.db.derPate.manager.LoginManager;
 
 /**
@@ -29,9 +27,9 @@ import de.db.derPate.manager.LoginManager;
  */
 @Entity
 @Table(name = "Godfather")
-@AttributeOverride(name = Id_.ID, column = @Column(name = "Id_Godfather"))
-@AttributeOverride(name = EmailPasswordLoginUser_.EMAIL, column = @Column(name = "Email"))
-@AttributeOverride(name = EmailPasswordLoginUser_.PASSWORD, column = @Column(name = "Password"))
+@AttributeOverride(name = "id", column = @Column(name = "Id_Godfather"))
+@AttributeOverride(name = "email", column = @Column(name = "Email"))
+@AttributeOverride(name = "password", column = @Column(name = "Password"))
 public class Godfather extends EmailPasswordLoginUser {
 	@Nullable
 	@Column(name = "Last_Name", nullable = false)

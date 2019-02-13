@@ -14,10 +14,10 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import annotations.de.db.derPate.model.Godfather_;
-import annotations.de.db.derPate.model.Id_;
-import annotations.de.db.derPate.model.Job_;
 import de.db.derPate.model.Godfather;
+import de.db.derPate.model.Godfather_;
+import de.db.derPate.model.Id_;
+import de.db.derPate.model.Job_;
 
 /**
  * Data Access Object providing methods to get {@link Godfather} objects out of

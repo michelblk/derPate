@@ -9,8 +9,6 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 
-import annotations.de.db.derPate.model.Id_;
-
 /**
  * This dataclass contains informations regarding a location
  *
@@ -19,7 +17,7 @@ import annotations.de.db.derPate.model.Id_;
  */
 @Entity
 @Table(name = "Location")
-@AttributeOverride(name = Id_.ID, column = @Column(name = "Id_Location"))
+@AttributeOverride(name = "id", column = @Column(name = "Id_Location"))
 public class Location extends Id {
 	@NonNull
 	@Column(name = "Location", nullable = false)

@@ -2,14 +2,15 @@ package de.db.derPate.persistence;
 
 import java.util.logging.Level;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.hibernate.HibernateException;
 import org.hibernate.NaturalIdLoadAccess;
 import org.hibernate.Session;
 
-import annotations.de.db.derPate.model.Trainee_;
 import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.model.DatabaseEntity;
 import de.db.derPate.model.Trainee;
+import de.db.derPate.model.Trainee_;
 
 /**
  * Data Access Object providing methods to get {@link Trainee}s out of the
@@ -60,5 +61,25 @@ public class TraineeDao extends IdDao {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Updates a Trainee
+	 *
+	 * @param trainee the {@link Trainee}
+	 * @return <code>true</code>, if update was successful; <code>false</code>, if
+	 *         an error occurred
+	 */
+	public boolean update(@NonNull Trainee trainee) {
+		boolean success = false;
+		try {
+			Session session = sessionFactory.openSession();
+			session.update(trainee);
+			session.close();
+			success = true;
+		} catch (@SuppressWarnings("unused") HibernateException e) {
+			// error updating entry
+		}
+		return success;
 	}
 }

@@ -8,8 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import annotations.de.db.derPate.model.EmailPasswordLoginUser_;
-import annotations.de.db.derPate.model.Id_;
 import de.db.derPate.manager.LoginManager;
 
 /**
@@ -22,9 +20,9 @@ import de.db.derPate.manager.LoginManager;
  */
 @Entity
 @Table(name = "admin")
-@AttributeOverride(name = Id_.ID, column = @Column(name = "Id_Admin"))
-@AttributeOverride(name = EmailPasswordLoginUser_.EMAIL, column = @Column(name = "Email"))
-@AttributeOverride(name = EmailPasswordLoginUser_.PASSWORD, column = @Column(name = "Password"))
+@AttributeOverride(name = "id", column = @Column(name = "Id_Admin"))
+@AttributeOverride(name = "email", column = @Column(name = "Email"))
+@AttributeOverride(name = "password", column = @Column(name = "Password"))
 public class Admin extends EmailPasswordLoginUser {
 
 	/**

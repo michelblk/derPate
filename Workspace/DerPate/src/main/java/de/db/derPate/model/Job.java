@@ -12,8 +12,6 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 
-import annotations.de.db.derPate.model.Id_;
-
 /**
  * This dataclass contains informations regarding the different job types (for
  * example "Auszubildender")
@@ -23,7 +21,7 @@ import annotations.de.db.derPate.model.Id_;
  */
 @Entity
 @Table(name = "Job")
-@AttributeOverride(name = Id_.ID, column = @Column(name = "Id_Job"))
+@AttributeOverride(name = "id", column = @Column(name = "Id_Job"))
 public class Job extends Id {
 	@NonNull
 	@Column(name = "Job", nullable = false)
