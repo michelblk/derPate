@@ -1,6 +1,9 @@
 <%@page
 	contentType="text/html" pageEncoding="UTF-8"
+	import="de.db.derPate.CSRFForm"
 	import="de.db.derPate.servlet.traineeOnly.GodfatherServlet"
+	import="de.db.derPate.servlet.traineeOnly.GodfatherSelectServlet"
+	import="de.db.derPate.util.CSRFPreventionUtil"
 	import="de.db.derPate.persistence.LocationDao"
 	import="de.db.derPate.model.Location"
 	import="de.db.derPate.util.URIParameterEncryptionUtil"
@@ -115,6 +118,13 @@
 								<footer class="blockquote-footer godfather-card-firstname"></footer>
 							</blockquote>
 						</div>
+					</div>
+					<div class="card-footer">
+						<form class="godfahter-card-select-form" action="../godfatherSelect" method="POST">
+							<input type="hidden" class="godfather-card-select-csrf" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.TRAINEE_SELECT_GODFATHER) %>" />
+							<input type="hidden" class="godfather-card-select-id" name="<%= GodfatherSelectServlet.PARAM_GODFAHTER_ID %>" value="">
+							<input type="submit" class="btn godfather-card-select-btn" value="Als Paten ausw&auml;hlen"/>
+						</form>
 					</div>
 				</div>
 				<!-- show all -->

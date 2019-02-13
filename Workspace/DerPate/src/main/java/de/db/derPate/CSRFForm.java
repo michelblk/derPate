@@ -4,6 +4,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derPate.servlet.LoginServlet;
 import de.db.derPate.servlet.LogoutServlet;
+import de.db.derPate.servlet.traineeOnly.GodfatherSelectServlet;
 
 /**
  * Enum used to identify a frontend-form, that uses csrf tokens. It set's how
@@ -21,14 +22,22 @@ public enum CSRFForm {
 	 *
 	 * @see LoginServlet
 	 */
-	LOGIN(1),
+	LOGIN(1)
 	/**
 	 * Logout<br>
 	 * A token is valid till the session ends (session based)
 	 *
 	 * @see LogoutServlet
 	 */
-	LOGOUT();
+	,LOGOUT()
+	
+	/**
+	 * Form for Trainee to select a Godfather<br>
+	 * This token will be valid till the session ends
+	 * 
+	 * @see GodfatherSelectServlet
+	 */
+	,TRAINEE_SELECT_GODFATHER();
 
 	private int maxCSRFTokens;
 	private boolean requestBased;

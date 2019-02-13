@@ -68,12 +68,13 @@ public class LoginManager {
 	 * @return {@link LoginUser} or <code>null</code>, if given {@link HttpSession}
 	 *         was null or user was not properly logged in
 	 */
+	@SuppressWarnings({ "null", "unchecked" })
 	@Nullable
-	public LoginUser getUserBySession(final @Nullable HttpSession session) {
-		LoginUser user = null;
+	public <T extends LoginUser> T getUserBySession(final @Nullable HttpSession session) {
+		T user = null;
 		if (session != null) {
 			try {
-				user = (LoginUser) session.getAttribute(this.userKey);
+				user = (T) session.getAttribute(this.userKey);
 			} catch (IllegalStateException | ClassCastException e) {
 				LoggingManager.log(Level.INFO, "Could not get user due to an session error: " + e.getMessage()); //$NON-NLS-1$
 			}
@@ -82,7 +83,8 @@ public class LoginManager {
 	}
 
 	/**
-	 * Connects {@link HttpSession} with {@link LoginUser}
+	 * Connects {@link HttpSession} with {@link LoginUser}<br>
+	 * Caution: This will call the {@link LoginUser#removeSecret()}-method.
 	 *
 	 * @param request {@link HttpServletRequest}
 	 * @param user    {@link LoginUser}
@@ -190,6 +192,25 @@ public class LoginManager {
 			}
 		}
 		return success;
+	}
+
+	/**
+	 * Updates the user connected with the session.<br>
+	 * The id and type of user have to be the same!<br>
+	 * Caution: This will call the {@link LoginUser#removeSecret()}-method.
+	 * 
+	 * @param session the {@link HttpSession}
+	 * @param user    the {@link LoginUser} to replace
+	 */
+	public void update(@Nullable HttpSession session, @NonNull final LoginUser user) {
+		LoginUser currentUser = this.getUserBySession(session);
+		if (session != null && currentUser != null) {
+			if (this.getUsermode(user) == this.getUsermode(currentUser) && currentUser.getId() == user.getId()) {
+				session.removeAttribute(this.userKey);
+				user.removeSecret();
+				session.setAttribute(this.userKey, user);
+			}
+		}
 	}
 
 	/**

@@ -47,7 +47,7 @@ public final class Constants {
 		} catch (IllegalArgumentException e) {
 			charset = Charset.defaultCharset();
 			LoggingManager.log(Level.WARNING, "Charset " + charset_string //$NON-NLS-1$
-					+ " cannot be used. Switching to default charset (" + charset.name() + ")."); //$NON-NLS-1$ //$NON-NLS-2$
+					+ " cannot be used. Switching to default charset (" + charset.name() + "):" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		CHARSET = charset;
 	}

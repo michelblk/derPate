@@ -28,11 +28,20 @@ import de.db.derPate.util.InputVerifyUtil;
 import de.db.derPate.util.URIParameterEncryptionUtil;
 
 /**
+ * This servlet is only available for Trainees and is used to filter available
+ * godfathers or - if the trainee already selected a godfahter - get information
+ * of their selected godfather.
+ *
  * @author MichelBlank
  *
  */
 @WebServlet("/godfather")
 public class GodfatherServlet extends FilterServlet {
+	/**
+	 * Default Serial Version UID
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Http parameter used to specify a godfather id (encrypted)
 	 */
@@ -55,11 +64,6 @@ public class GodfatherServlet extends FilterServlet {
 	public static final String FILTER_PARAM_EDUCATIONAL_YEAR = "eduYear"; //$NON-NLS-1$
 
 	/**
-	 * Default Serial Version UID
-	 */
-	private static final long serialVersionUID = 1L;
-
-	/**
 	 * The Gson object to transform objects to json
 	 */
 	protected Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
@@ -78,7 +82,7 @@ public class GodfatherServlet extends FilterServlet {
 		resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 
 		// get logged in trainee
-		Trainee trainee = (Trainee) LoginManager.getInstance().getUserBySession(this.session);
+		Trainee trainee = LoginManager.getInstance().getUserBySession(this.session);
 		if (trainee == null) {
 			LoggingManager.log(Level.WARNING,
 					"Trainee could call GodfatherServlet without permission, as Filter failed! Request stopped."); //$NON-NLS-1$
@@ -149,6 +153,6 @@ public class GodfatherServlet extends FilterServlet {
 
 	@Override
 	protected void onPost(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		super.onPost(req, resp); // method not supported
+		super.onPost(req, resp); // unsupported method
 	}
 }
