@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpSession;
 
-import org.junit.Before;
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.Test;
 
 import de.db.derPate.CSRFForm;
@@ -15,12 +15,8 @@ import de.db.derPate.CSRFForm;
 @SuppressWarnings({ "javadoc", "nls" })
 public class CSRFPreventionUtilTest {
 
-	private HttpSession session;
-
-	@Before
-	public void init() {
-		this.session = new DefaultHttpSession().SESSION;
-	}
+	@NonNull
+	private HttpSession session = new DefaultHttpSession().SESSION;
 
 	@Test
 	public void testTokenLimit() {
@@ -33,7 +29,7 @@ public class CSRFPreventionUtilTest {
 			String firstToken = CSRFPreventionUtil.generateToken(this.session, form);
 			try {
 				TimeUnit.MILLISECONDS.sleep(1); // wait 1 millisecond, so future tokens will be older
-			} catch (InterruptedException e) {
+			} catch (@SuppressWarnings("unused") InterruptedException e) {
 				// do nothing
 			}
 			for (int i = 0; i < form.getMaxTokens(); i++) {

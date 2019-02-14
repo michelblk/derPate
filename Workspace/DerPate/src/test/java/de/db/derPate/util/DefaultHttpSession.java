@@ -34,7 +34,7 @@ public class DefaultHttpSession {
 
 		@Override
 		public void setMaxInactiveInterval(int interval) {
-
+			// not implemented
 		}
 
 		@Override
@@ -45,63 +45,63 @@ public class DefaultHttpSession {
 
 		@Override
 		public void removeValue(String name) {
-
+			// not implemented
 		}
 
 		@Override
 		public void removeAttribute(String name) {
-
+			// not implemented
 		}
 
 		@Override
 		public void putValue(String name, Object value) {
-
+			// not implemented
 		}
 
 		@Override
 		public boolean isNew() {
-
+			// not implemented
 			return false;
 		}
 
 		@Override
 		public void invalidate() {
-
+			// not implemented
 		}
 
 		@Override
 		public String[] getValueNames() {
-
+			// not implemented
 			return null;
 		}
 
 		@Override
 		public Object getValue(String name) {
-
+			// not implemented
 			return null;
 		}
 
 		@Override
 		public HttpSessionContext getSessionContext() {
-
+			// not implemented
 			return null;
 		}
 
 		@Override
 		public ServletContext getServletContext() {
-
+			// not implemented
 			return null;
 		}
 
 		@Override
 		public int getMaxInactiveInterval() {
-
+			// not implemented
 			return 0;
 		}
 
 		@Override
 		public long getLastAccessedTime() {
-
+			// not implemented
 			return 0;
 		}
 
@@ -112,13 +112,13 @@ public class DefaultHttpSession {
 
 		@Override
 		public long getCreationTime() {
-
+			// not implemented
 			return 0;
 		}
 
 		@Override
 		public Enumeration<String> getAttributeNames() {
-
+			// not implemented
 			return null;
 		}
 
