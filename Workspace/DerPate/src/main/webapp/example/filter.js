@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(function () {
 	var submitButton = $("#filtering-form-submit");
 	
@@ -21,7 +23,7 @@ $(document).ready(function () {
 					var firstName = godfather["firstname"];
 					var job = godfather["job"];
 					var location = godfather["location"];
-					var teachingType = godfather["teachingType"];
+					var teachingType = godfather["teachingtype"];
 					var educationalYear = godfather["educationalyear"];
 					
 					var card = $("#godfahter-card-default").clone();

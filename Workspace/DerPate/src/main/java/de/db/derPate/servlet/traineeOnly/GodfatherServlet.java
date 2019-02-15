@@ -89,7 +89,7 @@ public class GodfatherServlet extends FilterServlet {
 	/**
 	 * Json element name for the educational year (e.g. 1, 2, 3, ...)
 	 */
-	public static final String JSON_OUTPUT_EDUCATIONAL_YEAR = "educationalYear"; //$NON-NLS-1$
+	public static final String JSON_OUTPUT_EDUCATIONAL_YEAR = "educationalyear"; //$NON-NLS-1$
 	/**
 	 * Json element name for the description of the godfather
 	 */
