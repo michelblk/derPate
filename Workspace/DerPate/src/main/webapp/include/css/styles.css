@@ -1,16 +1,14 @@
 @charset "UTF-8";
-
-#tokenfield{
-	
-	margin-top : 20%;
-	margin-left: 40%;
-	
+@font-face{
+	font-family:Roboto;
+ src: url("../bootstrap/fonts/Roboto-Regular.ttf");
 }
 
 #pate{
 	text-align: center;
 	font-family: roboto;
 	color: #F2F2F2;
+	margin-top: 5%;
 	
 }
 
@@ -22,6 +20,10 @@ body{
 #login{
 	margin-top:30%;
 	
+}
+
+#spinner{
+	visibility: hidden;
 }
 
 
