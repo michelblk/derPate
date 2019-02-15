@@ -24,3 +24,7 @@
 .godfather-card-year:after {
 	content: ". Lehrjahr";
 }
+
+.godfather-card-description{
+	white-space: pre-wrap;
+}
