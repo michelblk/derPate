@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.model.DatabaseEntity;
 import de.db.derPate.model.EmailPasswordLoginUser;
+import de.db.derPate.model.EmailPasswordLoginUser_;
 
 /**
  * Abstract Data Access Object, that can be used for all objects, that extend
@@ -48,7 +49,7 @@ abstract class EmailPasswordLoginUserDao extends IdDao {
 			Session session = sessionFactory.openSession();
 
 			NaturalIdLoadAccess<? extends DatabaseEntity> loader = session.byNaturalId(this.cls).with(LockOptions.READ);
-			loader = loader.using("email", email); // TODO find better way //$NON-NLS-1$
+			loader = loader.using(EmailPasswordLoginUser_.EMAIL, email);
 			DatabaseEntity entity = loader.load();
 			result = (T) entity;
 

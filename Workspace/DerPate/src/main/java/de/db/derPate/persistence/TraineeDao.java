@@ -6,6 +6,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.hibernate.HibernateException;
 import org.hibernate.NaturalIdLoadAccess;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.model.DatabaseEntity;
@@ -74,7 +75,9 @@ public class TraineeDao extends IdDao {
 		boolean success = false;
 		try {
 			Session session = sessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
 			session.update(trainee);
+			transaction.commit();
 			session.close();
 			success = true;
 		} catch (@SuppressWarnings("unused") HibernateException e) {

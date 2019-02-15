@@ -16,7 +16,7 @@
 	import="de.db.derPate.Constants"
 	import="java.util.List"
 %>
-<%-- TODO loginstatus check --%>
+<%-- TODO selectionstatus check --%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -45,7 +45,7 @@
 								for(Location location : locations) { %>
 									<li>
 										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_LOCATION %>" value="<%= URIParameterEncryptionUtil.encrypt(location.getId()) %>" />
-										<%= location.getLocation() %>
+										<%=location.getName()%>
 									</li>
 								<% } %>
 							</ul>
@@ -61,7 +61,7 @@
 								for(TeachingType teachingType : teachingTypes) { %>
 									<li>
 										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_TEACHING_TYPE %>" value="<%= URIParameterEncryptionUtil.encrypt(teachingType.getId()) %>" />
-										<%= teachingType.getTeachingType() %>
+										<%= teachingType.getName() %>
 									</li>
 								<% } %>
 							</ul>
@@ -77,7 +77,7 @@
 								for(Job job : jobs) { %>
 									<li>
 										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_JOB %>" value="<%= URIParameterEncryptionUtil.encrypt(job.getId()) %>" />
-										<%= job.getJob() %>
+										<%= job.getName() %>
 									</li>
 								<% } %>
 							</ul>
