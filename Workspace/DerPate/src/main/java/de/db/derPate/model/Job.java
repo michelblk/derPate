@@ -22,7 +22,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "Job")
 @AttributeOverride(name = "id", column = @Column(name = "Id_Job"))
-public class Job extends Id {
+public class Job extends Id implements HasName {
 	@NonNull
 	@Column(name = "Job", nullable = false)
 	@Expose
@@ -59,7 +59,8 @@ public class Job extends Id {
 	 * @return job name
 	 */
 	@NonNull
-	public String getJob() {
+	@Override
+	public String getName() {
 		return this.job;
 	}
 

@@ -18,7 +18,7 @@ import com.google.gson.annotations.Expose;
 @Entity
 @Table(name = "Teaching_Type")
 @AttributeOverride(name = "id", column = @Column(name = "Id_Teaching_Type"))
-public class TeachingType extends Id {
+public class TeachingType extends Id implements HasName {
 	@NonNull
 	@Column(name = "Teaching_Type", nullable = false)
 	@Expose
@@ -49,7 +49,8 @@ public class TeachingType extends Id {
 	 * @return name of teaching type
 	 */
 	@NonNull
-	public String getTeachingType() {
+	@Override
+	public String getName() {
 		return this.teachingType;
 	}
 }
