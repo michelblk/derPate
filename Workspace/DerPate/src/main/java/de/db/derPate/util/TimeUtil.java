@@ -40,4 +40,35 @@ public class TimeUtil {
 		return dateFormat.format(date);
 		// TODO exceptions?
 	}
+
+	/**
+	 * Calculates the difference between a date and now in (full) years.<br>
+	 * Can be useful to calculate the age by a birthday.<br>
+	 * 
+	 * @param date A date
+	 * @return the number of years in between, <code>null</code>, when date was null
+	 */
+	public static Integer getYearDiff(@Nullable Date date) {
+		if (date == null) {
+			return null;
+		}
+
+		Calendar now = Calendar.getInstance();
+		Calendar then = Calendar.getInstance();
+		then.setTime(date);
+
+		int age = now.get(Calendar.YEAR) - then.get(Calendar.YEAR);
+		int currentMonth = now.get(Calendar.MONTH);
+		int thenMonth = then.get(Calendar.MONTH);
+
+		if (thenMonth > currentMonth) {
+			age--;
+		} else if (currentMonth == thenMonth) {
+			if (then.get(Calendar.DAY_OF_MONTH) > now.get(Calendar.DAY_OF_MONTH)) {
+				age--;
+			}
+		}
+
+		return age;
+	}
 }

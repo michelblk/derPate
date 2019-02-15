@@ -29,6 +29,7 @@ import de.db.derPate.model.typeAdapter.DateTypeAdapter;
 import de.db.derPate.persistence.GodfatherDao;
 import de.db.derPate.servlet.FilterServlet;
 import de.db.derPate.servlet.filter.LoginServletFilter;
+import de.db.derPate.util.TimeUtil;
 import de.db.derPate.util.URIParameterEncryptionUtil;
 
 /**
@@ -90,6 +91,10 @@ public class GodfatherServlet extends FilterServlet {
 	 * Json element name for the educational year (e.g. 1, 2, 3, ...)
 	 */
 	public static final String JSON_OUTPUT_EDUCATIONAL_YEAR = "educationalyear"; //$NON-NLS-1$
+	/**
+	 * Json element name for godfathers age
+	 */
+	public static final String JSON_OUTPUT_AGE = "age"; //$NON-NLS-1$
 	/**
 	 * Json element name for the description of the godfather
 	 */
@@ -209,6 +214,7 @@ public class GodfatherServlet extends FilterServlet {
 				getNameOutOfGodfather(job != null ? job.getTeachingType() : null));
 		object.addProperty(JSON_OUTPUT_JOB_NAME, getNameOutOfGodfather(job));
 		object.addProperty(JSON_OUTPUT_EDUCATIONAL_YEAR, godfather.getEducationalYear());
+		object.addProperty(JSON_OUTPUT_AGE, TimeUtil.getYearDiff(godfather.getBirthday()));
 		object.addProperty(JSON_OUTPUT_DESCRIPTION, godfather.getDescription());
 
 		if (more) {

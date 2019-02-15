@@ -25,6 +25,7 @@ $(document).ready(function () {
 					var location = godfather["location"];
 					var teachingType = godfather["teachingtype"];
 					var educationalYear = godfather["educationalyear"];
+					var age = godfather["age"];
 					
 					var card = $("#godfahter-card-default").clone();
 					$(card).removeAttr("id").removeClass("default");
@@ -35,6 +36,7 @@ $(document).ready(function () {
 					$(card).find(".godfather-card-teachingType").text(teachingType);
 					$(card).find(".godfather-card-job").text(job);
 					$(card).find(".godfather-card-year").text(educationalYear);
+					$(card).find(".godfather-card-age").text(age);
 					$(card).find(".godfather-card-description").text(description);
 					$(card).find(".godfather-card-select-id").val(id);
 					

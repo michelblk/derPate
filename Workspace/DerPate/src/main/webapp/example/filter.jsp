@@ -113,6 +113,7 @@
 							<div class="godfather-card-teachingType">Ausbildung/Duales Studium</div>
 							<div class="godfather-card-job">Beruf</div>
 							<div class="godfather-card-year">Lehrjahr</div>
+							<div class="godfather-card-age">Alter</div>
 							<blockquote class="blockquote text-center">
 								<p class="godfather-card-description mb-0 text-small"></p>
 								<footer class="blockquote-footer godfather-card-firstname"></footer>
