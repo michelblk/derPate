@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+#tokenfield{
+	
+	margin-top : 20%;
+	margin-left: 40%;
+	
+}
+
+#pate{
+	text-align: center;
+	font-family: roboto;
+	color: #F2F2F2;
+	
+}
+
+body{
+	background-color: #848484;
+	
+}
+
+#login{
+	margin-top:30%;
+	
+}
+
+
