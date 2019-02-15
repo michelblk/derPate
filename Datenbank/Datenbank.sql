@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 09. Feb 2019 um 21:45
+-- Erstellungszeit: 15. Feb 2019 um 15:45
 -- Server-Version: 10.1.21-MariaDB
 -- PHP-Version: 7.0.16
 
@@ -61,7 +61,6 @@ CREATE TABLE IF NOT EXISTS `godfather` (
   `Id_Location` int(10) UNSIGNED NOT NULL,
   `Max_Trainees` int(2) NOT NULL,
   `Description` varchar(5000) NOT NULL,
-  `Picture` varchar(20) DEFAULT NULL,
   `Id_Job` int(10) UNSIGNED NOT NULL,
   `Hiring_Date` date NOT NULL,
   `Birthday` date DEFAULT NULL,
