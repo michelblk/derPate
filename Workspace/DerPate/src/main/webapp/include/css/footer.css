@@ -1,0 +1,25 @@
+
+.footer {
+	padding: 8px;
+	color: #fff;
+	background-color: #0080ff;
+	position: absolute;
+	left: 10px;
+    right: 10px;
+    buttom: 0px;
+   
+    
+  
+}
+
+
+.footer a {
+	color: #fff;
+	text-decoration: none;
+	padding: 20px;
+	
+}
+
+a:hover {
+	color: #ff0000;
+}

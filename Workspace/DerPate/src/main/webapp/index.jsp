@@ -43,7 +43,7 @@
 					</div>
 				</form>
 		</div>
-	</div>
+	</div> 
 <script>
 			$(document).ready(function () {
 				$("#login").submit(function (e) {
@@ -91,11 +91,4 @@
 				});
 			});
 		</script>
-</body>
 <jsp:include page="WEB-INF/include/footer.jsp" />
-
-<!-- 
-Admin und Pate Login, der Azubi toke
-
-
-token  -->
