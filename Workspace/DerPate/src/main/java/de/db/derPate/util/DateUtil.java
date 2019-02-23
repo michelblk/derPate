@@ -1,6 +1,7 @@
 package de.db.derPate.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -9,12 +10,12 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * This util is used to simplify date operations
+ * This util is used to simplify {@link Date} operations
  *
  * @author MichelBlank
  *
  */
-public class TimeUtil {
+public class DateUtil {
 	/**
 	 * Returns current date and time in a {@link Date}-Object
 	 *
@@ -38,16 +39,16 @@ public class TimeUtil {
 	public static String dateToReadableString(Date date, Locale locale) {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, locale);
 		return dateFormat.format(date);
-		// TODO exceptions?
 	}
 
 	/**
 	 * Calculates the difference between a date and now in (full) years.<br>
 	 * Can be useful to calculate the age by a birthday.<br>
-	 * 
+	 *
 	 * @param date A date
 	 * @return the number of years in between, <code>null</code>, when date was null
 	 */
+	@Nullable
 	public static Integer getYearDiff(@Nullable Date date) {
 		if (date == null) {
 			return null;
@@ -70,5 +71,27 @@ public class TimeUtil {
 		}
 
 		return age;
+	}
+
+	/**
+	 * Parses a {@link String} to the given {@link DateFormat}
+	 *
+	 * @param dateAsString the {@link Date} as a {@link String}
+	 * @param dateFormat   the {@link DateFormat} to use
+	 * @return the {@link Date} or <code>null</code>, if date could not be parsed
+	 */
+	@Nullable
+	public static Date parseDate(@Nullable String dateAsString, @NonNull DateFormat dateFormat) {
+		Date result = null;
+
+		if (dateAsString != null) {
+			try {
+				result = dateFormat.parse(dateAsString);
+			} catch (@SuppressWarnings("unused") ParseException e) {
+				// nothing to do
+			}
+		}
+
+		return result;
 	}
 }

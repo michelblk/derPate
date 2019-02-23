@@ -54,7 +54,7 @@ public class Godfather extends EmailPasswordLoginUser {
 	@Expose
 	private boolean hasFreeTraineeSlots;
 	@Nullable
-	@Column(name = "Description", nullable = false)
+	@Column(name = "Description", nullable = true)
 	@Expose
 	private String description;
 	@Nullable
@@ -116,7 +116,7 @@ public class Godfather extends EmailPasswordLoginUser {
 	 *                    {@link Godfather}
 	 */
 	public Godfather(int id, @NonNull String email, @NonNull final String lastName, @NonNull final String firstName,
-			@NonNull final Location location, int maxTrainees, @NonNull final String description,
+			@NonNull final Location location, int maxTrainees, @Nullable final String description,
 			@NonNull final Job job, @NonNull final Date hiringDate, @Nullable Date birthday,
 			@Nullable String pickText) {
 		super(id, email);
@@ -236,7 +236,7 @@ public class Godfather extends EmailPasswordLoginUser {
 	 *
 	 * @param description the description to set
 	 */
-	public void setDescription(@NonNull String description) {
+	public void setDescription(@Nullable String description) {
 		this.description = description;
 	}
 

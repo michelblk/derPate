@@ -1,6 +1,8 @@
 package de.db.derPate.servlet;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +29,12 @@ public abstract class BaseServlet extends HttpServlet {
 	 * Default serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * DateFormat using format yyyy-MM-dd used by <input type="date" />
+	 */
+	@NonNull
+	protected static DateFormat HTML_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 
 	/**
 	 * The request's {@link HttpSession}

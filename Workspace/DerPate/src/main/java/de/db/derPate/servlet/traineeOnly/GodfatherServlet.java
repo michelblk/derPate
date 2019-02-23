@@ -29,7 +29,7 @@ import de.db.derPate.model.typeAdapter.DateTypeAdapter;
 import de.db.derPate.persistence.GodfatherDao;
 import de.db.derPate.servlet.FilterServlet;
 import de.db.derPate.servlet.filter.LoginServletFilter;
-import de.db.derPate.util.TimeUtil;
+import de.db.derPate.util.DateUtil;
 import de.db.derPate.util.URIParameterEncryptionUtil;
 
 /**
@@ -143,36 +143,15 @@ public class GodfatherServlet extends FilterServlet {
 
 		// no godfather selected -> proceed
 		// list available godfathers
-		String[] wantedEncryptedLocations = req.getParameterValues(FILTER_PARAM_LOCATION);
-		String[] wantedEncryptedJobs = req.getParameterValues(FILTER_PARAM_JOB);
-		String[] wantedEncryptedTeachingTypes = req.getParameterValues(FILTER_PARAM_TEACHING_TYPE);
-		String[] wantedEncryptedEducationalYears = req.getParameterValues(FILTER_PARAM_EDUCATIONAL_YEAR);
 
 		// decryption
-		List<String> wantedDecrypedLocations = null;
-		List<String> wantedDecrypedJobs = null;
-		List<String> wantedDecrypedTeachingTypes = null;
-		List<String> wantedDecrypedEducationalYears = null;
-
-		// check if it is filtered by location
-		if (wantedEncryptedLocations != null && wantedEncryptedLocations.length > 0) {
-			wantedDecrypedLocations = URIParameterEncryptionUtil.decrypt(wantedEncryptedLocations);
-		}
-
-		// check if it is filtered by job
-		if (wantedEncryptedJobs != null && wantedEncryptedJobs.length > 0) {
-			wantedDecrypedJobs = URIParameterEncryptionUtil.decrypt(wantedEncryptedJobs);
-		}
-
-		// check if it is filtered by teaching type
-		if (wantedEncryptedTeachingTypes != null && wantedEncryptedTeachingTypes.length > 0) {
-			wantedDecrypedTeachingTypes = URIParameterEncryptionUtil.decrypt(wantedEncryptedTeachingTypes);
-		}
-
-		// check if it is filtered by educational year
-		if (wantedEncryptedEducationalYears != null && wantedEncryptedEducationalYears.length > 0) {
-			wantedDecrypedEducationalYears = URIParameterEncryptionUtil.decrypt(wantedEncryptedEducationalYears);
-		}
+		List<String> wantedDecrypedLocations = URIParameterEncryptionUtil
+				.decrypt(req.getParameterValues(FILTER_PARAM_LOCATION));
+		List<String> wantedDecrypedJobs = URIParameterEncryptionUtil.decrypt(req.getParameterValues(FILTER_PARAM_JOB));
+		List<String> wantedDecrypedTeachingTypes = URIParameterEncryptionUtil
+				.decrypt(req.getParameterValues(FILTER_PARAM_TEACHING_TYPE));
+		List<String> wantedDecrypedEducationalYears = URIParameterEncryptionUtil
+				.decrypt(req.getParameterValues(FILTER_PARAM_EDUCATIONAL_YEAR));
 
 		List<Godfather> all = GodfatherDao.getInstance().filterAvailable(wantedDecrypedLocations, wantedDecrypedJobs,
 				wantedDecrypedTeachingTypes, wantedDecrypedEducationalYears);
@@ -214,7 +193,7 @@ public class GodfatherServlet extends FilterServlet {
 				getNameOutOfGodfather(job != null ? job.getTeachingType() : null));
 		object.addProperty(JSON_OUTPUT_JOB_NAME, getNameOutOfGodfather(job));
 		object.addProperty(JSON_OUTPUT_EDUCATIONAL_YEAR, godfather.getEducationalYear());
-		object.addProperty(JSON_OUTPUT_AGE, TimeUtil.getYearDiff(godfather.getBirthday()));
+		object.addProperty(JSON_OUTPUT_AGE, DateUtil.getYearDiff(godfather.getBirthday()));
 		object.addProperty(JSON_OUTPUT_DESCRIPTION, godfather.getDescription());
 
 		if (more) {

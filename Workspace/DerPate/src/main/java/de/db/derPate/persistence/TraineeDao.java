@@ -2,11 +2,9 @@ package de.db.derPate.persistence;
 
 import java.util.logging.Level;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.hibernate.HibernateException;
 import org.hibernate.NaturalIdLoadAccess;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.model.DatabaseEntity;
@@ -62,27 +60,5 @@ public class TraineeDao extends IdDao {
 		}
 
 		return result;
-	}
-
-	/**
-	 * Updates a Trainee
-	 *
-	 * @param trainee the {@link Trainee}
-	 * @return <code>true</code>, if update was successful; <code>false</code>, if
-	 *         an error occurred
-	 */
-	public boolean update(@NonNull Trainee trainee) {
-		boolean success = false;
-		try {
-			Session session = sessionFactory.openSession();
-			Transaction transaction = session.beginTransaction();
-			session.update(trainee);
-			transaction.commit();
-			session.close();
-			success = true;
-		} catch (@SuppressWarnings("unused") HibernateException e) {
-			// error updating entry
-		}
-		return success;
 	}
 }

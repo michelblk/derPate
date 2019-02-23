@@ -91,4 +91,9 @@ public class Job extends Id implements HasName {
 	public void setTeachingType(@NonNull TeachingType teachingType) {
 		this.teachingType = teachingType;
 	}
+
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }

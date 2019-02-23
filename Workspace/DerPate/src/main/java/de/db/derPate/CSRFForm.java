@@ -4,6 +4,7 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derPate.servlet.LoginServlet;
 import de.db.derPate.servlet.LogoutServlet;
+import de.db.derPate.servlet.godfatherOnly.GodfatherUpdateServlet;
 import de.db.derPate.servlet.traineeOnly.GodfatherSelectServlet;
 
 /**
@@ -17,12 +18,11 @@ import de.db.derPate.servlet.traineeOnly.GodfatherSelectServlet;
 public enum CSRFForm {
 	/**
 	 * Login for all user types<br>
-	 * A token should only be used once (request based), as only one login screen
-	 * should be open at a time
+	 * The token will be valid until the session ends
 	 *
 	 * @see LoginServlet
 	 */
-	LOGIN(1)
+	LOGIN()
 	/**
 	 * Logout<br>
 	 * A token is valid till the session ends (session based)
@@ -32,12 +32,20 @@ public enum CSRFForm {
 	,LOGOUT()
 	
 	/**
-	 * Form for Trainee to select a Godfather<br>
-	 * This token will be valid till the session ends
+	 * Form for Trainee to select a godfather<br>
+	 * This token will be valid until the session ends
 	 * 
 	 * @see GodfatherSelectServlet
 	 */
-	,TRAINEE_SELECT_GODFATHER();
+	,TRAINEE_SELECT_GODFATHER()
+	
+	/**
+	 * Form for godfather to updated the data of him/herself.<br>
+	 * This token will be valid until the session ends
+	 * 
+	 * @see GodfatherUpdateServlet
+	 */
+	,GODFATHER_UPDATE_SELF();
 
 	private int maxCSRFTokens;
 	private boolean requestBased;

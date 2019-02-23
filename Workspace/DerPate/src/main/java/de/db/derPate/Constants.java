@@ -136,4 +136,15 @@ public final class Constants {
 		 */
 		public static final int MAX_INACTIVE_SECONDS = SECURITY_PROPERTIES.getIntProperty("login.timeout", 600); //$NON-NLS-1$
 	}
+
+	/**
+	 * This class contains all static attributes related with a Godfather
+	 */
+	public static final class Godfather {
+		/**
+		 * Number of Trainees a godfather is allowed to be responsible for at the same
+		 * time
+		 */
+		public static final int MAX_TRAINEES = APPLICATION_PROPERTIES.getIntProperty("godfather.max_trainees", 10); //$NON-NLS-1$
+	}
 }

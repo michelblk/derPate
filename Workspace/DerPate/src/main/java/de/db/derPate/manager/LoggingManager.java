@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import de.db.derPate.util.TimeUtil;
+import de.db.derPate.util.DateUtil;
 
 /**
  * This Manager can be used to get the default Logger of this project. It also
@@ -53,8 +53,8 @@ public class LoggingManager {
 	 * @param description Description for the log record
 	 */
 	public static void log(@Nullable Level level, @NonNull String description) {
-		Date currentTime = TimeUtil.getCurrentTime();
-		String currentTimeString = TimeUtil.dateToReadableString(currentTime, Locale.getDefault());
+		Date currentTime = DateUtil.getCurrentTime();
+		String currentTimeString = DateUtil.dateToReadableString(currentTime, Locale.getDefault());
 		String output = currentTimeString + ": " + description; //$NON-NLS-1$
 		Logger logg = getLogger();
 		if (logg != null && level != null) {

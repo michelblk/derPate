@@ -10,11 +10,11 @@ import java.util.Locale;
 import org.junit.Test;
 
 @SuppressWarnings({ "javadoc" })
-public class TimeUtilTest {
+public class DateUtilTest {
 	@Test
 	public void getCurrentTime() {
 		long expected = new Date().getTime();
-		long actual = TimeUtil.getCurrentTime().getTime();
+		long actual = DateUtil.getCurrentTime().getTime();
 
 		boolean same = expected < actual + 2000 && expected > actual - 2000; // two seconds tolerance
 		assertTrue(same);
@@ -28,7 +28,7 @@ public class TimeUtilTest {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, locale);
 		String expected = dateFormat.format(date);
 
-		String actual = TimeUtil.dateToReadableString(date, locale);
+		String actual = DateUtil.dateToReadableString(date, locale);
 
 		assertEquals(expected, actual);
 	}

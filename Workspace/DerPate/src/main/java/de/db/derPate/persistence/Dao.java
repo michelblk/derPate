@@ -2,7 +2,9 @@ package de.db.derPate.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
+import javax.persistence.PersistenceException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -10,8 +12,11 @@ import javax.persistence.criteria.Root;
 import org.eclipse.jdt.annotation.NonNull;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
+import de.db.derPate.manager.LoggingManager;
 import de.db.derPate.model.DatabaseEntity;
 import de.db.derPate.util.HibernateSessionFactoryUtil;
 
@@ -79,5 +84,29 @@ abstract class Dao {
 			result = new ArrayList<>();
 		}
 		return result;
+	}
+
+	/**
+	 * Updates a {@link DatabaseEntity}
+	 *
+	 * @param entity the {@link DatabaseEntity} to update
+	 * @return <code>true</code>, if update was successful; <code>false</code>, if
+	 *         an error occurred
+	 */
+	public <T extends DatabaseEntity> boolean update(@NonNull T entity) {
+		boolean success = false;
+		try {
+			Session session = sessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
+			session.update(entity);
+			transaction.commit();
+			session.close();
+			success = transaction.getStatus() == TransactionStatus.COMMITTED;
+		} catch (PersistenceException e) {
+			LoggingManager.log(Level.INFO, "Error updating DatabaseEntity. Rolling back: " + e.getMessage()); //$NON-NLS-1$
+		} catch (IllegalStateException e) {
+			LoggingManager.log(Level.WARNING, "Error updating DatabaseEntity: " + e.getMessage()); //$NON-NLS-1$
+		}
+		return success;
 	}
 }

@@ -95,12 +95,15 @@ public class URIParameterEncryptionUtil {
 	 * have been encrypted with the global password and salt.
 	 *
 	 * @param parameterValue the received value of the parameter
-	 * @return the decrypted value or <code>null</code>, if value could not get
-	 *         decrypted
+	 * @return the decrypted value or <code>null</code>, if parameterValue is
+	 *         <code>null</code> or value could not get decrypted
 	 * @see #encrypt(String)
 	 */
 	@Nullable
-	public static String decrypt(@NonNull String parameterValue) {
+	public static String decrypt(@Nullable String parameterValue) {
+		if (parameterValue == null) {
+			return null;
+		}
 		return defaultEncrypter.decrypt(parameterValue);
 	}
 
@@ -117,11 +120,11 @@ public class URIParameterEncryptionUtil {
 	 *         <code>null</code>, if parameterValues was null
 	 */
 	@Nullable
-	public static List<String> decrypt(@NonNull String[] parameterValues) {
-		List<String> decryptedValues = new ArrayList<>();
+	public static List<@Nullable String> decrypt(@Nullable String[] parameterValues) {
+		List<@Nullable String> decryptedValues = new ArrayList<>();
+
 		if (parameterValues != null) {
-			for (@NonNull
-			String parameterValue : parameterValues) {
+			for (String parameterValue : parameterValues) {
 				String decryptedValue = decrypt(parameterValue);
 				if (decryptedValue != null) {
 					decryptedValues.add(decryptedValue);
@@ -130,6 +133,27 @@ public class URIParameterEncryptionUtil {
 		}
 
 		return decryptedValues.size() > 0 ? decryptedValues : null;
+	}
+
+	/**
+	 * Decryptes the given {@link String}, checks if the result is an integer and
+	 * parses it. If given {@link String} is <code>null</code> or not a number,
+	 * <code>null</code> is returned
+	 *
+	 * @param parameterValue received value
+	 * @return decrypted integer or <code>null</code>, if parameterValue was null or
+	 *         not an encrypted integer
+	 */
+	@Nullable
+	public static Integer decryptToInteger(@Nullable String parameterValue) {
+		Integer result = null;
+
+		if (parameterValue != null) {
+			String decrypted = decrypt(parameterValue);
+			result = NumberUtil.parseInteger(decrypted);
+		}
+
+		return result;
 	}
 
 	/**

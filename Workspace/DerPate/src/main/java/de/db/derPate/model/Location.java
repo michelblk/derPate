@@ -53,4 +53,9 @@ public class Location extends Id implements HasName {
 	public String getName() {
 		return this.location;
 	}
+
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }

@@ -53,4 +53,9 @@ public class TeachingType extends Id implements HasName {
 	public String getName() {
 		return this.teachingType;
 	}
+
+	@Override
+	public String toString() {
+		return this.getName();
+	}
 }
