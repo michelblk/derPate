@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 15. Feb 2019 um 15:45
+-- Erstellungszeit: 23. Feb 2019 um 11:17
 -- Server-Version: 10.1.21-MariaDB
 -- PHP-Version: 7.0.16
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `godfather` (
   `First_Name` varchar(50) NOT NULL,
   `Id_Location` int(10) UNSIGNED NOT NULL,
   `Max_Trainees` int(2) NOT NULL,
-  `Description` varchar(5000) NOT NULL,
+  `Description` varchar(5000) DEFAULT NULL,
   `Id_Job` int(10) UNSIGNED NOT NULL,
   `Hiring_Date` date NOT NULL,
   `Birthday` date DEFAULT NULL,
@@ -148,6 +149,7 @@ ALTER TABLE `job`
 --
 ALTER TABLE `trainee`
   ADD CONSTRAINT `trainee_ibfk_1` FOREIGN KEY (`Id_Godfather`) REFERENCES `godfather` (`Id_Godfather`);
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
