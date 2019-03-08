@@ -8,22 +8,34 @@
 	text-align: center;
 	font-family: roboto;
 	color: #F2F2F2;
-	margin-top: 5%;
+	margin-top: 1%;
+	margin-bottom: 2%;
 	
 }
 
+
+
 body{
-	background-color: #848484;
+	background-image: url("../../images/background.jpg");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+	
 	
 }
 
 #login{
-	margin-top:30%;
+	margin-top:20%;
 	
 }
 
-#spinner{
-	visibility: hidden;
+#login>.form-signin>input{
+	margin-bottom: 2%;
 }
 
-
+#spinner{
+	visibility:hidden;
+	z-index:10;
+	margin-left:45%
+	}
