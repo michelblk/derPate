@@ -1,18 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<div class="footer">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-4">&nbsp;</div>
-			<div class="text-center">
-				<a href="">Impressum</a> | <a href="">&Uuml;ber Uns</a> | <a href="">Datenschutz</a>
-				| <a href="<%=request.getContextPath()%> /#">Kontakt</a>
-
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8" %>
+		<div class="footer">
+			<div class="container-fluid">
+				<ul class="text-center">
+					<li>
+						<a href="imprint.jsp">Impressum</a>
+					</li>
+					<li>
+						<a href="aboutus.jsp">&Uuml;ber uns</a>
+					</li>
+					<li>
+						<a href="privacypolicy.jsp">Datenschutzbestimmungen</a>
+					</li>
+					<li>
+						<a href="contact.jsp">Kontakt</a>
+					</li>
+				</ul>
 			</div>
-
 		</div>
-	</div>
-</div>
-</body>
+	</body>
 </html>
