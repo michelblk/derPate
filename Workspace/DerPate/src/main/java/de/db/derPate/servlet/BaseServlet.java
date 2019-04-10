@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -34,12 +33,7 @@ public abstract class BaseServlet extends HttpServlet {
 	 * DateFormat using format yyyy-MM-dd used by <input type="date" />
 	 */
 	@NonNull
-	protected static DateFormat HTML_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
-
-	/**
-	 * The request's {@link HttpSession}
-	 */
-	protected HttpSession session;
+	protected static final DateFormat HTML_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 
 	/**
 	 * Handles get request, sets character encoding and calls custom get method
@@ -50,7 +44,6 @@ public abstract class BaseServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		if (req != null && resp != null) {
-			this.session = req.getSession();
 			ServletUtil.setCharacterEncoding(req, resp);
 			this.get(req, resp);
 		}
@@ -79,7 +72,6 @@ public abstract class BaseServlet extends HttpServlet {
 	protected final void doPost(@Nullable HttpServletRequest req, @Nullable HttpServletResponse resp)
 			throws ServletException, IOException {
 		if (req != null && resp != null) {
-			this.session = req.getSession();
 			ServletUtil.setCharacterEncoding(req, resp);
 			this.post(req, resp);
 		}

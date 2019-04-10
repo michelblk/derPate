@@ -127,7 +127,7 @@ public class GodfatherServlet extends FilterServlet {
 		resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 
 		// get logged in trainee
-		Trainee trainee = LoginManager.getInstance().getUserBySession(this.session);
+		Trainee trainee = LoginManager.getInstance().getUserBySession(req.getSession());
 		if (trainee == null) {
 			LoggingManager.log(Level.WARNING,
 					"Trainee could call GodfatherServlet without permission, as Filter failed! Request stopped."); //$NON-NLS-1$
@@ -157,13 +157,6 @@ public class GodfatherServlet extends FilterServlet {
 				wantedDecrypedTeachingTypes, wantedDecrypedEducationalYears);
 
 		resp.getWriter().print(toJson(all, false).toString());
-
-		return;
-	}
-
-	@Override
-	protected void onPost(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		super.onPost(req, resp); // unsupported method
 	}
 
 	/**

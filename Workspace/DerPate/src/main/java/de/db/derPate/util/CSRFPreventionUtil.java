@@ -21,13 +21,13 @@ import de.db.derPate.CSRFForm;
  *
  * @author MichelBlank
  */
-public class CSRFPreventionUtil {
+public final class CSRFPreventionUtil {
 	/**
 	 * frontend html field name for use in an hidden input field
 	 */
 	public static final String FIELD_NAME = "csrf_token"; //$NON-NLS-1$
 	/**
-	 *
+	 * Token length in bytes
 	 */
 	public static final int TOKEN_LENGTH = 20;
 	/**
@@ -45,6 +45,10 @@ public class CSRFPreventionUtil {
 	 */
 	public static final String SESSION_ATTRIBUTE_PREFIX = "csrfTokenList_"; //$NON-NLS-1$
 
+	private CSRFPreventionUtil() {
+		// nothing to do
+	}
+
 	/**
 	 * This method generates a token and registers it in the user's
 	 * {@link HttpSession}.<br>
@@ -54,35 +58,28 @@ public class CSRFPreventionUtil {
 	 * @param form    {@link CSRFForm} used to limit token to this specific form
 	 * @return random string
 	 */
-	@SuppressWarnings("null")
 	@NonNull
 	public static String generateToken(@Nullable final HttpSession session, @NonNull final CSRFForm form) {
-		ArrayList<@NonNull String> list;
+		@Nullable
+		String formToken = null;
 		if (session != null) {
-			list = getFormTokens(session, form);
-		} else {
-			list = new ArrayList<>();
+			formToken = getFormTokenFromSession(session, form);
 		}
 
-		String randomToken;
-		if (!form.isRequestBased() && list.size() >= 1) { // is session based and was already generated
-			// a token per session and form
-			randomToken = list.get(0); // return first entry
-		} else {
-			// a new token for each request
-			// check if limit is exceeded and remove oldest token, if necessary
-			checkLimit(list, form.getMaxTokens());
-
+		String returnValue;
+		if (formToken == null) { // if no token for this form was set, yet
 			// set new token
-			randomToken = generateUniqueToken(list);
-			list.add(randomToken);
+			returnValue = generateRandomString(TOKEN_LENGTH);
 
 			// save token to session
 			if (session != null) {
-				saveToSession(session, form, list);
+				saveToSession(session, form, returnValue);
 			}
+		} else {
+			returnValue = formToken;
 		}
-		return randomToken;
+
+		return returnValue;
 	}
 
 	/**
@@ -125,26 +122,23 @@ public class CSRFPreventionUtil {
 	}
 
 	/**
-	 * Receives Map of tokens out of a Map of forms stored in the client's
-	 * {@link HttpSession}.
+	 * Returns the CSRF-Token for a given form and session
 	 *
 	 * @param session client's {@link HttpSession}
 	 * @param form    {@link CSRFForm}
-	 * @return a {@link ArrayList} of Tokens generated for the given form and user
+	 * @return a Token generated for the given form and user or <code>null</code>,
+	 *         if no token was generated yet
 	 */
-	@SuppressWarnings("unchecked")
-	@NonNull
-	private static ArrayList<@NonNull String> getFormTokens(@NonNull final HttpSession session,
-			@NonNull final CSRFForm form) {
-		ArrayList<@NonNull String> formTokens = new ArrayList<>();
-
+	@Nullable
+	private static String getFormTokenFromSession(@NonNull final HttpSession session, @NonNull final CSRFForm form) {
+		String formToken = null;
 		// load from session
 		Object sessionTokens = session.getAttribute(getSessionAttributeName(form));
-		if (sessionTokens != null && sessionTokens instanceof ArrayList) {
-			formTokens = (ArrayList<@NonNull String>) sessionTokens;
+		if (sessionTokens instanceof String) {
+			formToken = (String) sessionTokens;
 		}
 
-		return formTokens;
+		return formToken;
 	}
 
 	/**
@@ -155,94 +149,24 @@ public class CSRFPreventionUtil {
 	 * @param list    {@link ArrayList} to set
 	 */
 	private static void saveToSession(@NonNull final HttpSession session, @NonNull final CSRFForm form,
-			@NonNull final ArrayList<String> list) {
+			@NonNull final String token) {
 		// reset session
-		session.setAttribute(getSessionAttributeName(form), list);
-	}
-
-	/**
-	 * Checks, if the limit is exceeded and removes the oldest entry, if necessary.
-	 *
-	 * @param list      List, that should be checked
-	 * @param maxTokens the maximum count of entries
-	 */
-	private static void checkLimit(@NonNull final ArrayList<String> list, final int maxTokens) {
-		while (list.size() >= maxTokens) {
-			kickOldestToken(list);
-		}
-	}
-
-	/**
-	 * Removes the first (oldest) entry in {@link ArrayList}
-	 *
-	 * @param map {@link ArrayList}
-	 */
-	private static void kickOldestToken(@NonNull final ArrayList<String> list) {
-		if (list.size() >= 1) {
-			list.remove(0);
-		}
-	}
-
-	/**
-	 * Generates a random token using {@link #generateRandomString(int)} and makes
-	 * sure, that this token isn't already in use by the same user for the same
-	 * form.<br>
-	 * The token will have a length of {@value #TOKEN_LENGTH} bytes.
-	 *
-	 * @param map {@link ArrayList} of used tokens
-	 * @return random token
-	 */
-	@NonNull
-	private static String generateUniqueToken(@NonNull final ArrayList<String> list) {
-		boolean foundToken = false;
-		String randomToken;
-		do {
-			randomToken = generateRandomString(TOKEN_LENGTH);
-			foundToken = !list.contains(randomToken);
-		} while (!foundToken);
-		return randomToken;
+		session.setAttribute(getSessionAttributeName(form), token);
 	}
 
 	/**
 	 * This method checks if the given token was registered in the user's
-	 * {@link HttpSession} and if it's not older than the given seconds
+	 * {@link HttpSession}
 	 *
 	 * @param session client's {@link HttpSession}
 	 * @param form    {@link CSRFForm}
 	 * @param token   token given by the user
 	 * @return <code>true</code>, if token was registered for the given form
-	 *         beforehand and is still valid; <code>false</code>, if token wasn't
-	 *         registered or got removed
+	 *         beforehand; <code>false</code>, if token wasn't registered
 	 */
 	public static boolean checkToken(@NonNull final HttpSession session, @NonNull final CSRFForm form,
 			@NonNull final String token) {
-		ArrayList<String> formTokens = getFormTokens(session, form);
-
-		boolean isvalid = formTokens.contains(token);
-
-		if (isvalid && form.isRequestBased()) {
-			invalidateToken(session, form, token);
-		}
-
-		return isvalid;
-	}
-
-	/**
-	 * Invalidates token
-	 *
-	 * @param session client's {@link HttpSession}
-	 * @param form    {@link CSRFForm}
-	 * @param token   token given by the user
-	 */
-	public static void invalidateToken(@NonNull final HttpSession session, @NonNull final CSRFForm form,
-			@NonNull final String token) {
-		ArrayList<String> list = getFormTokens(session, form);
-		int listIndex = list.indexOf(token);
-		if (listIndex >= 0) {
-			list.remove(listIndex);
-			saveToSession(session, form, list);
-		}
-
+		return token.equals(getFormTokenFromSession(session, form));
 	}
 
 	/**

@@ -17,79 +17,32 @@ import de.db.derPate.servlet.traineeOnly.GodfatherSelectServlet;
  */
 public enum CSRFForm {
 	/**
-	 * Login for all user types<br>
-	 * The token will be valid until the session ends
+	 * Login for all user types
 	 *
 	 * @see LoginServlet
 	 */
-	LOGIN()
+	LOGIN
 	/**
-	 * Logout<br>
-	 * A token is valid till the session ends (session based)
+	 * Logout
 	 *
 	 * @see LogoutServlet
 	 */
-	,LOGOUT()
+	,LOGOUT
 	
 	/**
-	 * Form for Trainee to select a godfather<br>
-	 * This token will be valid until the session ends
+	 * Form for Trainee to select a godfather
 	 * 
 	 * @see GodfatherSelectServlet
 	 */
-	,TRAINEE_SELECT_GODFATHER()
+	,TRAINEE_SELECT_GODFATHER
 	
 	/**
-	 * Form for godfather to updated the data of him/herself.<br>
-	 * This token will be valid until the session ends
+	 * Form for godfather to updated the data of him/herself
 	 * 
 	 * @see GodfatherUpdateServlet
 	 */
-	,GODFATHER_UPDATE_SELF();
+	,GODFATHER_UPDATE_SELF;
 
-	private int maxCSRFTokens;
-	private boolean requestBased;
-
-	/**
-	 * Default: a session based CSRF token
-	 */
-	private CSRFForm() {
-		this.maxCSRFTokens = 1;
-		this.requestBased = false;
-	}
-
-	/**
-	 * If the maximum number of tokens is given, the token is request based.
-	 *
-	 * @param maxCSRFTokens the maximum number of tokens, that can be generated for
-	 *                      this form per session
-	 */
-	private CSRFForm(int maxCSRFTokens) {
-		if (maxCSRFTokens < 1) {
-			maxCSRFTokens = Constants.Security.CSRF_DEFAULT_MAX_TOKENS;
-		}
-		this.maxCSRFTokens = maxCSRFTokens;
-		this.requestBased = true;
-	}
-
-	/**
-	 * Returns the maximum number of stored tokens
-	 *
-	 * @return integer max tokens
-	 */
-	public int getMaxTokens() {
-		return this.maxCSRFTokens;
-	}
-
-	/**
-	 * Returns, if the CSFR token should be request based.
-	 *
-	 * @return <code>true</code>, if one token should be generated once per request;
-	 *         <code>false</code>, if a token is valid the whole session
-	 */
-	public boolean isRequestBased() {
-		return this.requestBased;
-	}
 
 	@SuppressWarnings("null")
 	@Override

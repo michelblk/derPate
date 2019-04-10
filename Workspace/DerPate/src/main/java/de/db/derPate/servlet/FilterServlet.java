@@ -27,7 +27,7 @@ public abstract class FilterServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
 	@NonNull
-	private FilterServletHandler filterHandler;
+	private final FilterServletHandler filterHandler;
 
 	/**
 	 * Constructor, that expects {@link ServletFilter}s, that get stored and used
@@ -64,7 +64,6 @@ public abstract class FilterServlet extends BaseServlet {
 	 */
 	protected void onGet(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
 		resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		return;
 	}
 
 	/**
@@ -92,7 +91,6 @@ public abstract class FilterServlet extends BaseServlet {
 	 */
 	protected void onPost(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
 		resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		return;
 	}
 
 }

@@ -153,7 +153,6 @@ public class LoginServlet extends FilterServlet {
 		// send error code, when login was wrong
 		attachCSRFHeader(request, response); // attach new token
 		response.sendError(SC_LOGIN_ERROR);
-		return;
 	}
 
 	/**

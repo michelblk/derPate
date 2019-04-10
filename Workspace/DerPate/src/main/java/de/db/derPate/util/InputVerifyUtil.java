@@ -1,11 +1,8 @@
 package de.db.derPate.util;
 
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import de.db.derPate.manager.LoggingManager;
 
 /**
  * This util can be used to verify inputs, especially when the data is given by
@@ -14,7 +11,7 @@ import de.db.derPate.manager.LoggingManager;
  * @author MichelBlank
  *
  */
-public class InputVerifyUtil {
+public final class InputVerifyUtil {
 	/**
 	 * Pattern validating a email address.<br>
 	 * Example: max.mustermann@subdomain.domain.org
@@ -36,6 +33,10 @@ public class InputVerifyUtil {
 	 */
 	public static final Pattern UUID_PATTERN = Pattern.compile(
 			"^(\\b[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}\\b)$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
+
+	private InputVerifyUtil() {
+		// nothing to do
+	}
 
 	/**
 	 * Returns, whether a {@link String} is not null and not empty.
@@ -135,7 +136,7 @@ public class InputVerifyUtil {
 				Float.parseFloat(string);
 				isFloat = true;
 			} catch (NumberFormatException e) { // TODO find way to avoid using exceptions
-				LoggingManager.log(Level.INFO, "Could not parse '" + string + "' to float: " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+				// nothing to do
 			}
 		}
 		return isFloat;

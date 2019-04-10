@@ -95,17 +95,21 @@ abstract class Dao {
 	 */
 	public <T extends DatabaseEntity> boolean update(@NonNull T entity) {
 		boolean success = false;
+		Session session = null;
 		try {
-			Session session = sessionFactory.openSession();
+			session = sessionFactory.openSession();
 			Transaction transaction = session.beginTransaction();
 			session.update(entity);
 			transaction.commit();
-			session.close();
 			success = transaction.getStatus() == TransactionStatus.COMMITTED;
 		} catch (PersistenceException e) {
 			LoggingManager.log(Level.INFO, "Error updating DatabaseEntity. Rolling back: " + e.getMessage()); //$NON-NLS-1$
 		} catch (IllegalStateException e) {
 			LoggingManager.log(Level.WARNING, "Error updating DatabaseEntity: " + e.getMessage()); //$NON-NLS-1$
+		} finally {
+			if (session != null) {
+				session.close();
+			}
 		}
 		return success;
 	}

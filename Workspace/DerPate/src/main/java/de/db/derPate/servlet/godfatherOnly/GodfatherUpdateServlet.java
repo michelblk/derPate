@@ -206,7 +206,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	private static void checkMaxTrainees(String maxTraineesString, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		Integer maxTrainees = NumberUtil.parseInteger(maxTraineesString);
-		Integer oldMaxTrainees = outGodfather.getMaxTrainees();
+		int oldMaxTrainees = outGodfather.getMaxTrainees();
 		boolean valid = false;
 		if (maxTrainees != null) {
 			// max trainees has to be between the number of trainees he/she is currently
@@ -217,7 +217,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 				outGodfather.setMaxTrainees(maxTrainees);
 			}
 		}
-		if (!valid || maxTrainees != oldMaxTrainees) {
+		if (!valid || (maxTrainees != null && maxTrainees.equals(oldMaxTrainees))) {
 			outJsonMap.put(PARAMETER_MAXTRAINEES,
 					new SimpleEntry<>(maxTrainees == null ? null : Integer.toString(maxTrainees), valid));
 		}

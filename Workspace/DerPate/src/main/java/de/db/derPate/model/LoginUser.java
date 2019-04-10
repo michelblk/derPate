@@ -1,5 +1,7 @@
 package de.db.derPate.model;
 
+import java.io.Serializable;
+
 import javax.persistence.MappedSuperclass;
 
 /**
@@ -9,7 +11,7 @@ import javax.persistence.MappedSuperclass;
  *
  */
 @MappedSuperclass
-public abstract class LoginUser extends Id {
+public abstract class LoginUser extends Id implements Serializable {
 
 	/**
 	 * Default constructor used for hibernate

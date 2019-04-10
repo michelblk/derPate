@@ -8,7 +8,11 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author MichelBlank
  * @see InputVerifyUtil
  */
-public class NumberUtil {
+public final class NumberUtil {
+	private NumberUtil() {
+		// nothing to do
+	}
+
 	/**
 	 * Parsing an integer and returning <code>null</code>, if the number format is
 	 * wrong

@@ -14,7 +14,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
  *
  * @see TextEncryptor
  */
-public class AES256EncryptionUtil implements EncryptionUtil {
+public final class AES256EncryptionUtil implements EncryptionUtil {
 	private TextEncryptor encryptor;
 
 	/**
@@ -62,10 +62,9 @@ public class AES256EncryptionUtil implements EncryptionUtil {
 	 * @see #decrypt(String, String, String)
 	 * @see AES256EncryptionUtil#AES256EncryptionUtil(String, String)
 	 */
-	@SuppressWarnings("null")
 	@NonNull
 	public static String encrypt(@NonNull String password, @NonNull String salt, @NonNull String text) {
-		return Encryptors.delux(password, salt).encrypt(text);
+		return new AES256EncryptionUtil(password, salt).encrypt(text);
 	}
 
 	/**

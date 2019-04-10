@@ -96,9 +96,4 @@ public class GodfatherSelectServlet extends FilterServlet {
 		}
 		resp.sendError(SC_SET_GODFATHER_INVALID_REQUEST);
 	}
-
-	@Override
-	protected void onGet(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		super.onGet(req, resp);
-	}
 }

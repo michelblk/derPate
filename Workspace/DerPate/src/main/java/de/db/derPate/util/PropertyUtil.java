@@ -17,7 +17,7 @@ import de.db.derPate.manager.LoggingManager;
  * @author MichelBlank
  * @see Properties
  */
-public class PropertyUtil {
+public final class PropertyUtil {
 	@NonNull
 	private Properties properties = new Properties();
 	/**

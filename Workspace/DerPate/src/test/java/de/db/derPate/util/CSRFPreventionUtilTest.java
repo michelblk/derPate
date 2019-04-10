@@ -3,8 +3,6 @@ package de.db.derPate.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -17,29 +15,6 @@ public class CSRFPreventionUtilTest {
 
 	@NonNull
 	private HttpSession session = new DefaultHttpSession().SESSION;
-
-	@Test
-	public void testTokenLimit() {
-		for (CSRFForm form : CSRFForm.values()) {
-			if (!form.isRequestBased()) {
-				// this test cannot test tokens without a limit
-				continue;
-			}
-
-			String firstToken = CSRFPreventionUtil.generateToken(this.session, form);
-			try {
-				TimeUnit.MILLISECONDS.sleep(1); // wait 1 millisecond, so future tokens will be older
-			} catch (@SuppressWarnings("unused") InterruptedException e) {
-				// do nothing
-			}
-			for (int i = 0; i < form.getMaxTokens(); i++) {
-				CSRFPreventionUtil.generateToken(this.session, form);
-			}
-
-			boolean isFirstTokenStillValid = CSRFPreventionUtil.checkToken(this.session, form, firstToken);
-			assertFalse(isFirstTokenStillValid);
-		}
-	}
 
 	@Test
 	public void testValidity() {

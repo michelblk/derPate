@@ -17,8 +17,12 @@ import de.db.derPate.manager.LoggingManager;
  * @author MichelBlank
  *
  */
-public class StringEscapeUtil {
+public final class StringEscapeUtil {
 	private static final String URL_CHARSET = "UTF-8"; //$NON-NLS-1$
+
+	private StringEscapeUtil() {
+		// nothing to do
+	}
 
 	/**
 	 * Escapes the characters in a String using HTML entities.<br>

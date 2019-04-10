@@ -13,7 +13,7 @@ import java.util.Random;
  * @author MichelBlank
  *
  */
-public class SHA256Util implements HashUtil {
+public final class SHA256Util implements HashUtil {
 	private static SHA256Util instance;
 	private static final String ALGORITHM = "SHA-256"; //$NON-NLS-1$
 	private final Random RANDOM = new SecureRandom();

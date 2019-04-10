@@ -17,7 +17,11 @@ import de.db.derPate.manager.LoggingManager;
  *
  * @author MichelBlank
  */
-public class ServletUtil {
+public final class ServletUtil {
+	private ServletUtil() {
+		// nothing to do
+	}
+
 	/**
 	 * Sets default character encoding ({link Constants#CHARSET}) to request and
 	 * response.

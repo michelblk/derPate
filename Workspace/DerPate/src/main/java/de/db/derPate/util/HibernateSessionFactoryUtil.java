@@ -15,9 +15,8 @@ import de.db.derPate.manager.LoggingManager;
  * @author MichelBlank
  *
  */
-public class HibernateSessionFactoryUtil {
+public final class HibernateSessionFactoryUtil {
 	private static final SessionFactory sessionFactory;
-
 	static {
 		try {
 			Configuration config = new Configuration().configure();
@@ -32,6 +31,10 @@ public class HibernateSessionFactoryUtil {
 							+ e.getMessage() + "\n\n"); //$NON-NLS-1$
 			throw e; // stop program
 		}
+	}
+
+	private HibernateSessionFactoryUtil() {
+		// nothing to do
 	}
 
 	/**

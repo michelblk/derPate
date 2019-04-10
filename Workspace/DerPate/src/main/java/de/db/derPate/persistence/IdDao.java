@@ -32,20 +32,25 @@ abstract class IdDao extends Dao {
 	/**
 	 * Finds object by {@link Id#getId()}
 	 *
-	 * @param id id
-	 * @param    <T> type
+	 * @param id  id
+	 * @param <T> type
 	 * @return object or <code>null</code>, if object was not found
 	 */
 	@SuppressWarnings({ "unchecked" })
 	@Nullable
 	public <@Nullable T> T byId(int id) {
 		T result = null;
+		Session session = null;
 		try {
-			Session session = sessionFactory.openSession();
+			session = sessionFactory.openSession();
 			result = (T) session.get(this.cls, id);
 			session.close();
 		} catch (HibernateException e) {
 			LoggingManager.log(Level.WARNING, "Could not get database element by id: " + e.getMessage()); //$NON-NLS-1$
+		} finally {
+			if (session != null) {
+				session.close();
+			}
 		}
 
 		return result;

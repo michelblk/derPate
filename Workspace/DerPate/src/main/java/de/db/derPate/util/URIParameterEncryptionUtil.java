@@ -18,7 +18,7 @@ import de.db.derPate.model.LoginUser;
  * @author MichelBlank
  *
  */
-public class URIParameterEncryptionUtil {
+public final class URIParameterEncryptionUtil {
 	private static EncryptionUtil defaultEncrypter;
 	@NonNull
 	private static String DEFAULT_PASSWORD = Constants.Security.ENCRYPTION_AES256_PASSWORD;
@@ -27,6 +27,10 @@ public class URIParameterEncryptionUtil {
 
 	static {
 		defaultEncrypter = new AES256EncryptionUtil(DEFAULT_PASSWORD, DEFAULT_SALT);
+	}
+
+	private URIParameterEncryptionUtil() {
+		// nothing to do
 	}
 
 	/**

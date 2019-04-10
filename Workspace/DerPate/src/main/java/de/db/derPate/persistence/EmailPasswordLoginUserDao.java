@@ -37,7 +37,7 @@ abstract class EmailPasswordLoginUserDao extends IdDao {
 	 * Finds {@link EmailPasswordLoginUser} by email
 	 *
 	 * @param email {@link String} of the email address
-	 * @param       <T> type
+	 * @param <T>   type
 	 * @return Object that is or extends from {@link EmailPasswordLoginUser} or
 	 *         <code>null</code>, if user was not found
 	 */
@@ -45,17 +45,20 @@ abstract class EmailPasswordLoginUserDao extends IdDao {
 	@Nullable
 	public <@Nullable T extends EmailPasswordLoginUser> T byEmail(@NonNull String email) {
 		T result = null;
+		Session session = null;
 		try {
-			Session session = sessionFactory.openSession();
+			session = sessionFactory.openSession();
 
 			NaturalIdLoadAccess<? extends DatabaseEntity> loader = session.byNaturalId(this.cls).with(LockOptions.READ);
 			loader = loader.using(EmailPasswordLoginUser_.EMAIL, email);
 			DatabaseEntity entity = loader.load();
 			result = (T) entity;
-
-			session.close();
 		} catch (HibernateException e) {
 			LoggingManager.log(Level.WARNING, "An error occurred while finding user by email:\n" + e.getMessage()); //$NON-NLS-1$
+		} finally {
+			if (session != null) {
+				session.close();
+			}
 		}
 
 		return result;

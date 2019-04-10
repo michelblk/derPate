@@ -15,7 +15,11 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author MichelBlank
  *
  */
-public class DateUtil {
+public final class DateUtil {
+	private DateUtil() {
+		// nothing to do
+	}
+
 	/**
 	 * Returns current date and time in a {@link Date}-Object
 	 *
@@ -64,10 +68,8 @@ public class DateUtil {
 
 		if (thenMonth > currentMonth) {
 			age--;
-		} else if (currentMonth == thenMonth) {
-			if (then.get(Calendar.DAY_OF_MONTH) > now.get(Calendar.DAY_OF_MONTH)) {
-				age--;
-			}
+		} else if (currentMonth == thenMonth && then.get(Calendar.DAY_OF_MONTH) > now.get(Calendar.DAY_OF_MONTH)) {
+			age--;
 		}
 
 		return age;

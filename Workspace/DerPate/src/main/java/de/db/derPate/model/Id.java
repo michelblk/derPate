@@ -58,8 +58,8 @@ public abstract class Id extends DatabaseEntity {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj != null && obj instanceof Id) {
-			Id id = (Id) obj;
-			return id.getId() == this.getId();
+			Id idObj = (Id) obj;
+			return idObj.getId() == this.getId();
 		}
 		return super.equals(obj);
 	}

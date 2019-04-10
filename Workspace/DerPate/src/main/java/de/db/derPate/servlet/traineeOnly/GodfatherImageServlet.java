@@ -66,9 +66,4 @@ public class GodfatherImageServlet extends FilterServlet {
 		}
 		resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 	}
-
-	@Override
-	protected void onPost(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		super.onPost(req, resp);
-	}
 }

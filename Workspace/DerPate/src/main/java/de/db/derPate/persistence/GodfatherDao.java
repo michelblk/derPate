@@ -71,19 +71,19 @@ public class GodfatherDao extends EmailPasswordLoginUserDao {
 		query.orderBy(builder.asc(root.get(Godfather_.CURRENT_TRAINEES)), builder.asc(root.get(Godfather_.FIRST_NAME)));
 
 		Predicate predicate = builder.lt(root.get(Godfather_.CURRENT_TRAINEES), root.get(Godfather_.MAX_TRAINEES));
-		if (location != null && location.size() > 0) {
+		if (location != null && !location.isEmpty()) {
 			Predicate clause = root.get(Godfather_.LOCATION).get(Id_.ID).in(location);
 			predicate = builder.and(predicate, clause);
 		}
-		if (jobs != null && jobs.size() > 0) {
+		if (jobs != null && !jobs.isEmpty()) {
 			Predicate clause = root.get(Godfather_.JOB).get(Id_.ID).in(jobs);
 			predicate = builder.and(predicate, clause);
 		}
-		if (teachingType != null && teachingType.size() > 0) {
+		if (teachingType != null && !teachingType.isEmpty()) {
 			Predicate clause = root.get(Godfather_.JOB).get(Job_.TEACHING_TYPE).get(Id_.ID).in(teachingType);
 			predicate = builder.and(predicate, clause);
 		}
-		if (educationalYear != null && educationalYear.size() > 0) {
+		if (educationalYear != null && !educationalYear.isEmpty()) {
 			Predicate clause = root.get(Godfather_.EDUCATIONAL_YEAR).in(educationalYear);
 			predicate = builder.and(predicate, clause);
 		}
