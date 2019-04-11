@@ -21,11 +21,11 @@ DO NOT UPLOAD THE secret.properties FILE INTO A PUBLICLY AVAILABLE SHARE!
       	thread
       </property>
       
-      <mapping class="de.db.derPate.model.Job" />
-      <mapping class="de.db.derPate.model.Location" />
-      <mapping class="de.db.derPate.model.TeachingType" />
-      <mapping class="de.db.derPate.model.Admin" />
-      <mapping class="de.db.derPate.model.Godfather" />
-      <mapping class="de.db.derPate.model.Trainee" />
+      <mapping class="de.db.derpate.model.Job" />
+      <mapping class="de.db.derpate.model.Location" />
+      <mapping class="de.db.derpate.model.TeachingType" />
+      <mapping class="de.db.derpate.model.Admin" />
+      <mapping class="de.db.derpate.model.Godfather" />
+      <mapping class="de.db.derpate.model.Trainee" />
    </session-factory>
 </hibernate-configuration>

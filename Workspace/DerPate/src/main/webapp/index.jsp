@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8"
-	import="de.db.derPate.util.CSRFPreventionUtil"
-	import="de.db.derPate.manager.LoginManager"
-	import="de.db.derPate.servlet.LoginServlet"
-	import="de.db.derPate.servlet.filter.CSRFServletFilter"
-	import="de.db.derPate.CSRFForm"
-	import="de.db.derPate.util.URIParameterEncryptionUtil"
+	import="de.db.derpate.util.CSRFPreventionUtil"
+	import="de.db.derpate.manager.LoginManager"
+	import="de.db.derpate.servlet.LoginServlet"
+	import="de.db.derpate.servlet.filter.CSRFServletFilter"
+	import="de.db.derpate.CSRFForm"
+	import="de.db.derpate.util.URIParameterEncryptionUtil"
 %>
 <jsp:include page="WEB-INF/include/header.jsp" />
 	<link rel="stylesheet" type="text/css" href="include/css/login.css" />

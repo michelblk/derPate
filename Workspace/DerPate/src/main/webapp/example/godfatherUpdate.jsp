@@ -1,17 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"
-		import="de.db.derPate.model.Godfather"
-		import="de.db.derPate.manager.LoginManager"
-		import="de.db.derPate.servlet.godfatherOnly.GodfatherUpdateServlet"
-		import="de.db.derPate.Constants"
-		import="de.db.derPate.util.CSRFPreventionUtil"
-		import="de.db.derPate.CSRFForm"
-		import="de.db.derPate.persistence.LocationDao"
+		import="de.db.derpate.model.Godfather"
+		import="de.db.derpate.manager.LoginManager"
+		import="de.db.derpate.servlet.godfatherOnly.GodfatherUpdateServlet"
+		import="de.db.derpate.Constants"
+		import="de.db.derpate.util.CSRFPreventionUtil"
+		import="de.db.derpate.CSRFForm"
+		import="de.db.derpate.persistence.LocationDao"
 		import="java.util.List"
-		import="de.db.derPate.model.Location"
-		import="de.db.derPate.util.URIParameterEncryptionUtil"
-		import="de.db.derPate.model.Job"
-		import="de.db.derPate.persistence.JobDao"
-		import="de.db.derPate.persistence.GodfatherDao" %>
+		import="de.db.derpate.model.Location"
+		import="de.db.derpate.util.URIParameterEncryptionUtil"
+		import="de.db.derpate.model.Job"
+		import="de.db.derpate.persistence.JobDao"
+		import="de.db.derpate.persistence.GodfatherDao" %>
 <% 
 // FIXME find better solution
 Godfather sessionGodfather = LoginManager.getInstance().getUserBySession(session);
