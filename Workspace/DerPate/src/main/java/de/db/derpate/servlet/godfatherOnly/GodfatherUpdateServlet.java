@@ -173,7 +173,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			String lowerEmail = email.trim().toLowerCase();
 			String oldMail = outGodfather.getEmail();
 
-			boolean valid = InputVerifyUtil.isEmailAddress(email);
+			boolean valid = InputVerifyUtil.isEmailAddress(lowerEmail);
 			if (valid) {
 				outGodfather.setEmail(lowerEmail);
 			}
@@ -220,7 +220,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 				outGodfather.setMaxTrainees(maxTrainees);
 			}
 		}
-		if (!valid || (maxTrainees != null && maxTrainees.equals(oldMaxTrainees))) {
+		if (!valid || (maxTrainees != null && !maxTrainees.equals(oldMaxTrainees))) {
 			outJsonMap.put(PARAMETER_MAXTRAINEES,
 					new SimpleEntry<>(maxTrainees == null ? null : Integer.toString(maxTrainees), valid));
 		}
