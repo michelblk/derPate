@@ -37,14 +37,14 @@ public final class TraineeDao extends IdDao<@NonNull Integer, @Nullable Trainee>
 	 *         found with the given token
 	 */
 	public Trainee byToken(String token) {
-		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Trainee> query = builder.createQuery(this.entityClass);
 
 		Root<Trainee> root = query.from(this.entityClass);
 		Predicate predicate = builder.like(root.get(Trainee_.LOGIN_TOKEN), token);
 
 		query.select(root).where(predicate);
-		TypedQuery<Trainee> q = this.entityManager.createQuery(query);
+		TypedQuery<Trainee> q = entityManager.createQuery(query);
 		List<Trainee> results = q.getResultList();
 
 		if (results.isEmpty() || results.size() > 1) {

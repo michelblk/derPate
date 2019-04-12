@@ -33,14 +33,14 @@ abstract class EmailPasswordLoginUserDao<@NonNull K, @Nullable E> extends IdDao<
 	 */
 	@Nullable
 	public E findByEmail(@NonNull String email) {
-		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<E> query = builder.createQuery(this.entityClass);
 
 		Root<E> root = query.from(this.entityClass);
 		Predicate predicate = builder.like(root.get(EmailPasswordLoginUser_.EMAIL), email);
 
 		query.select(root).where(predicate);
-		TypedQuery<E> q = this.entityManager.createQuery(query);
+		TypedQuery<E> q = entityManager.createQuery(query);
 		List<E> results = q.getResultList();
 
 		if (results.isEmpty() || results.size() > 1) {

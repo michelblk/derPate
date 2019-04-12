@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.persistence.RollbackException;
 import javax.persistence.TransactionRequiredException;
 import javax.persistence.TypedQuery;
@@ -36,8 +35,7 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	 * The {@link EntityManager}
 	 */
 	@PersistenceContext
-	@NonNull
-	protected EntityManager entityManager;
+	protected static final EntityManager entityManager;
 	/**
 	 * The {@link Class} that the wanted objects are of
 	 *
@@ -46,6 +44,12 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	@NonNull
 	protected final Class<E> entityClass;
 
+	static {
+		// FIXME find a way, to make EntityManager not static, while findById returns a
+		// valid user (with password)
+		entityManager = new EntityManagerFactory().getEntityManager();
+	}
+
 	/**
 	 * Default constructor for dao objects
 	 */
@@ -53,12 +57,6 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	public IdDao() {
 		ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
 		this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[1];
-
-		EntityManager newEntityManager = new EntityManagerFactory().getEntityManager();
-		if (newEntityManager == null) {
-			throw new PersistenceException("EntityManager could not be fetched from EntityManagerFactory"); //$NON-NLS-1$
-		}
-		this.entityManager = newEntityManager;
 	}
 
 	/**
@@ -69,12 +67,14 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	 */
 	@Override
 	public E findById(@NonNull K id) {
-		return this.entityManager.find(this.entityClass, id);
+		E result = entityManager.find(this.entityClass, id);
+		entityManager.refresh(result);
+		return result;
 	}
 
 	@Override
 	public List<E> all() {
-		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
 		// Build query
 		CriteriaQuery<E> query = builder.createQuery(this.entityClass);
@@ -82,7 +82,7 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 		CriteriaQuery<E> all = query.select(root);
 
 		// Execute query and get ResultList
-		TypedQuery<E> q = this.entityManager.createQuery(all);
+		TypedQuery<E> q = entityManager.createQuery(all);
 		List<E> result = q.getResultList();
 
 		if (result == null) {
@@ -93,7 +93,7 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 
 	@Override
 	public void persist(E entity) {
-		this.entityManager.persist(entity);
+		entityManager.persist(entity);
 	}
 
 	@Override
@@ -101,9 +101,9 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 		boolean success = false;
 		EntityTransaction transaction = null;
 		try {
-			transaction = this.entityManager.getTransaction();
+			transaction = entityManager.getTransaction();
 			transaction.begin();
-			this.entityManager.merge(entity);
+			entityManager.merge(entity);
 			transaction.commit();
 			success = true;
 		} catch (RollbackException e) {
@@ -116,7 +116,7 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 
 	@Override
 	public void remove(E entity) {
-		this.entityManager.remove(entity);
+		entityManager.remove(entity);
 	}
 
 }

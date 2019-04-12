@@ -48,7 +48,7 @@ public final class GodfatherDao extends EmailPasswordLoginUserDao<@NonNull Integ
 	public List<Godfather> filterAvailable(@Nullable List<String> location, @Nullable List<String> jobs,
 			@Nullable List<String> teachingType, @Nullable List<String> educationalYear) {
 
-		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
 		CriteriaQuery<Godfather> query = builder.createQuery(Godfather.class);
 		Root<Godfather> root = query.from(Godfather.class);
@@ -78,7 +78,7 @@ public final class GodfatherDao extends EmailPasswordLoginUserDao<@NonNull Integ
 			query.where(predicate);
 		}
 
-		TypedQuery<Godfather> q = this.entityManager.createQuery(query);
+		TypedQuery<Godfather> q = entityManager.createQuery(query);
 
 		return q.getResultList();
 	}
@@ -94,7 +94,7 @@ public final class GodfatherDao extends EmailPasswordLoginUserDao<@NonNull Integ
 		List<@NonNull Integer> result = new ArrayList<>();
 
 		// TODO avoid sql and use a hibernate query instead
-		List<@NonNull BigInteger> sqlResult = this.entityManager
+		List<@NonNull BigInteger> sqlResult = entityManager
 				.createNativeQuery("SELECT DISTINCT YEAR_DIFF(hiring_date) + 1 AS 'year' FROM Godfather") //$NON-NLS-1$
 				.getResultList();
 
