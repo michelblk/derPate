@@ -34,7 +34,7 @@
 	</div>
 	<script>
 		$(document).ready(function () {
-			$("#login").submit(function (e) {
+			$("#login form").submit(function (e) {
 				$("#spinner").show();
 				var form = $(this);
 				e.preventDefault();
