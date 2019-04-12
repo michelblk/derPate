@@ -39,6 +39,10 @@ public class LoginServlet extends FilterServlet {
 	 * Default serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
+	private final GodfatherDao godfatherDao = new GodfatherDao();
+	private final TraineeDao traineeDao = new TraineeDao();
+	private final AdminDao adminDao = new AdminDao();
+
 	/**
 	 * Http status code used to indicate a successful login
 	 */
@@ -108,7 +112,7 @@ public class LoginServlet extends FilterServlet {
 				&& InputVerifyUtil.isNotBlank(password)) {
 
 			// find admin user
-			Admin admin = AdminDao.getInstance().byEmail(email);
+			Admin admin = this.adminDao.findByEmail(email);
 			if (admin != null) {
 				// try to login as admin
 				String dbPassword = admin.getPassword();
@@ -120,7 +124,7 @@ public class LoginServlet extends FilterServlet {
 				}
 			} else {
 				// find godfather
-				Godfather godfather = GodfatherDao.getInstance().byEmail(email);
+				Godfather godfather = this.godfatherDao.findByEmail(email);
 				if (godfather != null) {
 					// try to login as godfather
 					String dbPassword = godfather.getPassword();
@@ -134,7 +138,7 @@ public class LoginServlet extends FilterServlet {
 			}
 		} else if (InputVerifyUtil.isNotBlank(token)) {
 			// find token
-			Trainee trainee = TraineeDao.getInstance().byToken(token);
+			Trainee trainee = this.traineeDao.byToken(token);
 			if (trainee != null) {
 				// no password needed
 				LoginManager.getInstance().login(request, trainee);

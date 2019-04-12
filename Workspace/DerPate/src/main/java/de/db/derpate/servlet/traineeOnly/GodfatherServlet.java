@@ -25,7 +25,7 @@ import de.db.derpate.model.Godfather;
 import de.db.derpate.model.HasName;
 import de.db.derpate.model.Job;
 import de.db.derpate.model.Trainee;
-import de.db.derpate.model.typeAdapter.DateTypeAdapter;
+import de.db.derpate.model.typeadapter.DateTypeAdapter;
 import de.db.derpate.persistence.GodfatherDao;
 import de.db.derpate.servlet.FilterServlet;
 import de.db.derpate.servlet.filter.LoginServletFilter;
@@ -46,6 +46,8 @@ public class GodfatherServlet extends FilterServlet {
 	 * Default Serial Version UID
 	 */
 	private static final long serialVersionUID = 1L;
+	private final GodfatherDao godfatherDao = new GodfatherDao();
+
 	/**
 	 * Http parameter used to specify a location id, to filter for
 	 */
@@ -153,7 +155,7 @@ public class GodfatherServlet extends FilterServlet {
 		List<String> wantedDecrypedEducationalYears = URIParameterEncryptionUtil
 				.decrypt(req.getParameterValues(FILTER_PARAM_EDUCATIONAL_YEAR));
 
-		List<Godfather> all = GodfatherDao.getInstance().filterAvailable(wantedDecrypedLocations, wantedDecrypedJobs,
+		List<Godfather> all = this.godfatherDao.filterAvailable(wantedDecrypedLocations, wantedDecrypedJobs,
 				wantedDecrypedTeachingTypes, wantedDecrypedEducationalYears);
 
 		resp.getWriter().print(toJson(all, false).toString());

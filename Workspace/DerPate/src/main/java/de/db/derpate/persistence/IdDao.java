@@ -1,11 +1,23 @@
 package de.db.derpate.persistence;
 
+import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import javax.persistence.RollbackException;
+import javax.persistence.TransactionRequiredException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import de.db.derpate.manager.LoggingManager;
 import de.db.derpate.model.Id;
@@ -16,44 +28,95 @@ import de.db.derpate.model.Id;
  *
  * @author MichelBlank
  *
+ * @param <K> Primary Key Class
+ * @param <E> Entity Class
  */
-abstract class IdDao extends Dao {
+abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
+	/**
+	 * The {@link EntityManager}
+	 */
+	@PersistenceContext
+	@NonNull
+	protected EntityManager entityManager;
+	/**
+	 * The {@link Class} that the wanted objects are of
+	 *
+	 * @see de.db.derpate.model
+	 */
+	@NonNull
+	protected final Class<E> entityClass;
 
 	/**
-	 * Constructor
-	 *
-	 * @param cls {@link Class} that the future objects should be of and that the
-	 *            data is stored in (in the database)
+	 * Default constructor for dao objects
 	 */
-	public IdDao(@NonNull Class<? extends Id> cls) {
-		super(cls);
+	@SuppressWarnings({ "null", "unchecked" })
+	public IdDao() {
+		ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
+		this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[1];
+
+		EntityManager newEntityManager = new EntityManagerFactory().getEntityManager();
+		if (newEntityManager == null) {
+			throw new PersistenceException("EntityManager could not be fetched from EntityManagerFactory"); //$NON-NLS-1$
+		}
+		this.entityManager = newEntityManager;
 	}
 
 	/**
 	 * Finds object by {@link Id#getId()}
 	 *
-	 * @param id  id
-	 * @param <T> type
+	 * @param id id
 	 * @return object or <code>null</code>, if object was not found
 	 */
-	@SuppressWarnings({ "unchecked" })
-	@Nullable
-	public <@Nullable T> T byId(int id) {
-		T result = null;
-		Session session = null;
-		try {
-			session = sessionFactory.openSession();
-			result = (T) session.get(this.cls, id);
-			session.close();
-		} catch (HibernateException e) {
-			LoggingManager.log(Level.WARNING, "Could not get database element by id: " + e.getMessage()); //$NON-NLS-1$
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
+	@Override
+	public E findById(@NonNull K id) {
+		return this.entityManager.find(this.entityClass, id);
+	}
 
+	@Override
+	public List<E> all() {
+		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+
+		// Build query
+		CriteriaQuery<E> query = builder.createQuery(this.entityClass);
+		Root<E> root = query.from(this.entityClass);
+		CriteriaQuery<E> all = query.select(root);
+
+		// Execute query and get ResultList
+		TypedQuery<E> q = this.entityManager.createQuery(all);
+		List<E> result = q.getResultList();
+
+		if (result == null) {
+			result = new ArrayList<>();
+		}
 		return result;
+	}
+
+	@Override
+	public void persist(E entity) {
+		this.entityManager.persist(entity);
+	}
+
+	@Override
+	public boolean update(E entity) {
+		boolean success = false;
+		EntityTransaction transaction = null;
+		try {
+			transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.merge(entity);
+			transaction.commit();
+			success = true;
+		} catch (RollbackException e) {
+			LoggingManager.log(Level.INFO, "Error updating DatabaseEntity. Rolling back: " + e.getMessage()); //$NON-NLS-1$
+		} catch (IllegalArgumentException | TransactionRequiredException | IllegalStateException e) {
+			LoggingManager.log(Level.WARNING, "Error updating DatabaseEntity: " + e.getMessage()); //$NON-NLS-1$
+		}
+		return success;
+	}
+
+	@Override
+	public void remove(E entity) {
+		this.entityManager.remove(entity);
 	}
 
 }

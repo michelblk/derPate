@@ -1,116 +1,58 @@
 package de.db.derpate.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-
-import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
-import org.hibernate.resource.transaction.spi.TransactionStatus;
-
-import de.db.derpate.manager.LoggingManager;
-import de.db.derpate.model.DatabaseEntity;
-import de.db.derpate.util.HibernateSessionFactoryUtil;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * This abstract class is used a a base class for all Data Access Objects. It
- * stores the default {@link SessionFactory} (@see
- * {@link HibernateSessionFactoryUtil#getSessionFactory()}
+ * Interface each data access object should implement, including methods to find
+ * an entry by id, list all entities, persist/update/remove an entity.
  *
  * @author MichelBlank
  *
+ * @param <K> Primary Key Class
+ * @param <E> Entity Class
  */
-abstract class Dao {
+public interface Dao<@NonNull K, @Nullable E> {
 	/**
-	 * The default {@link SessionFactory}
-	 */
-	protected static final SessionFactory sessionFactory;
-	/**
-	 * The {@link Class} that the wanted objects are of
+	 * Finds entity with the given id (primary key)
 	 *
-	 * @see de.db.derpate.model
+	 * @param id the primary identifier
+	 * @return the entity or <code>null</code>, if entity was not found
+	 */
+	@Nullable
+	E findById(@NonNull K id);
+
+	/**
+	 * Returns a list of all persisted entities
+	 *
+	 * @return a {@link List} of all entities
 	 */
 	@NonNull
-	protected final Class<? extends DatabaseEntity> cls;
-
-	static {
-		sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
-	}
+	List<E> all();
 
 	/**
-	 * Default constructor for dao objects
+	 * Saves a given entity to the database.<br>
+	 * Make sure, that there is no entity with the given entity's id persisted.
 	 *
-	 * @param cls {@link Class} that the future objects should be of and that the
-	 *            data is stored in (in the database)
+	 * @param entity the entity to persist
 	 */
-	public Dao(@NonNull Class<? extends DatabaseEntity> cls) {
-		this.cls = cls;
-	}
+	void persist(@NonNull E entity);
 
 	/**
-	 * Returns a {@link List} of {@link #cls}-objects, stored in the Table used for
-	 * {@link #cls}-objects
+	 * Updates an already existing entity
 	 *
-	 * @param <T> type
-	 * @return {@link List} of objects
+	 * @param entity the entity to update
+	 * @return <code>true</code>, if update was successfully performed;
+	 *         <code>false</code>, if an error occurred while updating
 	 */
-	@SuppressWarnings("unchecked")
-	@NonNull
-	public <T extends DatabaseEntity> List<T> list() {
-
-		Session session = sessionFactory.openSession();
-		CriteriaBuilder builder = session.getCriteriaBuilder();
-
-		// Build query
-		CriteriaQuery<T> query = (CriteriaQuery<T>) builder.createQuery(this.cls);
-		Root<T> root = (Root<T>) query.from(this.cls);
-		query.select(root);
-
-		// Execute query and get ResultList
-		Query<T> q = session.createQuery(query);
-		List<T> result = q.getResultList();
-
-		session.close(); // first close session, before returning result
-
-		if (result == null) {
-			result = new ArrayList<>();
-		}
-		return result;
-	}
+	boolean update(@NonNull E entity);
 
 	/**
-	 * Updates a {@link DatabaseEntity}
+	 * Removes a persisted entity
 	 *
-	 * @param entity the {@link DatabaseEntity} to update
-	 * @return <code>true</code>, if update was successful; <code>false</code>, if
-	 *         an error occurred
+	 * @param entity the entity to remove
 	 */
-	public <T extends DatabaseEntity> boolean update(@NonNull T entity) {
-		boolean success = false;
-		Session session = null;
-		try {
-			session = sessionFactory.openSession();
-			Transaction transaction = session.beginTransaction();
-			session.update(entity);
-			transaction.commit();
-			success = transaction.getStatus() == TransactionStatus.COMMITTED;
-		} catch (PersistenceException e) {
-			LoggingManager.log(Level.INFO, "Error updating DatabaseEntity. Rolling back: " + e.getMessage()); //$NON-NLS-1$
-		} catch (IllegalStateException e) {
-			LoggingManager.log(Level.WARNING, "Error updating DatabaseEntity: " + e.getMessage()); //$NON-NLS-1$
-		} finally {
-			if (session != null) {
-				session.close();
-			}
-		}
-		return success;
-	}
+	void remove(@NonNull E entity);
 }

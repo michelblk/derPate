@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -11,38 +12,24 @@ import javax.persistence.criteria.Root;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 
+import de.db.derpate.model.Godfather;
 import de.db.derpate.model.Godfather_;
 import de.db.derpate.model.Id_;
 import de.db.derpate.model.Job_;
-import de.db.derpate.model.Godfather;
 
 /**
  * Data Access Object providing methods to get {@link Godfather} objects out of
  * the Database
  *
  * @author MichelBlank
- *
  */
-public class GodfatherDao extends EmailPasswordLoginUserDao {
-	private static GodfatherDao instance;
-
-	private GodfatherDao() {
-		super(Godfather.class);
-	}
-
+public final class GodfatherDao extends EmailPasswordLoginUserDao<@NonNull Integer, @Nullable Godfather> {
 	/**
-	 * Returns current instance
-	 *
-	 * @return instance
+	 * Constructor
 	 */
-	public static GodfatherDao getInstance() {
-		if (instance == null) {
-			instance = new GodfatherDao();
-		}
-		return instance;
+	public GodfatherDao() {
+		super();
 	}
 
 	/**
@@ -61,8 +48,7 @@ public class GodfatherDao extends EmailPasswordLoginUserDao {
 	public List<Godfather> filterAvailable(@Nullable List<String> location, @Nullable List<String> jobs,
 			@Nullable List<String> teachingType, @Nullable List<String> educationalYear) {
 
-		Session session = sessionFactory.openSession();
-		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 
 		CriteriaQuery<Godfather> query = builder.createQuery(Godfather.class);
 		Root<Godfather> root = query.from(Godfather.class);
@@ -92,7 +78,7 @@ public class GodfatherDao extends EmailPasswordLoginUserDao {
 			query.where(predicate);
 		}
 
-		Query<Godfather> q = session.createQuery(query);
+		TypedQuery<Godfather> q = this.entityManager.createQuery(query);
 
 		return q.getResultList();
 	}
@@ -104,15 +90,13 @@ public class GodfatherDao extends EmailPasswordLoginUserDao {
 	 * @return a {@link List} of educational years
 	 */
 	@NonNull
-	public static List<@NonNull Integer> getEducationalYears() {
+	public List<@NonNull Integer> getEducationalYears() {
 		List<@NonNull Integer> result = new ArrayList<>();
 
-		Session session = sessionFactory.openSession();
 		// TODO avoid sql and use a hibernate query instead
-		List<@NonNull BigInteger> sqlResult = session
-				.createSQLQuery("SELECT DISTINCT YEAR_DIFF(hiring_date) + 1 AS 'year' FROM Godfather") //$NON-NLS-1$
-				.list();
-		session.close();
+		List<@NonNull BigInteger> sqlResult = this.entityManager
+				.createNativeQuery("SELECT DISTINCT YEAR_DIFF(hiring_date) + 1 AS 'year' FROM Godfather") //$NON-NLS-1$
+				.getResultList();
 
 		for (@NonNull
 		BigInteger year : sqlResult) {

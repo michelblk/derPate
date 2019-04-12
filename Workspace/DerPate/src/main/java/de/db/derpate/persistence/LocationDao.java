@@ -1,5 +1,8 @@
 package de.db.derpate.persistence;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.db.derpate.model.Location;
 
 /**
@@ -9,22 +12,11 @@ import de.db.derpate.model.Location;
  * @author MichelBlank
  *
  */
-public class LocationDao extends IdDao {
-	private static LocationDao instance;
-
-	private LocationDao() {
-		super(Location.class);
-	}
-
+public final class LocationDao extends IdDao<@NonNull Integer, @Nullable Location> {
 	/**
-	 * Returns current instance
-	 *
-	 * @return instance
+	 * Constructor
 	 */
-	public static LocationDao getInstance() {
-		if (instance == null) {
-			instance = new LocationDao();
-		}
-		return instance;
+	public LocationDao() {
+		super();
 	}
 }

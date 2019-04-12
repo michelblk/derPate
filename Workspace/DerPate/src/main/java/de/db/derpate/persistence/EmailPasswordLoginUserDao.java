@@ -1,18 +1,18 @@
 package de.db.derpate.persistence;
 
-import java.util.logging.Level;
+import java.util.List;
+
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import org.hibernate.HibernateException;
-import org.hibernate.LockOptions;
-import org.hibernate.NaturalIdLoadAccess;
-import org.hibernate.Session;
 
-import de.db.derpate.model.EmailPasswordLoginUser_;
-import de.db.derpate.manager.LoggingManager;
-import de.db.derpate.model.DatabaseEntity;
 import de.db.derpate.model.EmailPasswordLoginUser;
+import de.db.derpate.model.EmailPasswordLoginUser_;
 
 /**
  * Abstract Data Access Object, that can be used for all objects, that extend
@@ -20,47 +20,32 @@ import de.db.derpate.model.EmailPasswordLoginUser;
  *
  * @author MichelBlank
  *
+ * @param <K> Primary Key Class
+ * @param <E> Entity Class
  */
-abstract class EmailPasswordLoginUserDao extends IdDao {
-
-	/**
-	 * Constructor
-	 *
-	 * @param cls {@link Class} that the future objects should be of and that the
-	 *            data is stored in (in the database)
-	 */
-	public EmailPasswordLoginUserDao(@NonNull final Class<? extends EmailPasswordLoginUser> cls) {
-		super(cls);
-	}
-
+abstract class EmailPasswordLoginUserDao<@NonNull K, @Nullable E> extends IdDao<K, E> {
 	/**
 	 * Finds {@link EmailPasswordLoginUser} by email
 	 *
 	 * @param email {@link String} of the email address
-	 * @param <T>   type
 	 * @return Object that is or extends from {@link EmailPasswordLoginUser} or
 	 *         <code>null</code>, if user was not found
 	 */
-	@SuppressWarnings("unchecked")
 	@Nullable
-	public <@Nullable T extends EmailPasswordLoginUser> T byEmail(@NonNull String email) {
-		T result = null;
-		Session session = null;
-		try {
-			session = sessionFactory.openSession();
+	public E findByEmail(@NonNull String email) {
+		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<E> query = builder.createQuery(this.entityClass);
 
-			NaturalIdLoadAccess<? extends DatabaseEntity> loader = session.byNaturalId(this.cls).with(LockOptions.READ);
-			loader = loader.using(EmailPasswordLoginUser_.EMAIL, email);
-			DatabaseEntity entity = loader.load();
-			result = (T) entity;
-		} catch (HibernateException e) {
-			LoggingManager.log(Level.WARNING, "An error occurred while finding user by email:\n" + e.getMessage()); //$NON-NLS-1$
-		} finally {
-			if (session != null) {
-				session.close();
-			}
+		Root<E> root = query.from(this.entityClass);
+		Predicate predicate = builder.like(root.get(EmailPasswordLoginUser_.EMAIL), email);
+
+		query.select(root).where(predicate);
+		TypedQuery<E> q = this.entityManager.createQuery(query);
+		List<E> results = q.getResultList();
+
+		if (results.isEmpty() || results.size() > 1) {
+			return null;
 		}
-
-		return result;
+		return results.get(0);
 	}
 }

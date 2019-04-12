@@ -1,4 +1,4 @@
-package de.db.derpate.model.typeAdapter;
+package de.db.derpate.model.typeadapter;
 
 import java.io.IOException;
 import java.sql.Date;

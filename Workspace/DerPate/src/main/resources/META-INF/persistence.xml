@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	version="1.0">
+	<persistence-unit name="de.db.derpate"> <!-- NAME HAS TO BE EQUAL TO NAME STATED IN de.db.derpate.persistence.EntityManagerFactory! -->
+		<description>
+			Persistence unit for this project
+		</description>
+
+		<class>de.db.derpate.model.Job</class>
+		<class>de.db.derpate.model.Location</class>
+		<class>de.db.derpate.model.TeachingType</class>
+		<class>de.db.derpate.model.Admin</class>
+		<class>de.db.derpate.model.Godfather</class>
+		<class>de.db.derpate.model.Trainee</class>
+
+		<properties>
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.MariaDBDialect" />
+
+			<property name="javax.persistence.jdbc.driver"
+				value="org.mariadb.jdbc.Driver" />
+		</properties>
+
+	</persistence-unit>
+</persistence>

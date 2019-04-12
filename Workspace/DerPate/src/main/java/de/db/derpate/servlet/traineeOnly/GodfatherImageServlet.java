@@ -32,6 +32,8 @@ public class GodfatherImageServlet extends FilterServlet {
 	 * Default serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
+	private final GodfatherDao godfatherDao = new GodfatherDao();
+
 	/**
 	 * The URI parameter name that should contain the
 	 * {@link URIParameterEncryptionUtil encrypted} id of the Godfather
@@ -52,7 +54,7 @@ public class GodfatherImageServlet extends FilterServlet {
 			String decryptedUserid = URIParameterEncryptionUtil.decrypt(encryptedUserid);
 			if (decryptedUserid != null && InputVerifyUtil.isInteger(decryptedUserid)) {
 				int userid = Integer.parseInt(decryptedUserid);
-				Godfather godfather = GodfatherDao.getInstance().byId(userid);
+				Godfather godfather = this.godfatherDao.findById(userid);
 				if (godfather != null) {
 					// valid user -> try to find image on file system
 

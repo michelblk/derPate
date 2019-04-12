@@ -12,6 +12,10 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class LoginUser extends Id implements Serializable {
+	/**
+	 * Default serial version
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default constructor used for hibernate

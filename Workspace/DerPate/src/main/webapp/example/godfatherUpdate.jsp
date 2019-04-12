@@ -12,13 +12,17 @@
 		import="de.db.derpate.model.Job"
 		import="de.db.derpate.persistence.JobDao"
 		import="de.db.derpate.persistence.GodfatherDao" %>
-<% 
-// FIXME find better solution
+<%	
+LocationDao locationDao = new LocationDao();
+GodfatherDao godfatherDao = new GodfatherDao();	
+
+//FIXME find better solution
 Godfather sessionGodfather = LoginManager.getInstance().getUserBySession(session);
 if(sessionGodfather == null) return;
-Godfather godfather = GodfatherDao.getInstance().byId(sessionGodfather.getId()); // always use up to date godfather, as maxTrainees will be displayed
+Godfather godfather = godfatherDao.findById(sessionGodfather.getId()); // always use up to date godfather, as maxTrainees will be displayed
 if(godfather == null) return;
-LoginManager.getInstance().update(session, godfather); // update session %>
+LoginManager.getInstance().update(session, godfather); // update session
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -51,8 +55,10 @@ LoginManager.getInstance().update(session, godfather); // update session %>
 					<div class="form-group">
 						<label>Erste Tätigkeitsstätte</label>
 						<select class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_LOCATION %>">
-							<% List<Location> locations = LocationDao.getInstance().list();
-							for(Location location : locations) { %>
+							<%
+								List<Location> locations = locationDao.all();
+												for(Location location : locations) {
+							%>
 								<option value="<%=URIParameterEncryptionUtil.encrypt(location.getId()) %>" <% if(location.equals(godfather.getLocation())){%>selected<% } %>>
 									<%= location.getName() %>
 								</option>

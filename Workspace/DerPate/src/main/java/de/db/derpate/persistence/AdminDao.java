@@ -1,5 +1,8 @@
 package de.db.derpate.persistence;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.db.derpate.model.Admin;
 
 /**
@@ -9,28 +12,11 @@ import de.db.derpate.model.Admin;
  * @author MichelBlank
  *
  */
-public class AdminDao extends EmailPasswordLoginUserDao {
-	/**
-	 * {@link AdminDao} instance
-	 */
-	private static AdminDao instance;
-
+public final class AdminDao extends EmailPasswordLoginUserDao<@NonNull Integer, @Nullable Admin> {
 	/**
 	 * Constructor
 	 */
-	private AdminDao() {
-		super(Admin.class);
-	}
-
-	/**
-	 * Creates {@link AdminDao} instance if none was created before and returns it
-	 *
-	 * @return instance
-	 */
-	public static AdminDao getInstance() {
-		if (instance == null) {
-			instance = new AdminDao();
-		}
-		return instance;
+	public AdminDao() {
+		super();
 	}
 }

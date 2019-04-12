@@ -40,13 +40,13 @@ public final class Constants {
 	public static final Charset CHARSET;
 
 	static {
-		String charset_string = APPLICATION_PROPERTIES.getProperty("app.charset", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+		String charsetString = APPLICATION_PROPERTIES.getProperty("app.charset", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
 		Charset charset;
 		try {
-			charset = Charset.forName(charset_string);
+			charset = Charset.forName(charsetString);
 		} catch (IllegalArgumentException e) {
 			charset = Charset.defaultCharset();
-			LoggingManager.log(Level.WARNING, "Charset " + charset_string //$NON-NLS-1$
+			LoggingManager.log(Level.WARNING, "Charset " + charsetString //$NON-NLS-1$
 					+ " cannot be used. Switching to default charset (" + charset.name() + "):" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		CHARSET = charset;

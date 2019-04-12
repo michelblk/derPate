@@ -24,6 +24,10 @@ import de.db.derpate.manager.LoginManager;
 @AttributeOverride(name = "email", column = @Column(name = "Email"))
 @AttributeOverride(name = "password", column = @Column(name = "Password"))
 public class Admin extends EmailPasswordLoginUser {
+	/**
+	 * default serial version UID
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Default constructor used for hibernate

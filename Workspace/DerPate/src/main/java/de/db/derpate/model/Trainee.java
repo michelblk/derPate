@@ -25,6 +25,10 @@ import de.db.derpate.manager.LoginManager;
 @Table(name = "Trainee")
 @AttributeOverride(name = "id", column = @Column(name = "Id_Trainee"))
 public class Trainee extends LoginUser {
+	/**
+	 * default serial version UID
+	 */
+	private static final long serialVersionUID = 1L;
 	@Nullable
 	@Column(name = "Login_Code", nullable = false)
 	@NaturalId(mutable = true)

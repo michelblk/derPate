@@ -46,6 +46,9 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	 * Default serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
+	private final GodfatherDao godfatherDao = new GodfatherDao();
+	private final LocationDao locationDao = new LocationDao();
+
 	/**
 	 * POST Parameter used for the e-mail
 	 */
@@ -119,7 +122,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 
 		// get godfather out of the database, as the user could be logged in twice and
 		// we don't want to revert other changes, that were made
-		Godfather godfatherToUpdate = GodfatherDao.getInstance().byId(loggedInUser.getId());
+		Godfather godfatherToUpdate = this.godfatherDao.findById(loggedInUser.getId());
 		if (godfatherToUpdate == null) {
 			resp.sendError(SC_ERROR);
 			return;
@@ -127,13 +130,13 @@ public class GodfatherUpdateServlet extends FilterServlet {
 
 		// check fields, update godfather object and push informations to output
 		checkEmail(email, godfatherToUpdate, jsonOutput);
-		checkLocation(locationId, godfatherToUpdate, jsonOutput);
+		this.checkLocation(locationId, godfatherToUpdate, jsonOutput);
 		checkMaxTrainees(maxTrainees, godfatherToUpdate, jsonOutput);
 		checkDescription(description, godfatherToUpdate, jsonOutput);
 		checkPickText(pickText, godfatherToUpdate, jsonOutput);
 
 		// Update database
-		boolean dbUpdateSuccess = GodfatherDao.getInstance().update(godfatherToUpdate); // update database
+		boolean dbUpdateSuccess = this.godfatherDao.update(godfatherToUpdate); // update database
 
 		if (dbUpdateSuccess) {
 			LoginManager.getInstance().update(session, godfatherToUpdate); // update session
@@ -182,14 +185,14 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 	}
 
-	private static void checkLocation(String encryptedLocation, Godfather outGodfather,
+	private void checkLocation(String encryptedLocation, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (encryptedLocation != null) {
 			Integer locationId = URIParameterEncryptionUtil.decryptToInteger(encryptedLocation);
 			Location location = null;
 			Location oldLocation = null;
 			if (locationId != null) {
-				location = LocationDao.getInstance().byId(locationId);
+				location = this.locationDao.findById(locationId);
 				oldLocation = outGodfather.getLocation();
 
 				if (location != null) {

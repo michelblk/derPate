@@ -1,15 +1,18 @@
 package de.db.derpate.persistence;
 
-import java.util.logging.Level;
+import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.NaturalIdLoadAccess;
-import org.hibernate.Session;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
-import de.db.derpate.model.Trainee_;
-import de.db.derpate.manager.LoggingManager;
-import de.db.derpate.model.DatabaseEntity;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.db.derpate.model.Trainee;
+import de.db.derpate.model.Trainee_;
 
 /**
  * Data Access Object providing methods to get {@link Trainee}s out of the
@@ -18,23 +21,12 @@ import de.db.derpate.model.Trainee;
  * @author MichelBlank
  *
  */
-public class TraineeDao extends IdDao {
-	private static TraineeDao instance;
-
-	private TraineeDao() {
-		super(Trainee.class);
-	}
-
+public final class TraineeDao extends IdDao<@NonNull Integer, @Nullable Trainee> {
 	/**
-	 * Returns current instance
-	 *
-	 * @return instance
+	 * Constructor
 	 */
-	public static TraineeDao getInstance() {
-		if (instance == null) {
-			instance = new TraineeDao();
-		}
-		return instance;
+	public TraineeDao() {
+		super();
 	}
 
 	/**
@@ -45,20 +37,19 @@ public class TraineeDao extends IdDao {
 	 *         found with the given token
 	 */
 	public Trainee byToken(String token) {
-		Trainee result = null;
-		try {
-			Session session = sessionFactory.openSession();
+		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+		CriteriaQuery<Trainee> query = builder.createQuery(this.entityClass);
 
-			NaturalIdLoadAccess<? extends DatabaseEntity> loader = session.byNaturalId(this.cls);
-			loader = loader.using(Trainee_.LOGIN_TOKEN, token);
-			DatabaseEntity entity = loader.load();
-			result = (Trainee) entity;
+		Root<Trainee> root = query.from(this.entityClass);
+		Predicate predicate = builder.like(root.get(Trainee_.LOGIN_TOKEN), token);
 
-			session.close();
-		} catch (HibernateException e) {
-			LoggingManager.log(Level.WARNING, "An error occurred while finding trainee by token:\n" + e.getMessage()); //$NON-NLS-1$
+		query.select(root).where(predicate);
+		TypedQuery<Trainee> q = this.entityManager.createQuery(query);
+		List<Trainee> results = q.getResultList();
+
+		if (results.isEmpty() || results.size() > 1) {
+			return null;
 		}
-
-		return result;
+		return results.get(0);
 	}
 }

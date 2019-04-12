@@ -1,5 +1,8 @@
 package de.db.derpate.persistence;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.db.derpate.model.TeachingType;
 
 /**
@@ -9,22 +12,11 @@ import de.db.derpate.model.TeachingType;
  * @author MichelBlank
  *
  */
-public class TeachingTypeDao extends IdDao {
-	private static TeachingTypeDao instance;
-
-	private TeachingTypeDao() {
-		super(TeachingType.class);
-	}
-
+public final class TeachingTypeDao extends IdDao<@NonNull Integer, @Nullable TeachingType> {
 	/**
-	 * Returns current instance
-	 *
-	 * @return instance
+	 * Constructor
 	 */
-	public static TeachingTypeDao getInstance() {
-		if (instance == null) {
-			instance = new TeachingTypeDao();
-		}
-		return instance;
+	public TeachingTypeDao() {
+		super();
 	}
 }

@@ -135,7 +135,7 @@ public final class InputVerifyUtil {
 			try {
 				Float.parseFloat(string);
 				isFloat = true;
-			} catch (NumberFormatException e) { // TODO find way to avoid using exceptions
+			} catch (@SuppressWarnings("unused") NumberFormatException e) {
 				// nothing to do
 			}
 		}

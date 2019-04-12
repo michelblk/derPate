@@ -34,6 +34,8 @@ public class GodfatherSelectServlet extends FilterServlet {
 	 * Default serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
+	private final GodfatherDao godfatherDao = new GodfatherDao();
+	private final TraineeDao traineeDao = new TraineeDao();
 	/**
 	 * Http parameter used to specify a godfather id (encrypted)
 	 */
@@ -70,17 +72,17 @@ public class GodfatherSelectServlet extends FilterServlet {
 				// submitted id is a valid integer
 				int id = Integer.parseInt(decryptedId);
 				Trainee loggedInTrainee = LoginManager.getInstance().getUserBySession(session);
-				Godfather wantedGodfather = GodfatherDao.getInstance().byId(id);
+				Godfather wantedGodfather = this.godfatherDao.findById(id);
 
 				if (loggedInTrainee != null && wantedGodfather != null
 						&& wantedGodfather.getMaxTrainees() > wantedGodfather.getCurrentNumberTrainees()) {
 					// Trainee hasn't selected godfather and godfather is available
-					Trainee trainee = TraineeDao.getInstance().byId(loggedInTrainee.getId()); // get full object out of
-																								// database (with
-																								// password)
+					Trainee trainee = this.traineeDao.findById(loggedInTrainee.getId()); // get full object out of
+																							// database (with
+																							// password)
 					if (trainee != null && trainee.getGodfather() == null) {
 						trainee.setGodfather(wantedGodfather);
-						boolean success = TraineeDao.getInstance().update(trainee); // database update
+						boolean success = this.traineeDao.update(trainee); // database update
 						if (!success) {
 							// error writing to database
 							resp.setStatus(SC_SET_GODFATHER_ERROR);

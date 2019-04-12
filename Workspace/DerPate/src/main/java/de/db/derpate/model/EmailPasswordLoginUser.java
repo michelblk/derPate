@@ -20,6 +20,11 @@ import de.db.derpate.manager.LoginManager;
  */
 @MappedSuperclass
 public abstract class EmailPasswordLoginUser extends LoginUser {
+	/**
+	 * default serial version UID
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@NonNull
 	@NaturalId(mutable = true)
 	@Column(nullable = false)

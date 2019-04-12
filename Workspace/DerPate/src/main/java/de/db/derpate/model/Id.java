@@ -8,13 +8,13 @@ import javax.persistence.MappedSuperclass;
 import com.google.gson.annotations.Expose;
 
 /**
- * Used for all {@link DatabaseEntity}s, that have a numeric id field
+ * Abstract class containing an id-integer.
  *
  * @author MichelBlank
  *
  */
 @MappedSuperclass
-public abstract class Id extends DatabaseEntity {
+public abstract class Id {
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
@@ -57,10 +57,14 @@ public abstract class Id extends DatabaseEntity {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj != null && obj instanceof Id) {
-			Id idObj = (Id) obj;
-			return idObj.getId() == this.getId();
+		if (obj instanceof Id) {
+			return ((Id) obj).hashCode() == this.hashCode();
 		}
 		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.id;
 	}
 }

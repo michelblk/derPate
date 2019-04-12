@@ -1,5 +1,8 @@
 package de.db.derpate.persistence;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.db.derpate.model.Job;
 
 /**
@@ -8,22 +11,11 @@ import de.db.derpate.model.Job;
  * @author MichelBlank
  *
  */
-public class JobDao extends IdDao {
-	private static JobDao instance;
-
-	private JobDao() {
-		super(Job.class);
-	}
-
+public final class JobDao extends IdDao<@NonNull Integer, @Nullable Job> {
 	/**
-	 * Returns current instance
-	 *
-	 * @return instance
+	 * Constructor
 	 */
-	public static JobDao getInstance() {
-		if (instance == null) {
-			instance = new JobDao();
-		}
-		return instance;
+	public JobDao() {
+		super();
 	}
 }
