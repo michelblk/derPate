@@ -15,7 +15,13 @@
 			<div class="spinner-border" role="status" id="spinner">
 				<span class="sr-only">Loading...</span>
 			</div>
-	
+					<form method="post" action="login">
+					<div class="form-signin">
+						<input type="text" class="form-control" id="input_token" name="<%= LoginServlet.INPUT_FIELD_TOKEN %>"  value="" placeholder="Benutzererkennung" required autofocus/>
+					</div>
+					</form>
+					<button class="btn btn-lg btn-primary btn-block" type="submit"
+						value="Login">Login</button>
 			<form method="post" action="login">
 				<input type="hidden" id="csrftoken"
 					name="<%=CSRFPreventionUtil.FIELD_NAME%>"
