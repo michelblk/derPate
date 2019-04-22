@@ -20,25 +20,36 @@
 						<input type="text" class="form-control" id="input_token" name="<%= LoginServlet.INPUT_FIELD_TOKEN %>"  value="" placeholder="Benutzererkennung" required autofocus/>
 					</div>
 					</form>
-					<button class="btn btn-lg btn-primary btn-block" type="submit"
-						value="Login">Login</button>
 			<form method="post" action="login">
 				<input type="hidden" id="csrftoken"
 					name="<%=CSRFPreventionUtil.FIELD_NAME%>"
 					value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN)%>" />
-				<div class="form-signin">
+				<div class="form-signin">		
+				<p>	
 					<input type="text" class="form-control" name="<%=LoginServlet.INPUT_FIELD_EMAIL%>"
 						placeholder="Benutzername" required autofocus />
 					<input type="password" class="form-control" name="<%=LoginServlet.INPUT_FIELD_PASSWORD%>"
 						placeholder="Passwort" required />
-				
-					<button class="btn btn-lg btn-primary btn-block" type="submit"
-						value="Login">Login</button>	
+						</p>	
+					<button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Login</button>	
+						
 				</div>
 			</form>
+			
+
+
+<button id="adminlogin" >Admin Login</button>
+
 		</div>
 	</div>
 	<script>
+	$(document).ready(function(){
+		  $('#adminlogin').click(function(){
+		    $("p").toggle(1000, function(){
+		    });
+		  });
+		});
+
 		$(document).ready(function () {
 			$("#login form").submit(function (e) {
 				$("#spinner").show();
