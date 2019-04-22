@@ -114,32 +114,24 @@ public class GodfatherUpdateServlet extends FilterServlet {
 																					// value, boolean (success or error)
 
 		HttpSession session = req.getSession();
-		Godfather loggedInUser = LoginManager.getInstance().getUserBySession(session);
-		if (loggedInUser == null) {
-			resp.sendError(SC_ERROR);
-			return;
-		}
-
-		// get godfather out of the database, as the user could be logged in twice and
-		// we don't want to revert other changes, that were made
-		Godfather godfatherToUpdate = this.godfatherDao.findById(loggedInUser.getId());
-		if (godfatherToUpdate == null) {
+		Godfather godfather = LoginManager.getInstance().getUserBySession(session);
+		if (godfather == null) {
 			resp.sendError(SC_ERROR);
 			return;
 		}
 
 		// check fields, update godfather object and push informations to output
-		checkEmail(email, godfatherToUpdate, jsonOutput);
-		this.checkLocation(locationId, godfatherToUpdate, jsonOutput);
-		checkMaxTrainees(maxTrainees, godfatherToUpdate, jsonOutput);
-		checkDescription(description, godfatherToUpdate, jsonOutput);
-		checkPickText(pickText, godfatherToUpdate, jsonOutput);
+		checkEmail(email, godfather, jsonOutput);
+		this.checkLocation(locationId, godfather, jsonOutput);
+		checkMaxTrainees(maxTrainees, godfather, jsonOutput);
+		checkDescription(description, godfather, jsonOutput);
+		checkPickText(pickText, godfather, jsonOutput);
 
 		// Update database
-		boolean dbUpdateSuccess = this.godfatherDao.update(godfatherToUpdate); // update database
+		boolean dbUpdateSuccess = this.godfatherDao.update(godfather); // update database
 
 		if (dbUpdateSuccess) {
-			LoginManager.getInstance().update(session, godfatherToUpdate); // update session
+			LoginManager.getInstance().update(session, godfather); // update session
 
 			resp.setStatus(SC_SUCCESS);
 			resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
@@ -232,9 +224,13 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			String oldDescription = outGodfather.getDescription();
 
 			description = description.trim();
+			if (description.isEmpty()) {
+				description = null;
+			}
 			outGodfather.setDescription(description);
 
-			if (!description.equals(oldDescription)) {
+			if ((oldDescription != null && description == null)
+					|| (description != null && !description.equals(oldDescription))) {
 				outJsonMap.put(PARAMETER_DESCRIPTION, new SimpleEntry<>(description, true));
 			}
 		}
@@ -246,9 +242,12 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			String oldPickText = outGodfather.getPickText();
 
 			pickText = pickText.trim();
+			if (pickText.isEmpty()) {
+				pickText = null;
+			}
 			outGodfather.setPickText(pickText);
 
-			if (!pickText.equals(oldPickText)) {
+			if ((oldPickText != null && pickText == null) || (pickText != null && !pickText.equals(oldPickText))) {
 				outJsonMap.put(PARAMETER_PICKTEXT, new SimpleEntry<>(pickText, true));
 			}
 		}

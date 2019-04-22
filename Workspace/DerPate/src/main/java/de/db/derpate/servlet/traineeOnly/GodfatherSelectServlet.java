@@ -71,28 +71,22 @@ public class GodfatherSelectServlet extends FilterServlet {
 			if (decryptedId != null && InputVerifyUtil.isInteger(decryptedId)) {
 				// submitted id is a valid integer
 				int id = Integer.parseInt(decryptedId);
-				Trainee loggedInTrainee = LoginManager.getInstance().getUserBySession(session);
+				Trainee trainee = LoginManager.getInstance().getUserBySession(session);
 				Godfather wantedGodfather = this.godfatherDao.findById(id);
 
-				if (loggedInTrainee != null && wantedGodfather != null
-						&& wantedGodfather.getMaxTrainees() > wantedGodfather.getCurrentNumberTrainees()) {
-					// Trainee hasn't selected godfather and godfather is available
-					Trainee trainee = this.traineeDao.findById(loggedInTrainee.getId()); // get full object out of
-																							// database (with
-																							// password)
-					if (trainee != null && trainee.getGodfather() == null) {
-						trainee.setGodfather(wantedGodfather);
-						boolean success = this.traineeDao.update(trainee); // database update
-						if (!success) {
-							// error writing to database
-							resp.setStatus(SC_SET_GODFATHER_ERROR);
-							return;
-						}
-						// successfully wrote to database
-						LoginManager.getInstance().update(session, trainee); // update session
-						resp.setStatus(SC_SET_GODFATHER_SUCCESS);
+				if ((trainee != null && trainee.getGodfather() == null) && (wantedGodfather != null
+						&& wantedGodfather.getMaxTrainees() > wantedGodfather.getCurrentNumberTrainees())) {
+					trainee.setGodfather(wantedGodfather);
+					boolean success = this.traineeDao.update(trainee); // database update
+					if (!success) {
+						// error writing to database
+						resp.setStatus(SC_SET_GODFATHER_ERROR);
 						return;
 					}
+					// successfully wrote to database
+					LoginManager.getInstance().update(session, trainee); // update session
+					resp.setStatus(SC_SET_GODFATHER_SUCCESS);
+					return;
 				}
 			}
 		}

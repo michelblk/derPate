@@ -5,25 +5,44 @@ import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import de.db.derpate.Constants;
 
 /**
  * This factory uses java's {@link Persistence} class to create an
  * EntityManagerFactory and EntityManager's using the persistence settings file
- * (src/main/resources/META-INF/persistence.xml).
+ * (src/main/resources/META-INF/persistence.xml).<br>
+ * Pattern: Singleton
  *
  * @author MichelBlank
- *
+ * @see javax.persistence.EntityManagerFactory
  */
 public final class EntityManagerFactory {
-	private static final String PERSISTENCE_UNIT_NAME = "de.db.derpate"; //$NON-NLS-1$
-	private javax.persistence.EntityManagerFactory emf;
+	@NonNull
+	private static EntityManagerFactory instance;
+	private final String PERSISTENCE_UNIT_NAME = "de.db.derpate"; //$NON-NLS-1$
+	private final javax.persistence.EntityManagerFactory EMF;
+
+	static {
+		instance = new EntityManagerFactory();
+	}
 
 	/**
 	 * Constructor
 	 */
-	protected EntityManagerFactory() {
-		this.emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, buildProperties());
+	private EntityManagerFactory() {
+		this.EMF = Persistence.createEntityManagerFactory(this.PERSISTENCE_UNIT_NAME, buildProperties());
+	}
+
+	/**
+	 * Returns the {@link EntityManagerFactory}
+	 *
+	 * @return the {@link EntityManagerFactory}
+	 */
+	@NonNull
+	protected static EntityManagerFactory getInstance() {
+		return instance;
 	}
 
 	/**
@@ -34,8 +53,8 @@ public final class EntityManagerFactory {
 	 * @return {@link EntityManager} instance
 	 * @see javax.persistence.EntityManagerFactory#createEntityManager()
 	 */
-	public EntityManager getEntityManager() {
-		return this.emf.createEntityManager();
+	protected EntityManager getEntityManager() {
+		return this.EMF.createEntityManager();
 	}
 
 	/**

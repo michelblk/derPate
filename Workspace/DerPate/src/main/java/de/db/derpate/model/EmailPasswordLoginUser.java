@@ -9,8 +9,6 @@ import org.hibernate.annotations.NaturalId;
 
 import com.google.gson.annotations.Expose;
 
-import de.db.derpate.manager.LoginManager;
-
 /**
  * Abstract class that is used by all classes, that are using email and password
  * as login credentials.
@@ -106,17 +104,5 @@ public abstract class EmailPasswordLoginUser extends LoginUser {
 	 */
 	public void setPassword(@Nullable String password) {
 		this.password = password;
-	}
-
-	/**
-	 * Removes the password from this object to ensure, that it cannot be read
-	 * afterwards. This method is used by the
-	 * {@link LoginManager#login(javax.servlet.http.HttpServletRequest, LoginUser)}.
-	 *
-	 * @see LoginManager#login(javax.servlet.http.HttpServletRequest, LoginUser)
-	 */
-	@Override
-	public void removeSecret() {
-		this.setPassword(null);
 	}
 }

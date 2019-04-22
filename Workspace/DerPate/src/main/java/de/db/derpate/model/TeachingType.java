@@ -24,11 +24,12 @@ public class TeachingType extends Id implements HasName {
 	@Expose
 	private String teachingType;
 
-	/**
-	 * Default constructor used for hibernate
+	/*
+	 * Default constructor used by hibernate
 	 */
-	TeachingType() {
-		super();
+	// FIXME why is a default constructor needed?
+	@SuppressWarnings("unused")
+	private TeachingType() {
 		this.teachingType = ""; //$NON-NLS-1$
 	}
 

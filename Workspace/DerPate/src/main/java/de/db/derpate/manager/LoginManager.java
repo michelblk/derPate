@@ -83,8 +83,7 @@ public class LoginManager {
 	}
 
 	/**
-	 * Connects {@link HttpSession} with {@link LoginUser}<br>
-	 * Caution: This will call the {@link LoginUser#removeSecret()}-method.
+	 * Connects {@link HttpSession} with {@link LoginUser}
 	 *
 	 * @param request {@link HttpServletRequest}
 	 * @param user    {@link LoginUser}
@@ -98,7 +97,6 @@ public class LoginManager {
 			try {
 				HttpSession session = newSession(request); // creates new session to prevent session hijacking
 				if (session != null) {
-					user.removeSecret(); // remove password from user to prevent unwanted use
 					session.setAttribute(this.userKey, user);
 					session.setMaxInactiveInterval(Constants.Login.MAX_INACTIVE_SECONDS);
 
@@ -196,9 +194,8 @@ public class LoginManager {
 
 	/**
 	 * Updates the user connected with the session.<br>
-	 * The id and type of user have to be the same!<br>
-	 * Caution: This will call the {@link LoginUser#removeSecret()}-method.
-	 * 
+	 * The id and type of user have to be the same!
+	 *
 	 * @param session the {@link HttpSession}
 	 * @param user    the {@link LoginUser} to replace
 	 */
@@ -207,7 +204,6 @@ public class LoginManager {
 		if (session != null && currentUser != null) {
 			if (this.getUsermode(user) == this.getUsermode(currentUser) && currentUser.getId() == user.getId()) {
 				session.removeAttribute(this.userKey);
-				user.removeSecret();
 				session.setAttribute(this.userKey, user);
 			}
 		}

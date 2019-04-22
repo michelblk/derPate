@@ -16,6 +16,9 @@
 		<properties>
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.MariaDBDialect" />
+				
+			<property name="hibernate.connection.isolation"
+				value ="8" /> <!-- Transaction Isolation: SERIALIZABLE -->
 
 			<property name="javax.persistence.jdbc.driver"
 				value="org.mariadb.jdbc.Driver" />

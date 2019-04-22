@@ -41,7 +41,7 @@ import de.db.derpate.util.URIParameterEncryptionUtil;
  *
  */
 @WebServlet("/godfather")
-public class GodfatherServlet extends FilterServlet {
+public class GodfatherFilterServlet extends FilterServlet {
 	/**
 	 * Default Serial Version UID
 	 */
@@ -119,7 +119,7 @@ public class GodfatherServlet extends FilterServlet {
 	/**
 	 * Constructor
 	 */
-	public GodfatherServlet() {
+	public GodfatherFilterServlet() {
 		super(new LoginServletFilter(Usermode.TRAINEE));
 	}
 
@@ -132,7 +132,7 @@ public class GodfatherServlet extends FilterServlet {
 		Trainee trainee = LoginManager.getInstance().getUserBySession(req.getSession());
 		if (trainee == null) {
 			LoggingManager.log(Level.WARNING,
-					"Trainee could call GodfatherServlet without permission, as Filter failed! Request stopped."); //$NON-NLS-1$
+					"Trainee could call GodfatherFilterServlet without permission, as Filter failed! Request stopped."); //$NON-NLS-1$
 			return;
 		}
 
