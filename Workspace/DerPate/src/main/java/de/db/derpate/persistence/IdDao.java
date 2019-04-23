@@ -63,12 +63,16 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	 * Finds object by {@link Id#getId()}
 	 *
 	 * @param id id
-	 * @return object or <code>null</code>, if object was not found
+	 * @return object or <code>null</code>, if object was not found or id was
+	 *         <code>null</code>
 	 */
 	@Override
-	public E findById(@NonNull K id) {
-		E result = this.entityManager.find(this.entityClass, id);
-		return result;
+	public E findById(@Nullable K id) {
+		if (id != null) {
+			E result = this.entityManager.find(this.entityClass, id);
+			return result;
+		}
+		return null;
 	}
 
 	@Override

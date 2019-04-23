@@ -121,11 +121,11 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 
 		// check fields, update godfather object and push informations to output
-		checkEmail(email, godfather, jsonOutput);
-		this.checkLocation(locationId, godfather, jsonOutput);
-		checkMaxTrainees(maxTrainees, godfather, jsonOutput);
-		checkDescription(description, godfather, jsonOutput);
-		checkPickText(pickText, godfather, jsonOutput);
+		updateEmail(email, godfather, jsonOutput);
+		this.updateLocation(locationId, godfather, jsonOutput);
+		updateMaxTrainees(maxTrainees, godfather, jsonOutput);
+		updateDescription(description, godfather, jsonOutput);
+		updatePickText(pickText, godfather, jsonOutput);
 
 		// Update database
 		boolean dbUpdateSuccess = this.godfatherDao.update(godfather); // update database
@@ -157,7 +157,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		return new Gson().toJson(obj);
 	}
 
-	private static void checkEmail(String email, Godfather outGodfather,
+	private static void updateEmail(String email, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (email != null) {
 			@SuppressWarnings("null") // lowerEmail cannot be null, as email is not null
@@ -177,7 +177,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 	}
 
-	private void checkLocation(String encryptedLocation, Godfather outGodfather,
+	private void updateLocation(String encryptedLocation, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (encryptedLocation != null) {
 			Integer locationId = URIParameterEncryptionUtil.decryptToInteger(encryptedLocation);
@@ -198,7 +198,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 	}
 
-	private static void checkMaxTrainees(String maxTraineesString, Godfather outGodfather,
+	private static void updateMaxTrainees(String maxTraineesString, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		Integer maxTrainees = NumberUtil.parseInteger(maxTraineesString);
 		int oldMaxTrainees = outGodfather.getMaxTrainees();
@@ -218,7 +218,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 	}
 
-	private static void checkDescription(String description, Godfather outGodfather,
+	private static void updateDescription(String description, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (description != null) { // is allowed to be empty
 			String oldDescription = outGodfather.getDescription();
@@ -227,7 +227,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			if (description.isEmpty()) {
 				description = null;
 			}
-			outGodfather.setDescription(description);
+			outGodfather.setDescription(description); // TODO validate
 
 			if ((oldDescription != null && description == null)
 					|| (description != null && !description.equals(oldDescription))) {
@@ -236,7 +236,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 	}
 
-	private static void checkPickText(String pickText, Godfather outGodfather,
+	private static void updatePickText(String pickText, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (pickText != null) { // is allowed to be empty
 			String oldPickText = outGodfather.getPickText();
@@ -245,7 +245,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			if (pickText.isEmpty()) {
 				pickText = null;
 			}
-			outGodfather.setPickText(pickText);
+			outGodfather.setPickText(pickText); // TODO validate
 
 			if ((oldPickText != null && pickText == null) || (pickText != null && !pickText.equals(oldPickText))) {
 				outJsonMap.put(PARAMETER_PICKTEXT, new SimpleEntry<>(pickText, true));

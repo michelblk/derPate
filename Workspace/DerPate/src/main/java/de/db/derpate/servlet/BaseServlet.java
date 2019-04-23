@@ -30,7 +30,7 @@ public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * DateFormat using format yyyy-MM-dd used by <input type="date" />
+	 * DateFormat using format yyyy-MM-dd used by {@literal <input type="date" />}
 	 */
 	@NonNull
 	protected static final DateFormat HTML_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$

@@ -14,7 +14,6 @@ import de.db.derpate.model.Godfather;
 import de.db.derpate.persistence.GodfatherDao;
 import de.db.derpate.servlet.FilterServlet;
 import de.db.derpate.servlet.filter.LoginServletFilter;
-import de.db.derpate.util.InputVerifyUtil;
 import de.db.derpate.util.URIParameterEncryptionUtil;
 
 /**
@@ -50,21 +49,15 @@ public class GodfatherImageServlet extends FilterServlet {
 	@Override
 	protected void onGet(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
 		String encryptedUserid = req.getParameter(PARAMETER_ID);
-		if (encryptedUserid != null) {
-			String decryptedUserid = URIParameterEncryptionUtil.decrypt(encryptedUserid);
-			if (decryptedUserid != null && InputVerifyUtil.isInteger(decryptedUserid)) {
-				int userid = Integer.parseInt(decryptedUserid);
-				Godfather godfather = this.godfatherDao.findById(userid);
-				if (godfather != null) {
-					// valid user -> try to find image on file system
+		Godfather godfather = this.godfatherDao.findById(URIParameterEncryptionUtil.decryptToInteger(encryptedUserid));
+		if (godfather != null) {
+			// valid user -> try to find image on file system
 
-					// TODO use imageutil
-					resp.setContentType(ContentType.IMAGE_PNG.getMimeType()); // TODO may need correction
-					resp.setContentLength(0); // TODO fill with correct size
+			// TODO use imageutil
+			resp.setContentType(ContentType.IMAGE_PNG.getMimeType()); // TODO may need correction
+			resp.setContentLength(0); // TODO fill with correct size
 
-					return;
-				}
-			}
+			return;
 		}
 		resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 	}
