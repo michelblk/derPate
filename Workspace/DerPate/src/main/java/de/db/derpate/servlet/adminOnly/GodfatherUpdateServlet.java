@@ -116,8 +116,6 @@ public class GodfatherUpdateServlet extends FilterServlet {
 
 	@Override
 	protected void onPost(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
-
 		Integer godfatherId = URIParameterEncryptionUtil.decryptToInteger(req.getParameter(PARAMETER_GODFATHER_ID));
 		Godfather godfather = this.godfatherDao.findById(godfatherId);
 		if (godfather != null) {
@@ -152,17 +150,18 @@ public class GodfatherUpdateServlet extends FilterServlet {
 					.findById(URIParameterEncryptionUtil.decryptToInteger(PARAMETER_GODFATHER_LOCATION)), godfather)) {
 				response.add(PARAMETER_GODFATHER_LOCATION);
 			}
-			if (updateMaxTrainees(PARAMETER_GODFATHER_MAXTRAINEES, godfather)) {
+			if (updateMaxTrainees(req.getParameter(PARAMETER_GODFATHER_MAXTRAINEES), godfather)) {
 				response.add(PARAMETER_GODFATHER_MAXTRAINEES);
 			}
-			if (updateDescription(PARAMETER_GODFATHER_DESCRIPTION, godfather)) {
+			if (resetDescription(req.getParameter(PARAMETER_GODFATHER_DESCRIPTION), godfather)) {
 				response.add(PARAMETER_GODFATHER_DESCRIPTION);
 			}
-			if (updatePickText(PARAMETER_GODFATHER_PICKTEXT, godfather)) {
+			if (resetPickText(req.getParameter(PARAMETER_GODFATHER_PICKTEXT), godfather)) {
 				response.add(PARAMETER_GODFATHER_PICKTEXT);
 			}
 
 			if (this.godfatherDao.update(godfather)) {
+				resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 				resp.getWriter().print(new Gson().toJson(response));
 			} else {
 				// if a database error occurred
@@ -254,29 +253,17 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		return valid;
 	}
 
-	private static boolean updateDescription(String description, Godfather outGodfather) {
-		boolean valid = false;
-		if (description != null) { // is allowed to be empty
-			description = description.trim();
-			if (description.isEmpty()) {
-				description = null;
-			}
-			valid = true;
-			outGodfather.setDescription(description); // TODO validate
+	private static boolean resetDescription(String description, Godfather outGodfather) {
+		if (description != null) {
+			outGodfather.setDescription(null); // reset description
 		}
-		return valid;
+		return true;
 	}
 
-	private static boolean updatePickText(String pickText, Godfather outGodfather) {
-		boolean valid = false;
-		if (pickText != null) { // is allowed to be empty
-			pickText = pickText.trim();
-			if (pickText.isEmpty()) {
-				pickText = null;
-			}
-			valid = true;
-			outGodfather.setPickText(pickText);
+	private static boolean resetPickText(String picktext, Godfather outGodfather) {
+		if (picktext != null) {
+			outGodfather.setPickText(null); // reset pick text
 		}
-		return valid;
+		return true;
 	}
 }
