@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * This util may be used to generate random data
@@ -30,15 +31,17 @@ public class RandomUtil {
 	}
 
 	/**
-	 * Creates a random string whose length is the number of characters
-	 * specified.<br>
-	 * Characters will be chosen from the set of Latin alphabetic characters (a-z,
-	 * A-Z).
+	 * Creates a random alphabetic {@link String} (upper case) whose length is the
+	 * number of characters specified.<br>
+	 * Characters will be chosen from the set of Latin alphabetic characters (A-Z).
 	 *
 	 * @param length the length of random string to create
 	 * @return the random string
+	 * @see RandomStringUtils#randomAlphabetic(int)
 	 */
-	public static String generateRandomString(int length) {
-		return RandomStringUtils.randomAlphabetic(length);
+	@SuppressWarnings("null")
+	@NonNull
+	public static String generateRandomAlphabetic(int length) {
+		return RandomStringUtils.randomAlphabetic(length).toUpperCase();
 	}
 }

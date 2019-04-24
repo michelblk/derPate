@@ -48,14 +48,12 @@ public class GenerateTraineeTokenServlet extends FilterServlet {
 
 	@Override
 	protected void onGet(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		String token = null;
+		@NonNull
+		String token;
 
 		do {
-			token = RandomUtil.generateRandomString(Constants.Trainee.TRAINEE_TOKEN_LENGTH).toUpperCase();
+			token = RandomUtil.generateRandomAlphabetic(Constants.Trainee.TRAINEE_TOKEN_LENGTH);
 		} while (this.traineeDao.findByToken(token) != null);
-		if (token == null) {
-			throw new RuntimeException("RandomUtil did not generate a random string!"); //$NON-NLS-1$
-		}
 
 		Trainee newTrainee = new Trainee(token);
 		this.traineeDao.persist(newTrainee);
