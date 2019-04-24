@@ -34,9 +34,9 @@ import de.db.derpate.util.NumberUtil;
 import de.db.derpate.util.URIParameterEncryptionUtil;
 
 /**
- * This Servlet is used by the {@link Admin} to update a godfathers personal
- * data (except password)<br>
- * Allowed http methods: <code>POST</code>
+ * This Servlet is used by the {@link Admin} to update a {@link Godfather}s
+ * personal data (except password) or to remove the {@link Godfather}<br>
+ * Allowed http methods: <code>POST</code>, <code>DELETE</code>
  *
  * @author MichelBlank
  *
@@ -103,7 +103,15 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	 */
 	public static final String PARAMETER_GODFATHER_PICKTEXT = "picktext"; //$NON-NLS-1$
 	/**
-	 * Http Status Code when database error
+	 * HTTP status code, if the id doesn't exist
+	 */
+	public static final int SC_NOT_FOUND = HttpServletResponse.SC_NOT_FOUND;
+	/**
+	 * HTTP status code, if action was performed successfully
+	 */
+	public static final int SC_SUCCESS = HttpServletResponse.SC_OK;
+	/**
+	 * HTTP status code, if action could not be performed due to a database error
 	 */
 	public static final int SC_ERROR = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
@@ -165,6 +173,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			}
 
 			if (this.godfatherDao.update(godfather)) {
+				resp.setStatus(SC_SUCCESS);
 				resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 				resp.getWriter().print(new Gson().toJson(response));
 			} else {
@@ -172,6 +181,20 @@ public class GodfatherUpdateServlet extends FilterServlet {
 				resp.sendError(SC_ERROR);
 			}
 		}
+		resp.sendError(SC_NOT_FOUND);
+	}
+
+	@Override
+	protected void onDelete(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
+		Integer godfatherId = URIParameterEncryptionUtil.decryptToInteger(req.getParameter(PARAMETER_GODFATHER_ID));
+		Godfather godfather = this.godfatherDao.findById(godfatherId);
+		if (godfather != null) {
+			boolean success = this.godfatherDao.remove(godfather);
+
+			resp.setStatus(success ? SC_SUCCESS : SC_ERROR);
+			return;
+		}
+		resp.sendError(SC_NOT_FOUND);
 	}
 
 	private static boolean updateLastName(@Nullable String lastName, @NonNull Godfather outGodfather) {
