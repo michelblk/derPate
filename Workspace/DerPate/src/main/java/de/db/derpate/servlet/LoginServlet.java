@@ -46,7 +46,7 @@ public class LoginServlet extends FilterServlet {
 	/**
 	 * Http status code used to indicate a successful login
 	 */
-	public static final int SC_LOGIN_SUCCESS = HttpServletResponse.SC_NO_CONTENT;
+	public static final int SC_LOGIN_SUCCESS = HttpServletResponse.SC_OK;
 	/**
 	 * Http status code used to indicate a bad login
 	 */
@@ -120,6 +120,7 @@ public class LoginServlet extends FilterServlet {
 						Constants.Login.hashSeparator)) {
 					LoginManager.getInstance().login(request, admin);
 					response.setStatus(SC_LOGIN_SUCCESS);
+					response.getWriter().print("admin/adminWelcome.jsp"); //$NON-NLS-1$
 					return;
 				}
 			} else {
@@ -132,6 +133,7 @@ public class LoginServlet extends FilterServlet {
 							Constants.Login.hashSeparator)) {
 						LoginManager.getInstance().login(request, godfather);
 						response.setStatus(SC_LOGIN_SUCCESS);
+						response.getWriter().print("welcome.jsp"); //$NON-NLS-1$
 						return;
 					}
 				}
@@ -143,6 +145,7 @@ public class LoginServlet extends FilterServlet {
 				// no password needed
 				LoginManager.getInstance().login(request, trainee);
 				response.setStatus(SC_LOGIN_SUCCESS);
+				response.getWriter().print("filter/filter.jsp"); //$NON-NLS-1$
 				return;
 			}
 		} else {
