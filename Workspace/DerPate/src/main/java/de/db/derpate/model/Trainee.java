@@ -13,8 +13,6 @@ import org.hibernate.annotations.NaturalId;
 
 import com.google.gson.annotations.Expose;
 
-import de.db.derpate.manager.LoginManager;
-
 /**
  * Class that holds all the informations of an trainee.
  *
@@ -29,7 +27,7 @@ public class Trainee extends LoginUser {
 	 * default serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
-	@Nullable
+	@NonNull
 	@Column(name = "Login_Code", nullable = false)
 	@NaturalId(mutable = true)
 	@Expose
@@ -41,10 +39,12 @@ public class Trainee extends LoginUser {
 	private Godfather godfather = null;
 
 	/**
-	 * Default constructor used for hibernate
+	 * Default constructor used by hibernate
 	 */
-	Trainee() {
+	@SuppressWarnings("unused")
+	private Trainee() {
 		super();
+		this.loginToken = ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -61,12 +61,11 @@ public class Trainee extends LoginUser {
 	}
 
 	/**
-	 * Returns the loginToken<br>
-	 * Might be <code>null</code>, if {@link #removeSecret()} was called.
+	 * Returns the loginToken
 	 *
 	 * @return the loginToken
 	 */
-	@Nullable
+	@NonNull
 	public String getLoginToken() {
 		return this.loginToken;
 	}
@@ -76,7 +75,7 @@ public class Trainee extends LoginUser {
 	 *
 	 * @param loginToken the loginToken to set
 	 */
-	public void setLoginToken(@Nullable String loginToken) {
+	public void setLoginToken(@NonNull String loginToken) {
 		this.loginToken = loginToken;
 	}
 
@@ -99,16 +98,5 @@ public class Trainee extends LoginUser {
 	 */
 	public void setGodfather(@Nullable Godfather godfather) {
 		this.godfather = godfather;
-	}
-
-	/**
-	 * Removes the loginToken from this object, to ensure that this may not be
-	 * printed to the user accidentally.
-	 *
-	 * @see LoginManager#login(javax.servlet.http.HttpServletRequest, LoginUser)
-	 */
-	@Override
-	public void removeSecret() {
-		this.setLoginToken(null);
 	}
 }

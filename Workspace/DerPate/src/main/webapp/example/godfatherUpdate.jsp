@@ -14,14 +14,11 @@
 		import="de.db.derpate.persistence.GodfatherDao" %>
 <%	
 LocationDao locationDao = new LocationDao();
-GodfatherDao godfatherDao = new GodfatherDao();	
 
-//FIXME find better solution
-Godfather sessionGodfather = LoginManager.getInstance().getUserBySession(session);
-if(sessionGodfather == null) return;
-Godfather godfather = godfatherDao.findById(sessionGodfather.getId()); // always use up to date godfather, as maxTrainees will be displayed
-if(godfather == null) return;
-LoginManager.getInstance().update(session, godfather); // update session
+Godfather godfather = LoginManager.getInstance().getUserBySession(session);
+if (godfather == null){
+	return;
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -72,12 +69,12 @@ LoginManager.getInstance().update(session, godfather); // update session
 					</div>
 					<div class="form-group">
 						<label>Beschreibung</label>
-						<textarea class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_DESCRIPTION %>" rows="3" placeholder="Hallo, ich bin ..."><%= godfather.getDescription() %></textarea>
+						<textarea class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_DESCRIPTION %>" rows="3" placeholder="Hallo, ich bin ..."><%= godfather.getDescription() != null ? godfather.getDescription() : "" %></textarea>
 						<div class="invalid-feedback">Hier stimmt etwas nicht. Maximal 500 Zeichen sind erlaubt. Unicodeblock Smileys sind nicht zulässig.</div>
 					</div>
 					<div class="form-group">
 						<label>Text, der der Nachwuchskraft nach der Anmeldung angezeigt wird</label>
-						<textarea class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_PICKTEXT %>" rows="3" placeholder="Ich freue mich, dass Du dich für mich entschieden hast! ..." ><%= godfather.getPickText() %></textarea>
+						<textarea class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_PICKTEXT %>" rows="3" placeholder="Ich freue mich, dass Du dich für mich entschieden hast! ..." ><%= godfather.getPickText() != null ? godfather.getPickText() : "" %></textarea>
 						<div class="invalid-feedback">Hier stimmt etwas nicht. Maximal 500 Zeichen sind erlaubt. Unicodeblock Smileys sind nicht zulässig.</div>
 					</div>
 					<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.GODFATHER_UPDATE_SELF) %>" />

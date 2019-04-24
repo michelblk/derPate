@@ -114,32 +114,24 @@ public class GodfatherUpdateServlet extends FilterServlet {
 																					// value, boolean (success or error)
 
 		HttpSession session = req.getSession();
-		Godfather loggedInUser = LoginManager.getInstance().getUserBySession(session);
-		if (loggedInUser == null) {
-			resp.sendError(SC_ERROR);
-			return;
-		}
-
-		// get godfather out of the database, as the user could be logged in twice and
-		// we don't want to revert other changes, that were made
-		Godfather godfatherToUpdate = this.godfatherDao.findById(loggedInUser.getId());
-		if (godfatherToUpdate == null) {
+		Godfather godfather = LoginManager.getInstance().getUserBySession(session);
+		if (godfather == null) {
 			resp.sendError(SC_ERROR);
 			return;
 		}
 
 		// check fields, update godfather object and push informations to output
-		checkEmail(email, godfatherToUpdate, jsonOutput);
-		this.checkLocation(locationId, godfatherToUpdate, jsonOutput);
-		checkMaxTrainees(maxTrainees, godfatherToUpdate, jsonOutput);
-		checkDescription(description, godfatherToUpdate, jsonOutput);
-		checkPickText(pickText, godfatherToUpdate, jsonOutput);
+		updateEmail(email, godfather, jsonOutput);
+		this.updateLocation(locationId, godfather, jsonOutput);
+		updateMaxTrainees(maxTrainees, godfather, jsonOutput);
+		updateDescription(description, godfather, jsonOutput);
+		updatePickText(pickText, godfather, jsonOutput);
 
 		// Update database
-		boolean dbUpdateSuccess = this.godfatherDao.update(godfatherToUpdate); // update database
+		boolean dbUpdateSuccess = this.godfatherDao.update(godfather); // update database
 
 		if (dbUpdateSuccess) {
-			LoginManager.getInstance().update(session, godfatherToUpdate); // update session
+			LoginManager.getInstance().update(session, godfather); // update session
 
 			resp.setStatus(SC_SUCCESS);
 			resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
@@ -165,7 +157,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		return new Gson().toJson(obj);
 	}
 
-	private static void checkEmail(String email, Godfather outGodfather,
+	private static void updateEmail(String email, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (email != null) {
 			@SuppressWarnings("null") // lowerEmail cannot be null, as email is not null
@@ -185,7 +177,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 	}
 
-	private void checkLocation(String encryptedLocation, Godfather outGodfather,
+	private void updateLocation(String encryptedLocation, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (encryptedLocation != null) {
 			Integer locationId = URIParameterEncryptionUtil.decryptToInteger(encryptedLocation);
@@ -206,7 +198,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 	}
 
-	private static void checkMaxTrainees(String maxTraineesString, Godfather outGodfather,
+	private static void updateMaxTrainees(String maxTraineesString, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		Integer maxTrainees = NumberUtil.parseInteger(maxTraineesString);
 		int oldMaxTrainees = outGodfather.getMaxTrainees();
@@ -226,29 +218,36 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		}
 	}
 
-	private static void checkDescription(String description, Godfather outGodfather,
+	private static void updateDescription(String description, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (description != null) { // is allowed to be empty
 			String oldDescription = outGodfather.getDescription();
 
 			description = description.trim();
-			outGodfather.setDescription(description);
+			if (description.isEmpty()) {
+				description = null;
+			}
+			outGodfather.setDescription(description); // TODO validate
 
-			if (!description.equals(oldDescription)) {
+			if ((oldDescription != null && description == null)
+					|| (description != null && !description.equals(oldDescription))) {
 				outJsonMap.put(PARAMETER_DESCRIPTION, new SimpleEntry<>(description, true));
 			}
 		}
 	}
 
-	private static void checkPickText(String pickText, Godfather outGodfather,
+	private static void updatePickText(String pickText, Godfather outGodfather,
 			HashMap<String, SimpleEntry<String, Boolean>> outJsonMap) {
 		if (pickText != null) { // is allowed to be empty
 			String oldPickText = outGodfather.getPickText();
 
 			pickText = pickText.trim();
-			outGodfather.setPickText(pickText);
+			if (pickText.isEmpty()) {
+				pickText = null;
+			}
+			outGodfather.setPickText(pickText); // TODO validate
 
-			if (!pickText.equals(oldPickText)) {
+			if ((oldPickText != null && pickText == null) || (pickText != null && !pickText.equals(oldPickText))) {
 				outJsonMap.put(PARAMETER_PICKTEXT, new SimpleEntry<>(pickText, true));
 			}
 		}

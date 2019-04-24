@@ -35,6 +35,14 @@
 			<param-value>GODFATHER</param-value>
 		</init-param>
 	</filter>
+		<filter>
+		<filter-name>AdminOnly</filter-name>
+		<filter-class>de.db.derpate.servlet.filter.LoginServletFilter</filter-class>
+		<init-param>
+			<param-name>usermode</param-name>
+			<param-value>ADMIN</param-value>
+		</init-param>
+	</filter>
 	
 	<filter-mapping>
 	   <filter-name>TraineeOnly</filter-name>
@@ -43,5 +51,9 @@
 	<filter-mapping>
 		<filter-name>GodfatherOnly</filter-name>
 		<url-pattern>/example/godfatherUpdate.jsp</url-pattern>
+	</filter-mapping>
+		<filter-mapping>
+		<filter-name>AdminOnly</filter-name>
+		<url-pattern>/admin/*</url-pattern>
 	</filter-mapping>
 </web-app>

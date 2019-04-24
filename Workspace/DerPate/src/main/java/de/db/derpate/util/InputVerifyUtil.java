@@ -62,6 +62,20 @@ public final class InputVerifyUtil {
 	}
 
 	/**
+	 * Returns, whether a {@link String} has at least the given number of characters
+	 * in it (leading and trailing spaces excluded).
+	 *
+	 * @param string    {@link String} that should be checked
+	 * @param minLength the minimum number of characters
+	 * @return <code>true</code>, if the given String has at least the given number
+	 *         of characters; <code>false</code>, otherwise or if String is
+	 *         <code>null</code>.
+	 */
+	public static boolean hasAtLeastXCharacters(@Nullable String string, int minLength) {
+		return string != null && string.trim().length() >= minLength;
+	}
+
+	/**
 	 * Checks if given email address is valid (see {@link #EMAIL_PATTERN})
 	 *
 	 * @param email Email address to check

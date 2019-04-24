@@ -35,7 +35,7 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	 * The {@link EntityManager}
 	 */
 	@PersistenceContext
-	protected static final EntityManager entityManager;
+	protected final EntityManager entityManager;
 	/**
 	 * The {@link Class} that the wanted objects are of
 	 *
@@ -47,7 +47,6 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	static {
 		// FIXME find a way, to make EntityManager not static, while findById returns a
 		// valid user (with password)
-		entityManager = new EntityManagerFactory().getEntityManager();
 	}
 
 	/**
@@ -57,24 +56,28 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	public IdDao() {
 		ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
 		this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[1];
+		this.entityManager = EntityManagerFactory.getInstance().getEntityManager();
 	}
 
 	/**
 	 * Finds object by {@link Id#getId()}
 	 *
 	 * @param id id
-	 * @return object or <code>null</code>, if object was not found
+	 * @return object or <code>null</code>, if object was not found or id was
+	 *         <code>null</code>
 	 */
 	@Override
-	public E findById(@NonNull K id) {
-		E result = entityManager.find(this.entityClass, id);
-		entityManager.refresh(result);
-		return result;
+	public E findById(@Nullable K id) {
+		if (id != null) {
+			E result = this.entityManager.find(this.entityClass, id);
+			return result;
+		}
+		return null;
 	}
 
 	@Override
 	public List<E> all() {
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 
 		// Build query
 		CriteriaQuery<E> query = builder.createQuery(this.entityClass);
@@ -82,7 +85,7 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 		CriteriaQuery<E> all = query.select(root);
 
 		// Execute query and get ResultList
-		TypedQuery<E> q = entityManager.createQuery(all);
+		TypedQuery<E> q = this.entityManager.createQuery(all);
 		List<E> result = q.getResultList();
 
 		if (result == null) {
@@ -93,7 +96,7 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 
 	@Override
 	public void persist(E entity) {
-		entityManager.persist(entity);
+		this.entityManager.persist(entity);
 	}
 
 	@Override
@@ -101,9 +104,9 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 		boolean success = false;
 		EntityTransaction transaction = null;
 		try {
-			transaction = entityManager.getTransaction();
+			transaction = this.entityManager.getTransaction();
 			transaction.begin();
-			entityManager.merge(entity);
+			this.entityManager.merge(entity);
 			transaction.commit();
 			success = true;
 		} catch (RollbackException e) {
@@ -116,7 +119,7 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 
 	@Override
 	public void remove(E entity) {
-		entityManager.remove(entity);
+		this.entityManager.remove(entity);
 	}
 
 }

@@ -39,7 +39,15 @@ public enum CSRFForm {
 	 * 
 	 * @see GodfatherUpdateServlet
 	 */
-	,GODFATHER_UPDATE_SELF;
+	,GODFATHER_UPDATE_SELF
+	
+	,ADMIN_ADD_GODFATHER
+	
+	,ADMIN_UPDATE_GODFATHER
+	
+	,ADMIN_ADD_TRAINEE
+	
+	,ADMIN_UPDATE_TRAINEE;
 
 
 	@SuppressWarnings("null")
