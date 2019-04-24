@@ -16,11 +16,11 @@ import de.db.derpate.servlet.filter.CSRFServletFilter;
 import de.db.derpate.servlet.filter.LoginServletFilter;
 
 @WebServlet("/adminTraineeUpdate")
-public class TraineeUpdateServlet extends FilterServlet {
+public class TraineeRemoveServlet extends FilterServlet {
 	/**
 	 * Default constructor initializing the {@link FilterServlet}
 	 */
-	public TraineeUpdateServlet() {
+	public TraineeRemoveServlet() {
 		super(new LoginServletFilter(Usermode.ADMIN), new CSRFServletFilter(CSRFForm.ADMIN_UPDATE_TRAINEE));
 	}
 
