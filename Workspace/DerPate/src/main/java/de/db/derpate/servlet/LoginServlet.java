@@ -141,7 +141,7 @@ public class LoginServlet extends FilterServlet {
 			}
 		} else if (InputVerifyUtil.isNotBlank(token)) {
 			// find token
-			Trainee trainee = this.traineeDao.byToken(token);
+			Trainee trainee = this.traineeDao.findByToken(token);
 			if (trainee != null) {
 				// no password needed
 				LoginManager.getInstance().login(request, trainee);

@@ -52,7 +52,7 @@ public class GenerateTraineeTokenServlet extends FilterServlet {
 
 		do {
 			token = RandomUtil.generateRandomString(Constants.Trainee.TRAINEE_TOKEN_LENGTH).toUpperCase();
-		} while (this.traineeDao.byToken(token) != null);
+		} while (this.traineeDao.findByToken(token) != null);
 		if (token == null) {
 			throw new RuntimeException("RandomUtil did not generate a random string!"); //$NON-NLS-1$
 		}
