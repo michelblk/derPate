@@ -3,6 +3,7 @@ package de.db.derpate.servlet;
 import java.io.IOException;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,10 +17,8 @@ import de.db.derpate.servlet.filter.CSRFServletFilter;
 import de.db.derpate.servlet.filter.LoginServletFilter;
 
 /**
- * This servlet is used to remove the relation between the client's
+ * This {@link HttpServlet} is used to remove the relation between the client's
  * {@link HttpSession} and the logged in {@link LoginUser}.<br>
- * Caution: This servlet is even reachable when the user is not even logged
- * in!<br>
  * Allowed http methods: <code>GET</code>
  *
  * @author MichelBlank

@@ -17,7 +17,10 @@ import de.db.derpate.servlet.filter.LoginServletFilter;
 
 @WebServlet("/adminTraineeUpdate")
 public class TraineeUpdateServlet extends FilterServlet {
-	private TraineeUpdateServlet() {
+	/**
+	 * Default constructor initializing the {@link FilterServlet}
+	 */
+	public TraineeUpdateServlet() {
 		super(new LoginServletFilter(Usermode.ADMIN), new CSRFServletFilter(CSRFForm.ADMIN_UPDATE_TRAINEE));
 	}
 

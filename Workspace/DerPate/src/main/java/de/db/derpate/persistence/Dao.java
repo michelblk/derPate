@@ -37,8 +37,9 @@ public interface Dao<@NonNull K, @Nullable E> {
 	 * Make sure, that there is no entity with the given entity's id persisted.
 	 *
 	 * @param entity the entity to persist
+	 * @return <code>true</code>, when successful; <code>false</code>, otherwise
 	 */
-	void persist(@NonNull E entity);
+	boolean persist(@NonNull E entity);
 
 	/**
 	 * Updates an already existing entity
@@ -53,6 +54,7 @@ public interface Dao<@NonNull K, @Nullable E> {
 	 * Removes a persisted entity
 	 *
 	 * @param entity the entity to remove
+	 * @return <code>true</code>, when successful; <code>false</code>, otherwise
 	 */
-	void remove(@NonNull E entity);
+	boolean remove(@NonNull E entity);
 }

@@ -35,7 +35,8 @@ import de.db.derpate.util.URIParameterEncryptionUtil;
 
 /**
  * This Servlet is used by the {@link Admin} to update a godfathers personal
- * data (except password)
+ * data (except password)<br>
+ * Allowed http methods: <code>POST</code>
  *
  * @author MichelBlank
  *
@@ -110,7 +111,10 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	private final LocationDao locationDao = new LocationDao();
 	private final JobDao jobDao = new JobDao();
 
-	private GodfatherUpdateServlet() {
+	/**
+	 * Default constructor initializing the {@link FilterServlet}
+	 */
+	public GodfatherUpdateServlet() {
 		super(new LoginServletFilter(Usermode.ADMIN), new CSRFServletFilter(CSRFForm.ADMIN_UPDATE_GODFATHER));
 	}
 

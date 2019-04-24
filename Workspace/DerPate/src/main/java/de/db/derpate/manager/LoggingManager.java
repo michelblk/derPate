@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import de.db.derpate.util.DateUtil;
@@ -52,13 +51,15 @@ public class LoggingManager {
 	 * @param level       The {@link Level} of the log record
 	 * @param description Description for the log record
 	 */
-	public static void log(@Nullable Level level, @NonNull String description) {
-		Date currentTime = DateUtil.getCurrentTime();
-		String currentTimeString = DateUtil.dateToReadableString(currentTime, Locale.getDefault());
-		String output = currentTimeString + ": " + description; //$NON-NLS-1$
-		Logger logg = getLogger();
-		if (logg != null && level != null) {
-			logg.log(level, output);
+	public static void log(@Nullable Level level, @Nullable String description) {
+		if (description != null) {
+			Date currentTime = DateUtil.getCurrentTime();
+			String currentTimeString = DateUtil.dateToReadableString(currentTime, Locale.getDefault());
+			String output = currentTimeString + ": " + description; //$NON-NLS-1$
+			Logger logg = getLogger();
+			if (logg != null && level != null) {
+				logg.log(level, output);
+			}
 		}
 	}
 }

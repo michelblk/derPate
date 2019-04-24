@@ -5,8 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.MappedSuperclass;
 
-import com.google.gson.annotations.Expose;
-
 /**
  * Abstract class containing an id-integer.
  *
@@ -18,13 +16,12 @@ public abstract class Id {
 	@javax.persistence.Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable = false)
-	@Expose
-	private int id = -1;
+	private Integer id;
 
 	/**
 	 * Default constructor used for hibernate
 	 */
-	Id() {
+	protected Id() {
 
 	}
 

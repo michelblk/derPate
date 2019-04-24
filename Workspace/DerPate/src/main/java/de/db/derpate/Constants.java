@@ -138,13 +138,28 @@ public final class Constants {
 	}
 
 	/**
-	 * This class contains all static attributes related with a Godfather
+	 * This class contains all static attributes related with a
+	 * {@link de.db.derpate.model.Godfather Godfather}
 	 */
 	public static final class Godfather {
 		/**
-		 * Number of Trainees a godfather is allowed to be responsible for at the same
-		 * time
+		 * Number of Trainees a {@link de.db.derpate.model.Godfather Godfather} is
+		 * allowed to be responsible for at the same time<br>
+		 * Default value, if property not found: 10
 		 */
 		public static final int MAX_TRAINEES = APPLICATION_PROPERTIES.getIntProperty("godfather.max_trainees", 10); //$NON-NLS-1$
+	}
+
+	/**
+	 * This class contains all static attributes related with
+	 * {@link de.db.derpate.model.Trainee Trainee}s
+	 */
+	public static final class Trainee {
+		/**
+		 * Length of new tokens to be generated for trainees to log in<br>
+		 * Default value, if property not found: 10
+		 */
+		public static final int TRAINEE_TOKEN_LENGTH = APPLICATION_PROPERTIES.getIntProperty("trainee.token_length", //$NON-NLS-1$
+				10);
 	}
 }

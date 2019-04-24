@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,9 +26,9 @@ import de.db.derpate.util.CSRFPreventionUtil;
 import de.db.derpate.util.InputVerifyUtil;
 
 /**
- * This servlet get's called by the client, when the user tries to log on. It
- * checks the given credentials and redirects to the start page for logged in
- * users.<br>
+ * This {@link HttpServlet} get's called by the client, when the user tries to
+ * log on. It checks the given credentials and redirects to the start page for
+ * logged in users.<br>
  * Allowed http methods: <code>POST</code>
  *
  * @author MichelBlank
