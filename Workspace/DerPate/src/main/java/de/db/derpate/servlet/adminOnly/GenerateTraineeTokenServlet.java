@@ -10,12 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.entity.ContentType;
 import org.eclipse.jdt.annotation.NonNull;
 
+import de.db.derpate.CSRFForm;
 import de.db.derpate.Constants;
 import de.db.derpate.Usermode;
 import de.db.derpate.model.Admin;
 import de.db.derpate.model.Trainee;
 import de.db.derpate.persistence.TraineeDao;
 import de.db.derpate.servlet.FilterServlet;
+import de.db.derpate.servlet.filter.CSRFServletFilter;
 import de.db.derpate.servlet.filter.LoginServletFilter;
 import de.db.derpate.util.RandomUtil;
 
@@ -40,7 +42,7 @@ public class GenerateTraineeTokenServlet extends FilterServlet {
 	 * Default constructor initializing the {@link FilterServlet}
 	 */
 	public GenerateTraineeTokenServlet() {
-		super(new LoginServletFilter(Usermode.ADMIN)/* , new CSRFServletFilter(CSRFForm.ADMIN_ADD_TRAINEE) */);
+		super(new LoginServletFilter(Usermode.ADMIN), new CSRFServletFilter(CSRFForm.ADMIN_ADD_TRAINEE));
 		this.traineeDao = new TraineeDao();
 	}
 
