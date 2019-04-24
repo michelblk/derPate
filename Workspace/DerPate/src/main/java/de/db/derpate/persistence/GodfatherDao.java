@@ -14,10 +14,10 @@ import javax.persistence.criteria.Root;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import de.db.derPate.model.Godfather_;
-import de.db.derPate.model.Id_;
-import de.db.derPate.model.Job_;
 import de.db.derpate.model.Godfather;
+import de.db.derpate.model.Godfather_;
+import de.db.derpate.model.Id_;
+import de.db.derpate.model.Job_;
 import de.db.derpate.util.HibernateUtil;
 
 /**

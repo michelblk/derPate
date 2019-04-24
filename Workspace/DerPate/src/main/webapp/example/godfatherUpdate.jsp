@@ -16,6 +16,9 @@
 LocationDao locationDao = new LocationDao();
 
 Godfather godfather = LoginManager.getInstance().getUserBySession(session);
+if (godfather == null){
+	return;
+}
 %>
 <!DOCTYPE html>
 <html>
