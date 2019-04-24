@@ -7,16 +7,18 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
+import de.db.derPate.model.Godfather_;
+import de.db.derPate.model.Id_;
+import de.db.derPate.model.Job_;
 import de.db.derpate.model.Godfather;
-import de.db.derpate.model.Godfather_;
-import de.db.derpate.model.Id_;
-import de.db.derpate.model.Job_;
+import de.db.derpate.util.HibernateUtil;
 
 /**
  * Data Access Object providing methods to get {@link Godfather} objects out of
@@ -38,6 +40,8 @@ public final class GodfatherDao extends EmailPasswordLoginUserDao<@NonNull Integ
 	 * trainee. If multiple id's per type (location, job, etc.) are selected, only
 	 * one has to be true.
 	 *
+	 * @param availableOnly   if only Godfathers with available slots for Trainees
+	 *                        should be returned
 	 * @param location        the location ids
 	 * @param jobs            the job ids
 	 * @param teachingType    the teaching type ids
@@ -45,8 +49,8 @@ public final class GodfatherDao extends EmailPasswordLoginUserDao<@NonNull Integ
 	 * @return a {@link List} of {@link Godfather}s, that the filter applies to
 	 */
 	@Nullable
-	public List<Godfather> filterAvailable(@Nullable List<String> location, @Nullable List<String> jobs,
-			@Nullable List<String> teachingType, @Nullable List<String> educationalYear) {
+	public List<Godfather> filterAvailable(boolean availableOnly, @Nullable List<String> location,
+			@Nullable List<String> jobs, @Nullable List<String> teachingType, @Nullable List<String> educationalYear) {
 
 		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 
@@ -54,24 +58,35 @@ public final class GodfatherDao extends EmailPasswordLoginUserDao<@NonNull Integ
 		Root<Godfather> root = query.from(this.entityClass);
 
 		query.select(root);
-		query.orderBy(builder.asc(root.get(Godfather_.CURRENT_TRAINEES)), builder.asc(root.get(Godfather_.FIRST_NAME)));
+		List<Order> order = new ArrayList<>();
+		if (availableOnly) {
+			order.add(builder.asc(root.get(Godfather_.CURRENT_TRAINEES)));
+			order.add(builder.asc(root.get(Godfather_.FIRST_NAME)));
+		} else {
+			order.add(builder.asc(root.get(Godfather_.FIRST_NAME)));
+			order.add(builder.asc(root.get(Godfather_.LAST_NAME)));
+		}
+		query.orderBy(order);
 
-		Predicate predicate = builder.lt(root.get(Godfather_.CURRENT_TRAINEES), root.get(Godfather_.MAX_TRAINEES));
+		Predicate predicate = null;
+		if (availableOnly) {
+			predicate = builder.lt(root.get(Godfather_.CURRENT_TRAINEES), root.get(Godfather_.MAX_TRAINEES));
+		}
 		if (location != null && !location.isEmpty()) {
 			Predicate clause = root.get(Godfather_.LOCATION).get(Id_.ID).in(location);
-			predicate = builder.and(predicate, clause);
+			predicate = HibernateUtil.addPredicate(builder, predicate, clause);
 		}
 		if (jobs != null && !jobs.isEmpty()) {
 			Predicate clause = root.get(Godfather_.JOB).get(Id_.ID).in(jobs);
-			predicate = builder.and(predicate, clause);
+			predicate = HibernateUtil.addPredicate(builder, predicate, clause);
 		}
 		if (teachingType != null && !teachingType.isEmpty()) {
 			Predicate clause = root.get(Godfather_.JOB).get(Job_.TEACHING_TYPE).get(Id_.ID).in(teachingType);
-			predicate = builder.and(predicate, clause);
+			predicate = HibernateUtil.addPredicate(builder, predicate, clause);
 		}
 		if (educationalYear != null && !educationalYear.isEmpty()) {
 			Predicate clause = root.get(Godfather_.EDUCATIONAL_YEAR).in(educationalYear);
-			predicate = builder.and(predicate, clause);
+			predicate = HibernateUtil.addPredicate(builder, predicate, clause);
 		}
 
 		if (predicate != null) {
