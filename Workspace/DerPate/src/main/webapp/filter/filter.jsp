@@ -1,7 +1,7 @@
 <%@page
 	contentType="text/html" pageEncoding="UTF-8"
 	import="de.db.derpate.CSRFForm"
-	import="de.db.derpate.servlet.traineeOnly.GodfatherServlet"
+	import="de.db.derpate.servlet.traineeOnly.GodfatherFilterServlet"
 	import="de.db.derpate.servlet.traineeOnly.GodfatherSelectServlet"
 	import="de.db.derpate.util.CSRFPreventionUtil"
 	import="de.db.derpate.persistence.LocationDao"
@@ -51,7 +51,7 @@
 														for(Location location : locations) {
 								%>
 									<li>
-										<input type="checkbox" name="<%=GodfatherServlet.FILTER_PARAM_LOCATION%>" value="<%=URIParameterEncryptionUtil.encrypt(location.getId())%>" />
+										<input type="checkbox" name="<%=GodfatherFilterServlet.FILTER_PARAM_LOCATION%>" value="<%=URIParameterEncryptionUtil.encrypt(location.getId())%>" />
 										<%=location.getName()%>
 									</li>
 								<%
@@ -70,7 +70,7 @@
 														for(TeachingType teachingType : teachingTypes) {
 								%>
 									<li>
-										<input type="checkbox" name="<%=GodfatherServlet.FILTER_PARAM_TEACHING_TYPE%>" value="<%=URIParameterEncryptionUtil.encrypt(teachingType.getId())%>" />
+										<input type="checkbox" name="<%=GodfatherFilterServlet.FILTER_PARAM_TEACHING_TYPE%>" value="<%=URIParameterEncryptionUtil.encrypt(teachingType.getId())%>" />
 										<%=teachingType.getName()%>
 									</li>
 								<%
@@ -89,7 +89,7 @@
 														for(Job job : jobs) {
 								%>
 									<li>
-										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_JOB %>" value="<%= URIParameterEncryptionUtil.encrypt(job.getId()) %>" />
+										<input type="checkbox" name="<%= GodfatherFilterServlet.FILTER_PARAM_JOB %>" value="<%= URIParameterEncryptionUtil.encrypt(job.getId()) %>" />
 										<%= job.getName() %>
 									</li>
 								<% } %>
@@ -105,7 +105,7 @@
 								List<@NonNull Integer> educationalYears = godfatherDao.getEducationalYears();
 								for(@NonNull Integer year : educationalYears) { %>
 									<li>
-										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_EDUCATIONAL_YEAR %>" value="<%= URIParameterEncryptionUtil.encrypt(year) %>" />
+										<input type="checkbox" name="<%= GodfatherFilterServlet.FILTER_PARAM_EDUCATIONAL_YEAR %>" value="<%= URIParameterEncryptionUtil.encrypt(year) %>" />
 										<%= year %>
 									</li>
 								<% } %>
