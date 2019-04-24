@@ -32,7 +32,7 @@ html, body {
 	justify-content: center;
 }
 
-.btn {
+.btn-db {
     background-color: #f01414; /* DB Rot */
     color: #fff;
     line-height: 20px;
@@ -45,7 +45,7 @@ html, body {
     overflow: hidden;
 }
 
-.btn:hover {
+.btn-db:hover {
 	background: #c00;
 }
 
@@ -68,4 +68,35 @@ input[type="date"] {
 .jumbotron {
 	border-radius: 0;
 	margin: 0;
+}
+
+.btn-outline-db {
+  color: #f01414; /* DB Rot */
+  border-color: #f01414; /* DB Rot */
+  margin-top: 5px;
+}
+
+.btn-outline-db:hover {
+  color: #c00;
+}
+
+.btn-outline-db:focus, .btn-outline-db.focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+}
+
+.btn-outline-db.disabled, .btn-outline-db:disabled {
+  color: #f01414; /* DB Rot */
+  background-color: transparent;
+}
+
+.btn-outline-db:not(:disabled):not(.disabled):active, .btn-outline-db:not(:disabled):not(.disabled).active,
+.show > .btn-outline-db.dropdown-toggle {
+  color: #fff;
+  background-color: #f01414; /* DB Rot */;
+  border-color: #f01414; /* DB Rot */
+}
+
+.btn-outline-db:not(:disabled):not(.disabled):active:focus, .btn-outline-db:not(:disabled):not(.disabled).active:focus,
+.show > .btn-outline-db.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
 }

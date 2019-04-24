@@ -4,49 +4,56 @@
 	import="de.db.derpate.servlet.LoginServlet"
 	import="de.db.derpate.servlet.filter.CSRFServletFilter"
 	import="de.db.derpate.CSRFForm"
-	import="de.db.derpate.util.URIParameterEncryptionUtil"
-%>
+	import="de.db.derpate.util.URIParameterEncryptionUtil"%>
 <jsp:include page="WEB-INF/include/header.jsp" />
-	<link rel="stylesheet" type="text/css" href="include/css/login.css" />
-	<div class="container container-middle">
-		<div class="col-sm-10 col-md-6 jumbotron" id="login">
-			<h1 class="display-1 text-center">Der Pate</h1>
-			
-			<div class="spinner-border" role="status" id="spinner">
-				<span class="sr-only">Loading...</span>
-			</div>
-					<form method="post" action="login">
-					<div class="form-signin">
-						<input type="text" class="form-control" id="input_token" name="<%= LoginServlet.INPUT_FIELD_TOKEN %>"  value="" placeholder="Benutzererkennung" required autofocus/>
-					</div>
-					</form>
-			<form method="post" action="login">
-				<input type="hidden" id="csrftoken"
-					name="<%=CSRFPreventionUtil.FIELD_NAME%>"
-					value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN)%>" />
-				<div class="form-signin">		
-				<p>	
-					<input type="text" class="form-control" name="<%=LoginServlet.INPUT_FIELD_EMAIL%>"
-						placeholder="Benutzername" required autofocus />
-					<input type="password" class="form-control" name="<%=LoginServlet.INPUT_FIELD_PASSWORD%>"
-						placeholder="Passwort" required />
-						</p>	
-					<button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Login</button>	
-						
-				</div>
-			</form>
-			
+<link rel="stylesheet" type="text/css" href="include/css/login.css" />
+<div class="container container-middle">
+	<div class="col-sm-10 col-md-6 jumbotron" id="login">
+		<h1 class="display-1 text-center">Der Pate</h1>
 
-
-<button id="adminlogin" >Admin Login</button>
-
+		<div class="spinner-border" role="status" id="spinner">
+			<span class="sr-only">Loading...</span>
 		</div>
+
+		<form method="post" action="login">
+			<input type="hidden" class="csrftoken"
+				name="<%=CSRFPreventionUtil.FIELD_NAME%>"
+				value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN)%>" />
+			<div class="form-signin">
+				<input type="text" class="form-control" id="input_token"
+					name="<%=LoginServlet.INPUT_FIELD_TOKEN%>" value=""
+					placeholder="Benutzererkennung" />
+				<button class="btn btn-db btn-lg btn-primary btn-block" type="submit"
+					value="Login">Login</button>
+			</div>
+		</form>
+		<form method="post" action="login" style="display: none;">
+			<input type="hidden" class="csrftoken"
+				name="<%=CSRFPreventionUtil.FIELD_NAME%>"
+				value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN)%>" />
+			<div class="form-signin">
+				<input type="text" class="form-control"
+					name="<%=LoginServlet.INPUT_FIELD_EMAIL%>"
+					placeholder="Benutzername" /> <input type="password"
+					class="form-control" name="<%=LoginServlet.INPUT_FIELD_PASSWORD%>"
+					placeholder="Passwort" />
+				<button class="btn btn-db btn-lg btn-primary btn-block" type="submit"
+					value="Login">Login</button>
+
+			</div>
+		</form>
+
+
+
+		<button class="btn btn-outline-db" id="adminlogin">Admin
+			Login</button>
+
 	</div>
-	<script>
+</div>
+<script>
 	$(document).ready(function(){
 		  $('#adminlogin').click(function(){
-		    $("p").toggle(1000, function(){
-		    });
+		    $('#login form').toggle(1000);
 		  });
 		});
 
@@ -89,13 +96,16 @@
 							alert("Unknown error");
 						}
 						var newToken = e.getResponseHeader("<%=CSRFPreventionUtil.HEADER_FIELD%>");
-						if (newToken != null && newToken.length > 0) {
-							$(form).find("#csrftoken").val(newToken);
-						}
-					}
-				});
-				return false;
-			});
-		});
-	</script>
+															if (newToken != null
+																	&& newToken.length > 0) {
+																$(".csrftoken")
+																		.val(
+																				newToken);
+															}
+														}
+													});
+											return false;
+										});
+					});
+</script>
 <jsp:include page="WEB-INF/include/footer.jsp" />
