@@ -2,6 +2,7 @@
 
 $(document).ready(function () {
 	var submitButton = $("#filtering-form-submit");
+	var modal = $("#more-info-godfather");
 	
 	$("#filtering-form").submit(function (e) {
 		e.preventDefault();
@@ -10,7 +11,7 @@ $(document).ready(function () {
 		
 		$("#async-results").empty();
 		$.ajax({
-			url: '../godfather',
+			url: 'godfather',
 			method: 'GET',
 			data: $(this).serialize(),
 			dataType: 'json',
@@ -35,10 +36,10 @@ $(document).ready(function () {
 					$(card).find(".godfather-card-location").text(location);
 					$(card).find(".godfather-card-teachingType").text(teachingType);
 					$(card).find(".godfather-card-job").text(job);
-					$(card).find(".godfather-card-year").text(educationalYear);
-					$(card).find(".godfather-card-age").text(age);
-					$(card).find(".godfather-card-description").text(description);
-					$(card).find(".godfather-card-select-id").val(id);
+					$(card).find(".godfather-card-educationalYear").val(educationalYear);
+					$(card).find(".godfather-card-age").val(age);
+					$(card).find(".godfather-card-description").val(description);
+					
 					
 					$("#async-results").append(card);
 					
@@ -56,35 +57,21 @@ $(document).ready(function () {
 		return false;
 	});
 	
-	$("#async-results").on("submit", ".godfahter-card-select-form", function (e) {
+	$("#async-results").on("click", ".more-info-godfather-button", function (e) {
 		e.preventDefault();
+		$(modal).modal("show");
 		
-		var url = $(this).attr("action");
-		var method = $(this).attr("method");
+		var targetedCard = $(e.target).parents(".godfather-card");
+		var id = $(targetedCard).attr('data-id');
+		var firstname = $(targetedCard).find(".godfather-card-firstname").text();
+		var location = $(targetedCard).find(".godfather-card-location").text();
+		var teachingType = $(targetedCard).find(".godfather-card-teachingType").text();
+		var job = $(targetedCard).find(".godfather-card-job").text();
+		var educationalYear = $(targetedCard).find(".godfather-card-educationalYear").val();
+		var age = $(targetedCard).find(".godfather-card-age").val();
+		var description = $(targetedCard).find(".godfather-card-description").val();
 		
-		console.log(url);
-		console.log(method);
-		
-		$.ajax({
-			url: url,
-			method: method,
-			data: $(this).serialize(),
-			cache: false,
-			complete: function(e, text) {
-				if(e.status == 204) {
-					// success
-					alert("Success");
-				}else if(e.status == 500) {
-					// internal error
-					alert("Internal error");
-				}else if(e.status == 400) {
-					// bad request
-					alert("Bad request");
-				}else{
-					alert("Unknown error");
-				}
-			}
-		});
+		console.log(id);
 		
 		return false;
 	});

@@ -71,8 +71,7 @@
 						$("#spinner").hide();
 						if(e.status === <%=LoginServlet.SC_LOGIN_SUCCESS%>) {
 							// success
-							alert("Successfully logged in");
-							location.reload();// just an example
+							location.href = e.responseText;
 						}else
 						if(e.status === <%=Integer.toString((new CSRFServletFilter(CSRFForm.LOGIN)).getErrorStatusCode())%>) {
 							// CSRF token gone

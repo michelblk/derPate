@@ -23,10 +23,8 @@
 %>
 <%-- TODO selectionstatus check --%>
 <jsp:include page="/WEB-INF/include/header.jsp" />
-<title>Filter</title>
-<meta charset="<%=Constants.CHARSET.name()%>" />
-<link rel="stylesheet" type="text/css" href="filter.css" />
-<script src="filter.js"></script>
+<link rel="stylesheet" type="text/css" href="include/css/filter.css" />
+<script src="include/js/filter.js"></script>
 
 
 
@@ -89,35 +87,29 @@
 							}
 						%>
 					</ul>
+					<div class="btn-group" role="group">
+						<button type="button" class="btn btn-secondary dropdown-toggle"
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Lehrjahr</button>
+						<ul class="dropdown-menu">
+							<%
+								List<@NonNull Integer> educationalYears = godfatherDao.getEducationalYears();
+								for(@NonNull Integer year : educationalYears) { %>
+							<li><input type="checkbox"
+								name="<%= GodfatherFilterServlet.FILTER_PARAM_EDUCATIONAL_YEAR %>"
+								value="<%= URIParameterEncryptionUtil.encrypt(year) %>" /> <%= year %>
+							</li>
+							<% } %>
+						</ul>
+					</div>
 				</div>
-
-				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-secondary dropdown-toggle"
-						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Lehrjahr</button>
-					<ul class="dropdown-menu">
-						<%
-							List<@NonNull Integer> educationalYears = godfatherDao.getEducationalYears();
-							for (@NonNull
-							Integer year : educationalYears) {
-						%>
-						<li><input type="checkbox"
-							name="<%=GodfatherFilterServlet.FILTER_PARAM_EDUCATIONAL_YEAR%>"
-							value="<%=URIParameterEncryptionUtil.encrypt(year)%>" /> <%=year%>
-						</li>
-						<%
-							}
-						%>
-					</ul>
-				</div>
-
 				<input class="btn btn-secondary" id="filtering-form-submit"
 					type="submit" value="Suchen" />
 			</div>
 		</form>
-	</div>
+			</div>
 	<div id="results">
-		<div class="godfather-card card default" id="godfahter-card-default">
+		<div class="godfather-card card default" id="godfahter-card-default" data-description="">
 			<div class="card-img-top godfather-card-image"></div>
 			<div class="card-body">
 				<h5 class="card-title godfather-card-firstname">Vorname</h5>
@@ -126,29 +118,67 @@
 					<div class="godfather-card-teachingType">Ausbildung/Duales
 						Studium</div>
 					<div class="godfather-card-job">Beruf</div>
-					<div class="godfather-card-year">Lehrjahr</div>
-					<div class="godfather-card-age">Alter</div>
-					<blockquote class="blockquote text-center">
-						<p class="godfather-card-description mb-0 text-small"></p>
-						<footer class="blockquote-footer godfather-card-firstname"></footer>
-					</blockquote>
+					<input type="hidden" class="godfather-card-educationalyear">
+					<input type="hidden" class="godfather-card-age">
+					<input type="hidden" class="godfather-card-description">
+					<button class="btn btn-db more-info-godfather-button" >Show more</button>
 				</div>
-			</div>
-			<div class="card-footer">
-				<form class="godfahter-card-select-form" action="../godfatherSelect"
-					method="POST">
-					<input type="hidden" class="godfather-card-select-csrf"
-						name="<%=CSRFPreventionUtil.FIELD_NAME%>"
-						value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.TRAINEE_SELECT_GODFATHER)%>" />
-					<input type="hidden" class="godfather-card-select-id"
-						name="<%=GodfatherSelectServlet.PARAM_GODFAHTER_ID%>" value="">
-					<input type="submit" class="btn godfather-card-select-btn"
-						value="Als Paten ausw&auml;hlen" />
-				</form>
 			</div>
 		</div>
 		<!-- show all -->
 		<div id="async-results"></div>
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="more-info-godfather">
+  			<div class="modal-dialog modal-lg modal-dialog-centered">
+    	 <div class="modal-content">
+      <div class="modal-header">
+       	 <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+  <tbody>
+    <tr>
+      <th scope="row">Name</th>
+      <td>xx</td>
+
+    </tr>
+    <tr>
+      <th scope="row">Tätigkeitsstelle</th>
+      <td>xx</td>
+    </tr>
+        <tr>
+      <th scope="row"> Ausbildungart</th>
+      <td>xx</td>
+    </tr>
+        <tr>
+      <th scope="row">Job</th>
+      <td>xx</td>
+    </tr>
+        <tr>
+      <th scope="row">Ausbildungsjahr</th>
+      <td>xx</td>
+    </tr>
+        <tr>
+      <th scope="row">Alter</th>
+      <td>xx</td>
+    </tr>
+        <tr>
+      <th scope="row">Beschreibung</th>
+      <td>xx</td>
+    </tr>
+    </tbody>
+    </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 	</div>
 </div>
+
 <jsp:include page="/WEB-INF/include/footer.jsp" />
