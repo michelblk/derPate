@@ -38,7 +38,7 @@ public class LoginServletFilter implements ServletFilter, Filter {
 
 	/**
 	 * Default constructor<br>
-	 * Used, when all users are allowed
+	 * Used, when all logged users are allowed
 	 */
 	public LoginServletFilter() {
 		// no need to initialize anything

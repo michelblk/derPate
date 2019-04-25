@@ -34,8 +34,9 @@ import de.db.derpate.util.NumberUtil;
 import de.db.derpate.util.URIParameterEncryptionUtil;
 
 /**
- * This Servlet is used by the {@link Admin} to update a godfathers personal
- * data (except password)
+ * This Servlet is used by the {@link Admin} to update a {@link Godfather}s
+ * personal data (except password) or to remove the {@link Godfather}<br>
+ * Allowed http methods: <code>POST</code>, <code>DELETE</code>
  *
  * @author MichelBlank
  *
@@ -102,7 +103,15 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	 */
 	public static final String PARAMETER_GODFATHER_PICKTEXT = "picktext"; //$NON-NLS-1$
 	/**
-	 * Http Status Code when database error
+	 * HTTP status code, if the id doesn't exist
+	 */
+	public static final int SC_NOT_FOUND = HttpServletResponse.SC_NOT_FOUND;
+	/**
+	 * HTTP status code, if action was performed successfully
+	 */
+	public static final int SC_SUCCESS = HttpServletResponse.SC_OK;
+	/**
+	 * HTTP status code, if action could not be performed due to a database error
 	 */
 	public static final int SC_ERROR = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
@@ -110,14 +119,15 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	private final LocationDao locationDao = new LocationDao();
 	private final JobDao jobDao = new JobDao();
 
-	private GodfatherUpdateServlet() {
+	/**
+	 * Default constructor initializing the {@link FilterServlet}
+	 */
+	public GodfatherUpdateServlet() {
 		super(new LoginServletFilter(Usermode.ADMIN), new CSRFServletFilter(CSRFForm.ADMIN_UPDATE_GODFATHER));
 	}
 
 	@Override
 	protected void onPost(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
-		resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
-
 		Integer godfatherId = URIParameterEncryptionUtil.decryptToInteger(req.getParameter(PARAMETER_GODFATHER_ID));
 		Godfather godfather = this.godfatherDao.findById(godfatherId);
 		if (godfather != null) {
@@ -152,23 +162,39 @@ public class GodfatherUpdateServlet extends FilterServlet {
 					.findById(URIParameterEncryptionUtil.decryptToInteger(PARAMETER_GODFATHER_LOCATION)), godfather)) {
 				response.add(PARAMETER_GODFATHER_LOCATION);
 			}
-			if (updateMaxTrainees(PARAMETER_GODFATHER_MAXTRAINEES, godfather)) {
+			if (updateMaxTrainees(req.getParameter(PARAMETER_GODFATHER_MAXTRAINEES), godfather)) {
 				response.add(PARAMETER_GODFATHER_MAXTRAINEES);
 			}
-			if (updateDescription(PARAMETER_GODFATHER_DESCRIPTION, godfather)) {
+			if (resetDescription(req.getParameter(PARAMETER_GODFATHER_DESCRIPTION), godfather)) {
 				response.add(PARAMETER_GODFATHER_DESCRIPTION);
 			}
-			if (updatePickText(PARAMETER_GODFATHER_PICKTEXT, godfather)) {
+			if (resetPickText(req.getParameter(PARAMETER_GODFATHER_PICKTEXT), godfather)) {
 				response.add(PARAMETER_GODFATHER_PICKTEXT);
 			}
 
 			if (this.godfatherDao.update(godfather)) {
+				resp.setStatus(SC_SUCCESS);
+				resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 				resp.getWriter().print(new Gson().toJson(response));
 			} else {
 				// if a database error occurred
 				resp.sendError(SC_ERROR);
 			}
 		}
+		resp.sendError(SC_NOT_FOUND);
+	}
+
+	@Override
+	protected void onDelete(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
+		Integer godfatherId = URIParameterEncryptionUtil.decryptToInteger(req.getParameter(PARAMETER_GODFATHER_ID));
+		Godfather godfather = this.godfatherDao.findById(godfatherId);
+		if (godfather != null) {
+			boolean success = this.godfatherDao.remove(godfather);
+
+			resp.setStatus(success ? SC_SUCCESS : SC_ERROR);
+			return;
+		}
+		resp.sendError(SC_NOT_FOUND);
 	}
 
 	private static boolean updateLastName(@Nullable String lastName, @NonNull Godfather outGodfather) {
@@ -254,29 +280,17 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		return valid;
 	}
 
-	private static boolean updateDescription(String description, Godfather outGodfather) {
-		boolean valid = false;
-		if (description != null) { // is allowed to be empty
-			description = description.trim();
-			if (description.isEmpty()) {
-				description = null;
-			}
-			valid = true;
-			outGodfather.setDescription(description); // TODO validate
+	private static boolean resetDescription(String description, Godfather outGodfather) {
+		if (description != null) {
+			outGodfather.setDescription(null); // reset description
 		}
-		return valid;
+		return true;
 	}
 
-	private static boolean updatePickText(String pickText, Godfather outGodfather) {
-		boolean valid = false;
-		if (pickText != null) { // is allowed to be empty
-			pickText = pickText.trim();
-			if (pickText.isEmpty()) {
-				pickText = null;
-			}
-			valid = true;
-			outGodfather.setPickText(pickText);
+	private static boolean resetPickText(String picktext, Godfather outGodfather) {
+		if (picktext != null) {
+			outGodfather.setPickText(null); // reset pick text
 		}
-		return valid;
+		return true;
 	}
 }

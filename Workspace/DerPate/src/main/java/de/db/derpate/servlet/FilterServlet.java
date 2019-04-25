@@ -93,4 +93,31 @@ public abstract class FilterServlet extends BaseServlet {
 		resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 	}
 
+	/**
+	 * Handles delete request. Checks if all filters apply and calls
+	 * {@link #onDelete(HttpServletRequest, HttpServletResponse)}, if they do.
+	 */
+	@Override
+	protected void delete(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
+		if (this.filterHandler.handleFilter(req, resp)) {
+			this.onDelete(req, resp);
+		}
+	}
+
+	/**
+	 * Method, that get's called, after all filters were checked and should handle
+	 * delete requests.<br>
+	 * By default, responds with a "method not allowed" (code
+	 * {@value HttpServletResponse#SC_METHOD_NOT_ALLOWED}) http status, when not
+	 * overwritten.
+	 *
+	 * @param req  {@link HttpServletRequest}
+	 * @param resp {@link HttpServletResponse}
+	 * @throws IOException if an input or output exception occurs, while sending
+	 *                     error
+	 */
+	protected void onDelete(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
+		resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+	}
+
 }

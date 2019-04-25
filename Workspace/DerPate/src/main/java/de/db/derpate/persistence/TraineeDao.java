@@ -36,7 +36,7 @@ public final class TraineeDao extends IdDao<@NonNull Integer, @Nullable Trainee>
 	 * @return the {@link Trainee} or <code>null</code>, if no {@link Trainee} was
 	 *         found with the given token
 	 */
-	public Trainee byToken(String token) {
+	public Trainee findByToken(@NonNull String token) {
 		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 		CriteriaQuery<Trainee> query = builder.createQuery(this.entityClass);
 

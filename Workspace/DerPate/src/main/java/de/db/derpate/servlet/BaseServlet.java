@@ -92,4 +92,31 @@ public abstract class BaseServlet extends HttpServlet {
 		resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 	}
 
+	/**
+	 * Handles delete request, sets character encoding and calls custom delete
+	 * method ({@link #delete(HttpServletRequest, HttpServletResponse)}
+	 */
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if (req != null && resp != null) {
+			ServletUtil.setCharacterEncoding(req, resp);
+			this.delete(req, resp);
+		}
+	}
+
+	/**
+	 * This method handles delete requests, after it was initiated by
+	 * {@link #doDelete(HttpServletRequest, HttpServletResponse)}.<br>
+	 * By default, it sends a "method not allowed" (code
+	 * {@value HttpServletResponse#SC_METHOD_NOT_ALLOWED}) http error as response,
+	 * if this method does not get overwritten by subclass.
+	 *
+	 * @param req  {@link HttpServletRequest}
+	 * @param resp {@link HttpServletResponse}
+	 * @throws IOException if an input or output exception occurs
+	 */
+	protected void delete(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
+		resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+	}
+
 }

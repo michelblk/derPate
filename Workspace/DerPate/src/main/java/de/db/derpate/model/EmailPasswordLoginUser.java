@@ -42,14 +42,15 @@ public abstract class EmailPasswordLoginUser extends LoginUser {
 	}
 
 	/**
-	 * Constructor used, when object should not be used for login
+	 * Constructor used, when object is used for login
 	 *
-	 * @param id    id
-	 * @param email email
+	 * @param email    email
+	 * @param password hashed password
 	 */
-	public EmailPasswordLoginUser(int id, @NonNull String email) {
-		super(id);
+	public EmailPasswordLoginUser(@NonNull String email, @Nullable String password) {
+		super();
 		this.email = email;
+		this.setPassword(password);
 	}
 
 	/**
@@ -60,7 +61,8 @@ public abstract class EmailPasswordLoginUser extends LoginUser {
 	 * @param password hashed password
 	 */
 	public EmailPasswordLoginUser(int id, @NonNull String email, @Nullable String password) {
-		this(id, email);
+		super(id);
+		this.email = email;
 		this.setPassword(password);
 	}
 

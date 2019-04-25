@@ -48,6 +48,16 @@ public class Trainee extends LoginUser {
 	}
 
 	/**
+	 * Constructor used to generate new {@link Trainee} accounts
+	 *
+	 * @param loginToken LoginToken
+	 */
+	public Trainee(@NonNull String loginToken) {
+		super();
+		this.loginToken = loginToken;
+	}
+
+	/**
 	 * Constructor that sets the loginToken and the {@link Godfather}.
 	 *
 	 * @param id         Database id

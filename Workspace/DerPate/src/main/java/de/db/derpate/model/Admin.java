@@ -7,6 +7,7 @@ import javax.persistence.Table;
 import javax.servlet.http.HttpSession;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 import de.db.derpate.manager.LoginManager;
 
@@ -39,10 +40,11 @@ public class Admin extends EmailPasswordLoginUser {
 	/**
 	 * Constructor
 	 *
-	 * @param id    Database id
-	 * @param email Email
+	 * @param id       Database id
+	 * @param email    Email
+	 * @param password Password
 	 */
-	public Admin(int id, @NonNull String email) {
-		super(id, email);
+	public Admin(int id, @NonNull String email, @Nullable String password) {
+		super(id, email, password);
 	}
 }
