@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
@@ -95,31 +96,53 @@ abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	}
 
 	@Override
-	public void persist(E entity) {
-		this.entityManager.persist(entity);
+	public boolean persist(E entity) {
+		boolean success = false;
+		try {
+			EntityTransaction transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.persist(entity);
+			transaction.commit();
+			success = true;
+		} catch (EntityExistsException | IllegalArgumentException | TransactionRequiredException
+				| RollbackException e) {
+			LoggingManager.log(Level.SEVERE, "Error while persisting Entity: " + e.getMessage()); //$NON-NLS-1$
+		}
+		return success;
+
 	}
 
 	@Override
 	public boolean update(E entity) {
 		boolean success = false;
-		EntityTransaction transaction = null;
 		try {
-			transaction = this.entityManager.getTransaction();
+			EntityTransaction transaction = this.entityManager.getTransaction();
 			transaction.begin();
 			this.entityManager.merge(entity);
 			transaction.commit();
 			success = true;
 		} catch (RollbackException e) {
-			LoggingManager.log(Level.INFO, "Error updating DatabaseEntity. Rolling back: " + e.getMessage()); //$NON-NLS-1$
+			LoggingManager.log(Level.INFO, "Error updating Entity. Rolling back: " + e.getMessage()); //$NON-NLS-1$
 		} catch (IllegalArgumentException | TransactionRequiredException | IllegalStateException e) {
-			LoggingManager.log(Level.WARNING, "Error updating DatabaseEntity: " + e.getMessage()); //$NON-NLS-1$
+			LoggingManager.log(Level.WARNING, "Error updating Entity: " + e.getMessage()); //$NON-NLS-1$
 		}
 		return success;
 	}
 
 	@Override
-	public void remove(E entity) {
-		this.entityManager.remove(entity);
+	public boolean remove(E entity) {
+		boolean success = false;
+		try {
+			EntityTransaction transaction = this.entityManager.getTransaction();
+			transaction.begin();
+			this.entityManager.remove(entity);
+			transaction.commit();
+			success = true;
+		} catch (EntityExistsException | IllegalArgumentException | TransactionRequiredException
+				| RollbackException e) {
+			LoggingManager.log(Level.SEVERE, "Error while removing Entity: " + e.getMessage()); //$NON-NLS-1$
+		}
+		return success;
 	}
 
 }

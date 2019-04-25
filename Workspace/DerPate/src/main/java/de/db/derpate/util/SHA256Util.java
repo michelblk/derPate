@@ -2,9 +2,7 @@ package de.db.derpate.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Random;
 
 /**
  * This util uses the SHA-265 algorithm to hash data.<br>
@@ -16,7 +14,6 @@ import java.util.Random;
 public final class SHA256Util implements HashUtil {
 	private static SHA256Util instance;
 	private static final String ALGORITHM = "SHA-256"; //$NON-NLS-1$
-	private final Random RANDOM = new SecureRandom();
 	private final MessageDigest MESSAGEDIGEST;
 
 	/**
@@ -45,18 +42,6 @@ public final class SHA256Util implements HashUtil {
 			instance = new SHA256Util();
 		}
 		return instance;
-	}
-
-	/**
-	 * Generates a random byte array
-	 *
-	 * @param length Length of array
-	 * @return bytes
-	 */
-	public byte[] getRandomBytes(int length) {
-		byte[] bytes = new byte[length];
-		this.RANDOM.nextBytes(bytes);
-		return bytes;
 	}
 
 	/**
@@ -113,7 +98,7 @@ public final class SHA256Util implements HashUtil {
 
 	@Override
 	public String hash(String unhashed, int saltlength, byte[] pepper, String hashseperator) {
-		return this.hash(unhashed, this.getRandomBytes(saltlength), pepper, hashseperator);
+		return this.hash(unhashed, RandomUtil.generateRandomBytes(saltlength), pepper, hashseperator);
 	}
 
 	@Override

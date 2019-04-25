@@ -92,6 +92,16 @@ public class Godfather extends EmailPasswordLoginUser {
 	}
 
 	/**
+	 * Constructor used to generate new {@link Godfather}s
+	 *
+	 * @param email    Email
+	 * @param password Password
+	 */
+	public Godfather(@NonNull String email, @NonNull String password) {
+		super(email, password);
+	}
+
+	/**
 	 * Constructor used by godfather login
 	 *
 	 * @param id       Database id of {@link Godfather}
@@ -109,32 +119,25 @@ public class Godfather extends EmailPasswordLoginUser {
 	 *
 	 * @param id          Id from database
 	 * @param email       Email address
+	 * @param password    password
 	 * @param lastName    Lastname
 	 * @param firstName   Firstname
 	 * @param location    Location
 	 * @param maxTrainees Maximum number of accepted trainees
-	 * @param description Description
 	 * @param job         Job
 	 * @param hiringDate  Hiring date
 	 * @param birthday    Birthday
-	 * @param pickText    Text to display, after {@link Trainee} selected a
-	 *                    {@link Godfather}
 	 */
-	public Godfather(int id, @NonNull String email, @NonNull final String lastName, @NonNull final String firstName,
-			@NonNull final Location location, int maxTrainees, @Nullable final String description,
-			@NonNull final Job job, @NonNull final Date hiringDate, @Nullable Date birthday,
-			@Nullable String pickText) {
-		super(id, email);
+	public Godfather(int id, @NonNull String email, @Nullable String password, @NonNull final String lastName,
+			@NonNull final String firstName, @NonNull final Location location, int maxTrainees, @NonNull final Job job,
+			@NonNull final Date hiringDate, @Nullable Date birthday) {
+		super(id, email, password);
 		this.setLastName(lastName);
 		this.setFirstName(firstName);
 		this.setLocation(location);
-		this.setDescription(description);
 		this.setJob(job);
 		this.setHiringDate(hiringDate);
 		this.setBirthday(birthday);
-		this.setPickText(pickText);
-
-		this.hasFreeTraineeSlots = this.getMaxTrainees() > this.getCurrentNumberTrainees();
 	}
 
 	/**
@@ -290,15 +293,6 @@ public class Godfather extends EmailPasswordLoginUser {
 	 */
 	public int getCurrentNumberTrainees() {
 		return this.currentTrainees;
-	}
-
-	/**
-	 * @return <code>true</code>, if the godfather can be in charge of at least one
-	 *         more trainee;<code>false</code>, if all slots are assigned to a
-	 *         trainee
-	 */
-	public boolean hasFreeTraineeSlots() {
-		return this.hasFreeTraineeSlots;
 	}
 
 	/**

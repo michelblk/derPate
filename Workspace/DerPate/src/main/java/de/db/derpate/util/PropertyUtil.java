@@ -100,7 +100,7 @@ public final class PropertyUtil {
 	 *         converted to an integer
 	 */
 	public int getIntProperty(@NonNull String key, int defaultValue) {
-		String value = this.getProperty(key);
+		String value = this.getProperty(key, null);
 		return (InputVerifyUtil.isInteger(value) ? Integer.parseInt(value) : defaultValue);
 	}
 }

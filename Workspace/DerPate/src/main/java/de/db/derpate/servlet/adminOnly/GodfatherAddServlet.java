@@ -17,7 +17,10 @@ import de.db.derpate.servlet.filter.LoginServletFilter;
 
 @WebServlet("/adminGodfatherAdd")
 public class GodfatherAddServlet extends FilterServlet {
-	private GodfatherAddServlet() {
+	/**
+	 * Default constructor initializing the {@link FilterServlet}
+	 */
+	public GodfatherAddServlet() {
 		super(new LoginServletFilter(Usermode.ADMIN), new CSRFServletFilter(CSRFForm.ADMIN_ADD_GODFATHER));
 	}
 
