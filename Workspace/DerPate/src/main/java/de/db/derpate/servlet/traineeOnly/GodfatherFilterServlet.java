@@ -155,7 +155,7 @@ public class GodfatherFilterServlet extends FilterServlet {
 		List<String> wantedDecrypedEducationalYears = URIParameterEncryptionUtil
 				.decrypt(req.getParameterValues(FILTER_PARAM_EDUCATIONAL_YEAR));
 
-		List<Godfather> all = this.godfatherDao.filterAvailable(false, wantedDecrypedLocations, wantedDecrypedJobs,
+		List<Godfather> all = this.godfatherDao.filterAvailable(true, wantedDecrypedLocations, wantedDecrypedJobs,
 				wantedDecrypedTeachingTypes, wantedDecrypedEducationalYears);
 
 		resp.getWriter().print(toJson(all, false).toString());
