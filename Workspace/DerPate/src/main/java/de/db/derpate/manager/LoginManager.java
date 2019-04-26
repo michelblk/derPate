@@ -157,7 +157,7 @@ public class LoginManager {
 	 * @return the {@link Usermode}
 	 */
 	@Nullable
-	public Usermode getUsermode(@NonNull LoginUser user) {
+	public Usermode getUsermode(@Nullable LoginUser user) {
 		Usermode result = null;
 
 		if (user instanceof Admin) {

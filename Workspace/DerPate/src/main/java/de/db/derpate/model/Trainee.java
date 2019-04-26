@@ -41,8 +41,7 @@ public class Trainee extends LoginUser {
 	/**
 	 * Default constructor used by hibernate
 	 */
-	@SuppressWarnings("unused")
-	private Trainee() {
+	protected Trainee() {
 		super();
 		this.loginToken = ""; //$NON-NLS-1$
 	}
