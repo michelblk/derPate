@@ -29,6 +29,7 @@ import de.db.derpate.servlet.FilterServlet;
 import de.db.derpate.servlet.filter.CSRFServletFilter;
 import de.db.derpate.servlet.filter.LoginServletFilter;
 import de.db.derpate.util.DateUtil;
+import de.db.derpate.util.HashUtil;
 import de.db.derpate.util.InputVerifyUtil;
 import de.db.derpate.util.NumberUtil;
 import de.db.derpate.util.URIParameterEncryptionUtil;
@@ -83,6 +84,11 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	 * POST Parameter used for the e-mail
 	 */
 	public static final String PARAMETER_GODFATHER_EMAIL = "email"; //$NON-NLS-1$
+	/**
+	 * POST Parameter used for the password. Should only be set, if the password
+	 * should be overwritten
+	 */
+	public static final String PARAMETER_GODFATHER_PASSWORD = "password"; //$NON-NLS-1$
 	/**
 	 * POST Parameter used for the location id (encrypted)
 	 */
@@ -157,6 +163,9 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			}
 			if (updateEmail(req.getParameter(PARAMETER_GODFATHER_EMAIL), godfather)) {
 				response.add(PARAMETER_GODFATHER_EMAIL);
+			}
+			if (overwritePassword(req.getParameter(PARAMETER_GODFATHER_PASSWORD), godfather)) {
+				response.add(PARAMETER_GODFATHER_PASSWORD);
 			}
 			if (updateLocation(this.locationDao
 					.findById(URIParameterEncryptionUtil.decryptToInteger(PARAMETER_GODFATHER_LOCATION)), godfather)) {
@@ -292,5 +301,18 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			outGodfather.setPickText(null); // reset pick text
 		}
 		return true;
+	}
+
+	private static boolean overwritePassword(String password, Godfather outGodfather) {
+		boolean success = false;
+		if (password != null && !password.isBlank()) {
+			HashUtil hashUtil = Constants.Login.hashUtil;
+			String encryptedPassword = hashUtil.hash(password, Constants.Login.hashSaltLength,
+					Constants.Login.hashPepper, Constants.Login.hashSeparator);
+
+			outGodfather.setPassword(encryptedPassword);
+			success = true;
+		}
+		return success;
 	}
 }
