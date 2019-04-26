@@ -18,7 +18,7 @@ import de.db.derpate.util.ServletUtil;
  * This abstract {@link HttpServlet} should be used for all created servlets, as
  * it sets the character encoding and stops request, if request or response is
  * null.<br>
- * <b>Supported Methods: GET, POST</b>
+ * <b>Supported Methods: GET, POST, DELETE</b>
  *
  * @author MichelBlank
  *

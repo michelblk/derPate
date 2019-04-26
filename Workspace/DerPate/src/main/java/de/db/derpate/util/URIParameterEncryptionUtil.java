@@ -21,9 +21,9 @@ import de.db.derpate.model.LoginUser;
 public final class URIParameterEncryptionUtil {
 	private static EncryptionUtil defaultEncrypter;
 	@NonNull
-	private static String DEFAULT_PASSWORD = Constants.Security.ENCRYPTION_AES256_PASSWORD;
+	private static final String DEFAULT_PASSWORD = Constants.Security.ENCRYPTION_AES256_PASSWORD;
 	@NonNull
-	private static String DEFAULT_SALT = Constants.Security.ENCRYPTION_AES256_SALT;
+	private static final String DEFAULT_SALT = Constants.Security.ENCRYPTION_AES256_SALT;
 
 	static {
 		defaultEncrypter = new AES256EncryptionUtil(DEFAULT_PASSWORD, DEFAULT_SALT);
