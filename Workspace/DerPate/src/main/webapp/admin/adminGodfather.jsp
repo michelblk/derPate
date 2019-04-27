@@ -4,17 +4,14 @@
 	import="de.db.derpate.util.CSRFPreventionUtil"
 	import="de.db.derpate.persistence.LocationDao"
 	import="de.db.derpate.model.Location"
-	import="de.db.derpate.util.URIParameterEncryptionUtil"
-	import="de.db.derpate.persistence.TeachingTypeDao"
 	import="de.db.derpate.model.TeachingType"
-	import="de.db.derpate.persistence.JobDao"
-	import="org.eclipse.jdt.annotation.NonNull"
 	import="de.db.derpate.persistence.GodfatherDao"
-	import="de.db.derpate.model.Job" import="de.db.derpate.Constants"
-	import="java.util.List" import="de.db.derpate.model.Godfather"
-	import="de.db.derpate.persistence.GodfatherDao"
+	import="de.db.derpate.model.Job" 
+	import="java.util.List" 
+	import="de.db.derpate.model.Godfather"
 	import="de.db.derpate.util.URIParameterEncryptionUtil"
-	import="de.db.derpate.persistence.JobDao"%>
+	import="de.db.derpate.persistence.JobDao"
+%>
 
 <%
 	GodfatherDao godfatherDao = new GodfatherDao();
