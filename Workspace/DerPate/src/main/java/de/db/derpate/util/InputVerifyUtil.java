@@ -23,7 +23,7 @@ public final class InputVerifyUtil {
 	 */
 	public static final Pattern WORD_PATTERN = Pattern.compile("^([a-zäöüß]*)$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 	/**
-	 * Pattern used to check if string is just one single word
+	 * Pattern used to check if string contains at least one word
 	 */
 	public static final Pattern SENTENCE_PATTERN = Pattern.compile("^([a-zäöüß\\s]*)$", Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 	/**

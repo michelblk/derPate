@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.db.derpate.Constants;
-import de.db.derpate.util.SHA256Util;
 
 @SuppressWarnings({ "javadoc", "nls" })
 public class SHA256UtilTest {
@@ -22,7 +21,7 @@ public class SHA256UtilTest {
 	public void init() {
 		this.util = SHA256Util.getInstance();
 		this.saltPepperLength = Constants.Login.hashSaltLength;
-		this.pepper = this.util.getRandomBytes(this.saltPepperLength);
+		this.pepper = RandomUtil.generateRandomBytes(this.saltPepperLength);
 		this.input = "test";
 		this.hashseperator = Constants.Login.hashSeparator;
 	}

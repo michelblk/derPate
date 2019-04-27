@@ -4,7 +4,7 @@
 	pageEncoding="UTF-8"
 	import="org.apache.http.impl.EnglishReasonPhraseCatalog" %>
 <%@ include file="../include/header.jsp" %>
-<div class="text-center">
+<div class="container text-center">
 	<h1>
 		&#9785;<!-- sad face -->
 	</h1>

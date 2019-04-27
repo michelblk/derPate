@@ -67,7 +67,7 @@ public class LoginServletFilter implements ServletFilter, Filter {
 	public boolean filter(@NonNull HttpServletRequest req) {
 		boolean isLoggedIn = LoginManager.getInstance().isLoggedIn(req.getSession());
 		boolean result = isLoggedIn;
-		if (result == true && this.requiredUsermode != null) {
+		if (result && this.requiredUsermode != null) {
 			result = LoginManager.getInstance().isUserOfSessionInUsermode(req.getSession(), this.requiredUsermode);
 		}
 

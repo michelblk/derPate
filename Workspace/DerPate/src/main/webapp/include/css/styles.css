@@ -26,6 +26,7 @@ html, body {
 	flex: 1 0 auto;
 }
 
+
 .container-middle {
 	display: flex;
 	align-items: center;
@@ -37,7 +38,7 @@ html, body {
     color: #fff;
     line-height: 20px;
     font-size: .875em;
-    padding: 6px 33px 5px;
+    padding: 6px 33px 5px ;
     border: 0 !important;
     box-shadow: 1px 2px 2px rgba(0,0,0,0.5);
     text-decoration: none;
@@ -73,7 +74,10 @@ input[type="date"] {
 .btn-outline-db {
   color: #f01414; /* DB Rot */
   border-color: #f01414; /* DB Rot */
-  margin-top: 5px;
+  line-height: 19px;
+  font-size: .875em;
+  padding: 6px 33px 5px ;
+  border-radius: 0 !important;
 }
 
 .btn-outline-db:hover {

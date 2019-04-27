@@ -1,4 +1,4 @@
-package de.db.derpate.servlet.traineeOnly;
+package de.db.derpate.servlet;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -27,7 +27,6 @@ import de.db.derpate.model.Job;
 import de.db.derpate.model.Trainee;
 import de.db.derpate.model.typeadapter.DateTypeAdapter;
 import de.db.derpate.persistence.GodfatherDao;
-import de.db.derpate.servlet.FilterServlet;
 import de.db.derpate.servlet.filter.LoginServletFilter;
 import de.db.derpate.util.DateUtil;
 import de.db.derpate.util.URIParameterEncryptionUtil;
@@ -40,7 +39,7 @@ import de.db.derpate.util.URIParameterEncryptionUtil;
  * @author MichelBlank
  *
  */
-@WebServlet("/godfather")
+@WebServlet("/findGodfather")
 public class GodfatherFilterServlet extends FilterServlet {
 	/**
 	 * Default Serial Version UID
@@ -120,27 +119,35 @@ public class GodfatherFilterServlet extends FilterServlet {
 	 * Constructor
 	 */
 	public GodfatherFilterServlet() {
-		super(new LoginServletFilter(Usermode.TRAINEE));
+		super(new LoginServletFilter(Usermode.TRAINEE, Usermode.ADMIN));
 	}
 
 	@SuppressWarnings("null") // Suppress warning, that session or wantedEncryptedLocation,... might be null
 	@Override
 	protected void onGet(@NonNull HttpServletRequest req, @NonNull HttpServletResponse resp) throws IOException {
 		resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
+		Usermode usermode = LoginManager.getInstance()
+				.getUsermode(LoginManager.getInstance().getUserBySession(req.getSession())); // should not be null, as
+																								// user is logged in
+		boolean showAvailableOnly = usermode != Usermode.ADMIN; // show only godfathers with available slots
+		boolean showAllInformations = !showAvailableOnly; // show lastname, email and picktext too
 
-		// get logged in trainee
-		Trainee trainee = LoginManager.getInstance().getUserBySession(req.getSession());
-		if (trainee == null) {
-			LoggingManager.log(Level.WARNING,
-					"Trainee could call GodfatherFilterServlet without permission, as Filter failed! Request stopped."); //$NON-NLS-1$
-			return;
-		}
+		if (usermode == Usermode.TRAINEE) {
+			// get logged in trainee
+			Trainee trainee = LoginManager.getInstance().getUserBySession(req.getSession());
+			if (trainee == null) {
+				LoggingManager.log(Level.WARNING,
+						"Trainee could call GodfatherFilterServlet without permission, as Filter failed! Request stopped."); //$NON-NLS-1$
+				return;
+			}
 
-		if (trainee.getGodfather() != null) {
-			// look for my godfather, as user has already selected a godfather permanently
-			Godfather godfather = trainee.getGodfather();
-			resp.getWriter().print(toJson(godfather, true).toString());
-			return;
+			if (trainee.getGodfather() != null) {
+				// look for my godfather, as user has already selected a godfather permanently
+				showAllInformations = true;
+				Godfather godfather = trainee.getGodfather();
+				resp.getWriter().print(toJson(godfather, showAllInformations).toString());
+				return;
+			}
 		}
 
 		// no godfather selected -> proceed
@@ -155,10 +162,10 @@ public class GodfatherFilterServlet extends FilterServlet {
 		List<String> wantedDecrypedEducationalYears = URIParameterEncryptionUtil
 				.decrypt(req.getParameterValues(FILTER_PARAM_EDUCATIONAL_YEAR));
 
-		List<Godfather> all = this.godfatherDao.filterAvailable(false, wantedDecrypedLocations, wantedDecrypedJobs,
-				wantedDecrypedTeachingTypes, wantedDecrypedEducationalYears);
+		List<Godfather> all = this.godfatherDao.filterAvailable(showAvailableOnly, wantedDecrypedLocations,
+				wantedDecrypedJobs, wantedDecrypedTeachingTypes, wantedDecrypedEducationalYears);
 
-		resp.getWriter().print(toJson(all, false).toString());
+		resp.getWriter().print(toJson(all, showAllInformations).toString());
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"
 	import="de.db.derpate.CSRFForm"
-	import="de.db.derpate.servlet.traineeOnly.GodfatherFilterServlet"
+	import="de.db.derpate.servlet.GodfatherFilterServlet"
 	import="de.db.derpate.servlet.traineeOnly.GodfatherSelectServlet"
 	import="de.db.derpate.util.CSRFPreventionUtil"
 	import="de.db.derpate.persistence.LocationDao"
@@ -109,7 +109,7 @@
 		</form>
 			</div>
 	<div id="results">
-		<div class="godfather-card card default" id="godfahter-card-default" data-description="">
+		<div class="godfather-card card default" id="godfahter-card-default" >
 			<div class="card-img-top godfather-card-image"></div>
 			<div class="card-body">
 				<h5 class="card-title godfather-card-firstname">Vorname</h5>
@@ -121,7 +121,7 @@
 					<input type="hidden" class="godfather-card-educationalyear">
 					<input type="hidden" class="godfather-card-age">
 					<input type="hidden" class="godfather-card-description">
-					<button class="btn btn-db more-info-godfather-button" >Show more</button>
+					<button class="btn btn-db more-info-godfather-button" >Mehr anzeigen</button>
 				</div>
 			</div>
 		</div>
@@ -131,7 +131,7 @@
   			<div class="modal-dialog modal-lg modal-dialog-centered">
     	 <div class="modal-content">
       <div class="modal-header">
-       	 <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+       	 <h5 class="modal-title" id="exampleModalLongTitle">Mehr Informationen</h5>
         	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -140,40 +140,44 @@
         <table class="table">
   <tbody>
     <tr>
-      <th scope="row">Name</th>
-      <td>xx</td>
-
+      <th>Name</th>
+      <td class="godfather-card-firstname"></td>
+    </tr>
+      <tr>
+      <th>Alter</th>
+      <td class="godfather-card-age"></td>
     </tr>
     <tr>
-      <th scope="row">Tätigkeitsstelle</th>
-      <td>xx</td>
+      <th>Tätigkeitsstelle</th>
+      <td class="godfather-card-location"></td>
     </tr>
         <tr>
-      <th scope="row"> Ausbildungart</th>
-      <td>xx</td>
+      <th> Ausbildungsart</th>
+      <td class="godfather-card-teachingType"></td>
     </tr>
         <tr>
-      <th scope="row">Job</th>
-      <td>xx</td>
+      <th>Job</th>
+      <td class ="godfather-card-job"></td>
     </tr>
         <tr>
-      <th scope="row">Ausbildungsjahr</th>
-      <td>xx</td>
+      <th>Ausbildungsjahr</th>
+      <td class="godfather-card-educationalyear"></td>
     </tr>
+    
         <tr>
-      <th scope="row">Alter</th>
-      <td>xx</td>
-    </tr>
-        <tr>
-      <th scope="row">Beschreibung</th>
-      <td>xx</td>
+      <th>Beschreibung</th>
+      <td class="godfather-card-description"></td>
     </tr>
     </tbody>
     </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-outline-db" data-dismiss="modal">Schließen</button>
+						<form class="godfahter-card-select-form" action="godfatherSelect" method="POST">
+							<input type="hidden" class="godfather-card-select-csrf" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.TRAINEE_SELECT_GODFATHER) %>" />
+							<input type="hidden" class="godfather-card-select-id" name="<%= GodfatherSelectServlet.PARAM_GODFAHTER_ID %>" value="">
+							<input type="submit" class="btn btn-db godfather-card-select-btn" value="Als Paten ausw&auml;hlen"/>
+						</form>
       </div>
     </div>
   </div>

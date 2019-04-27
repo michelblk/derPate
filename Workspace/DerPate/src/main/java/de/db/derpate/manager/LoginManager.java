@@ -121,9 +121,9 @@ public class LoginManager {
 		if (session != null) {
 			try {
 				Object potentialUser = session.getAttribute(this.userKey);
-				success = (potentialUser != null && potentialUser instanceof LoginUser); // user is logged in, when
-																							// session contains an user
-																							// object
+				success = potentialUser instanceof LoginUser; // user is logged in, when
+																// session contains an user
+																// object
 			} catch (IllegalStateException e) {
 				LoggingManager.log(Level.INFO, "Could not read login status out of session: " + e.getMessage()); //$NON-NLS-1$
 			}
@@ -157,7 +157,7 @@ public class LoginManager {
 	 * @return the {@link Usermode}
 	 */
 	@Nullable
-	public Usermode getUsermode(@NonNull LoginUser user) {
+	public Usermode getUsermode(@Nullable LoginUser user) {
 		Usermode result = null;
 
 		if (user instanceof Admin) {
