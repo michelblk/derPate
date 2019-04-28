@@ -3,11 +3,15 @@ package de.db.derpate.servlet;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.entity.ContentType;
 import org.eclipse.jdt.annotation.NonNull;
+
+import com.google.gson.JsonObject;
 
 import de.db.derpate.CSRFForm;
 import de.db.derpate.Constants;
@@ -31,6 +35,7 @@ import de.db.derpate.util.HashUtil;
  * @author MichelBlank
  *
  */
+@WebServlet("/changepassword")
 public class ChangePasswordServlet extends FilterServlet {
 	/**
 	 * Default serial version UID
@@ -38,17 +43,13 @@ public class ChangePasswordServlet extends FilterServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * POST Parameter for the current password
-	 */
-	public static final String PARAMETER_OLD_PASSWORD = "current-password"; //$NON-NLS-1$
-	/**
 	 * POST Parameter for the new password
 	 */
 	public static final String PARAMETER_NEW_PASSWORD = "new-password"; //$NON-NLS-1$
 	/**
 	 * POST Parameter for the repetition of the new password
 	 */
-	public static final String PARAMETER_NEW_PASSWORD_2 = "new-password2"; //$NON-NLS-1$
+	public static final String PARAMETER_NEW_PASSWORD_2 = "new-password-confirmation"; //$NON-NLS-1$
 	/**
 	 * Http status code returned, if password change was successful
 	 */
@@ -57,6 +58,10 @@ public class ChangePasswordServlet extends FilterServlet {
 	 * Http status code returned, if an error occurred
 	 */
 	public static final int SC_ERROR = HttpServletResponse.SC_BAD_REQUEST;
+	/**
+	 * the key used for change status in response object
+	 */
+	public static final String RESPONSE_KEY_STATUS = "text"; //$NON-NLS-1$
 
 	/**
 	 * Constructor
@@ -81,7 +86,6 @@ public class ChangePasswordServlet extends FilterServlet {
 		String seperator = Constants.Login.hashSeparator;
 
 		// receive password
-		String oldPassword = req.getParameter(PARAMETER_OLD_PASSWORD);
 		String newPassword = req.getParameter(PARAMETER_NEW_PASSWORD);
 		String newPassword2 = req.getParameter(PARAMETER_NEW_PASSWORD_2);
 
@@ -89,10 +93,7 @@ public class ChangePasswordServlet extends FilterServlet {
 		String resultText = "OK"; //$NON-NLS-1$
 
 		// check preconditions
-		if (!hashUtil.isEqual(oldPassword, user.getPassword(), pepper, seperator)) {
-			success = false;
-			resultText = "Das aktuelle Passwort ist falsch"; //$NON-NLS-1$
-		} else if (newPassword == null || newPassword2 == null || !newPassword.equals(newPassword2)) {
+		if (newPassword == null || newPassword2 == null || !newPassword.equals(newPassword2)) {
 			success = false;
 			resultText = "Passwörter sind leer oder stimmen nicht überein"; //$NON-NLS-1$
 		} else if (hashUtil.isEqual(newPassword, user.getPassword(), pepper, seperator)) {
@@ -124,6 +125,14 @@ public class ChangePasswordServlet extends FilterServlet {
 
 		// return status
 		resp.setStatus(success ? SC_SUCCESS : SC_ERROR);
-		resp.getWriter().print(resultText); // $NON-NLS-1$
+		resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
+		String json = createJson(resultText);
+		resp.getWriter().print(json); // $NON-NLS-1$
+	}
+
+	private static String createJson(String status) {
+		JsonObject returnObject = new JsonObject();
+		returnObject.addProperty(RESPONSE_KEY_STATUS, status);
+		return returnObject.toString();
 	}
 }
