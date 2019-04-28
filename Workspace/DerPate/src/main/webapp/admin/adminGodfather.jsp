@@ -22,7 +22,7 @@
 
 <jsp:include page="/WEB-INF/include/header.jsp" />
 <link rel="stylesheet" type="text/css" href="include/css/admin.css" />
-<<script type="text/javascript" src="include/js/admin.js"></script>
+<script type="text/javascript" src="include/js/admin.js"></script>
 
 <nav class="navbar navbar-expand-sm menuebar">
 	<div class="container-fluid">
@@ -170,23 +170,24 @@
 							</div>
 						</div>
 					</div>
-					<form onSubmit="return checkPassword(this)">
+					<form class="passwordresetform">
 						<div class="row">
 							<div class="form-group col-md-6 row">
 								<label class="col-md-4 col-form-label">Neues Password</label>
 								<div class="col-md-8">
-									<input name="password" type="password" id="password">
+									<input name="password" type="password">
 								</div>
 							</div>
 							<div class="form-group col-md-6 row">
 								<label class="col-md-4 col-form-label">Password wiederholen</label>
 								<div class="col-md-8">
-									<input  name="password_confirm" type="password" id="password_confirm" oninput="check(this)">
+									<input  name="password_confirm" type="password">
 								</div>
 							</div>
 						</div>
 						<div>
-							<input type="submit" value="chech password">
+							<input type="hidden" name="csrf_token" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.CHANGE_PASSWORD) %>">
+							<input type="submit" value="Passwort ändern">
 						</div>
 					</form>
 				</div>
