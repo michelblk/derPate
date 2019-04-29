@@ -33,7 +33,7 @@
 		<form id="filtering-form">
 			<div class="btn-group" role="group">
 				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-secondary dropdown-toggle"
+					<button type="button" class="btn btn-db btn-secondary dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Standort</button>
 					<ul class="dropdown-menu">
@@ -52,7 +52,7 @@
 				</div>
 
 				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-secondary dropdown-toggle"
+					<button type="button" class="btn btn-db btn-secondary dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Ausbildungsform</button>
 					<ul class="dropdown-menu">
@@ -71,7 +71,7 @@
 				</div>
 
 				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-secondary dropdown-toggle"
+					<button type="button" class="btn btn-db btn-secondary dropdown-toggle"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Beruf</button>
 					<ul class="dropdown-menu">
@@ -88,7 +88,7 @@
 						%>
 					</ul>
 					<div class="btn-group" role="group">
-						<button type="button" class="btn btn-secondary dropdown-toggle"
+						<button type="button" class="btn btn-db btn-secondary dropdown-toggle"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Lehrjahr</button>
 						<ul class="dropdown-menu">
@@ -103,7 +103,7 @@
 						</ul>
 					</div>
 				</div>
-				<input class="btn btn-secondary" id="filtering-form-submit"
+				<input class="btn btn-db btn-secondary" id="filtering-form-submit"
 					type="submit" value="Suchen" />
 			</div>
 		</form>
