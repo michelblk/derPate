@@ -85,20 +85,10 @@ public class Godfather extends EmailPasswordLoginUser {
 	private String pickText;
 
 	/**
-	 * Default constructor used for hibernate
+	 * Default constructor used for hibernate and to create new {@link Godfather}s
 	 */
-	Godfather() {
+	public Godfather() {
 		super();
-	}
-
-	/**
-	 * Constructor used to generate new {@link Godfather}s
-	 *
-	 * @param email    Email
-	 * @param password Password
-	 */
-	public Godfather(@NonNull String email, @NonNull String password) {
-		super(email, password);
 	}
 
 	/**

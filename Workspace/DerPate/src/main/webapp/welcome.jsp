@@ -16,7 +16,7 @@
 				kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit
 				amet.
 			</div>
-			<a class="btn btn-lg btn-primary btn-block" href="">Weiter</a>
+			<a class="btn btn-lg btn-db btn-primary btn-block" href="godfather/godfatherUpdate.jsp">Weiter</a>
 		</div>
 	</div>
 <jsp:include page="WEB-INF/include/footer.jsp" />

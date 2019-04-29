@@ -5,6 +5,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import de.db.derpate.model.Admin;
 import de.db.derpate.model.Godfather;
 import de.db.derpate.model.Trainee;
+import de.db.derpate.servlet.ChangePasswordServlet;
 import de.db.derpate.servlet.LoginServlet;
 import de.db.derpate.servlet.LogoutServlet;
 import de.db.derpate.servlet.adminOnly.GenerateTraineeTokenServlet;
@@ -48,32 +49,39 @@ public enum CSRFForm {
 	,GODFATHER_UPDATE_SELF
 	
 	/**
-	 * Form used by {@link Admin}s to create a new {@link Godfather} account
+	 * Form used by {@link Admin Admins} to create a new {@link Godfather} account
 	 * 
 	 * @see GenerateTraineeTokenServlet
 	 */
 	,ADMIN_ADD_GODFATHER
 	
 	/**
-	 * Form used by {@link Admin}s to update {@link Godfather}s info
+	 * Form used by {@link Admin Admins} to update {@link Godfather Godfathers} info
 	 * 
 	 * @see de.db.derpate.servlet.adminOnly.GodfatherUpdateServlet
 	 */
 	,ADMIN_UPDATE_GODFATHER
 	
 	/**
-	 * Form used by {@link Admin}s to create a new {@link Trainee} account
+	 * Form used by {@link Admin Admins} to create a new {@link Trainee} account
 	 * 
 	 * @see GodfatherAddServlet
 	 */
 	,ADMIN_ADD_TRAINEE
 	
 	/**
-	 * Form used by {@link Admin}s to remove a {@link Trainee} or to remove their chosen {@link Godfather}
+	 * Form used by {@link Admin Admins} to remove a {@link Trainee} or to remove their chosen {@link Godfather}
 	 * 
 	 * @see TraineeRemoveServlet
 	 */
-	,ADMIN_UPDATE_TRAINEE;
+	,ADMIN_UPDATE_TRAINEE
+	
+	/**
+	 * Form used by {@link Admin Admins} and {@link Godfather Godfathers} to change their own password.
+	 * 
+	 * @see ChangePasswordServlet
+	 */
+	,CHANGE_PASSWORD;
 
 
 	@SuppressWarnings("null")

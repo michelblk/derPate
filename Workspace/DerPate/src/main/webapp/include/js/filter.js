@@ -11,7 +11,7 @@ $(document).ready(function () {
 		
 		$("#async-results").empty();
 		$.ajax({
-			url: 'godfather',
+			url: 'findGodfather',
 			method: 'GET',
 			data: $(this).serialize(),
 			dataType: 'json',

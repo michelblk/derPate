@@ -45,15 +45,15 @@
 	</filter>
 	
 	<filter-mapping>
-	   <filter-name>TraineeOnly</filter-name>
-	   <url-pattern>/example/filter.jsp</url-pattern>
+		<filter-name>AdminOnly</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>TraineeOnly</filter-name>
+		<url-pattern>/trainee/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>GodfatherOnly</filter-name>
-		<url-pattern>/example/godfatherUpdate.jsp</url-pattern>
-	</filter-mapping>
-		<filter-mapping>
-		<filter-name>AdminOnly</filter-name>
-		<url-pattern>/admin/*</url-pattern>
+		<url-pattern>/godfather/*</url-pattern>
 	</filter-mapping>
 </web-app>
