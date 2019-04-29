@@ -21,7 +21,7 @@
 %>
 
 <jsp:include page="/WEB-INF/include/header.jsp" />
-<link rel="stylesheet" type="text/css" href="include/css/admin.css" />
+<link rel="stylesheet" type="text/css" href="include/css/button.css" />
 <script type="text/javascript" src="include/js/admin.js"></script>
 
 <nav class="navbar navbar-expand-sm menuebar">
@@ -160,7 +160,7 @@
 						<div class="form-group col-md-6 row">
 							<label class="col-md-4 col-form-label">Kurze Beschreibung</label>
 							<div class="col-md-8">
-								<span><%=godfather.getDescription()%></span>"
+								<span><%=godfather.getDescription()%></span>
 							</div>
 						</div>
 						<div class="form-group col-md-6 row">
