@@ -87,7 +87,6 @@
 						if (location != null) {
 					%>
 					<div class="row">
-					<!-- !!!!!! FIXME hibernate will update database but not java object !!!!!! -->
 						<div class="form-group col-md-6 row">
 							<label class="col-md-4 col-form-label">Standort</label>
 							<div class="col-md-8">
@@ -194,7 +193,7 @@
 				<input class="godfather-csrf" type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.ADMIN_UPDATE_GODFATHER) %>">
 				<input class="godfather-id" type="hidden" name="<%= GodfatherUpdateServlet.PARAMETER_GODFATHER_ID %>" value="<%= URIParameterEncryptionUtil.encrypt(godfather.getId()) %>" />
 				<button class="btn btn-db godfather-update">Senden</button>
-				<button class="btn btn-outline-db float-right godfather-remove">Benutzer Löschen</button>
+				<button class="btn btn-outline-db float-right godfather-remove" <%=godfather.getCurrentNumberTrainees()>0?"disabled":""%>>Benutzer löschen</button>
 			</div>
 		</div>
 

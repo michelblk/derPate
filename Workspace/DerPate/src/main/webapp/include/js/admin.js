@@ -19,10 +19,11 @@ $(document).ready(function () {
 			},
 			data: data,
 			success: function(data) {
-				console.log(data);
+				location.reload(true);
 			},
 			error: function(jqXHR) {
-				console.log(jqXHR);
+				alert("Ein Fehler ist aufgetreten!");
+				location.reload(true);
 			}
 		});
 		
@@ -35,7 +36,22 @@ $(document).ready(function () {
 		var id = $(this).siblings(".godfather-id").val();
 		var csrf = $(this).siblings(".godfather-csrf").val();
 		
-		console.log(id);
+		if(confirm("Wirklich löschen?")) {
+			$.ajax({
+				url: 'adminGodfatherUpdate?godfatherid='+id,
+				method: 'DELETE',
+				headers: {
+					'X-Csrf-Token': csrf
+				},
+				success: function(data) {
+					location.reload(true);
+				},
+				error: function(jqXHR) {
+					alert("Ein Fehler ist aufgetreten!");
+					location.reload(true);
+				}
+			});
+		}
 		
 		return false;
 	});
