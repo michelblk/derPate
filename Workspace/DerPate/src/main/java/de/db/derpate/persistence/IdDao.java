@@ -31,7 +31,7 @@ import de.db.derpate.model.Id;
  * @param <K> Primary Key Class
  * @param <E> Entity Class
  */
-abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
+public abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	/**
 	 * The {@link EntityManager}
 	 */
