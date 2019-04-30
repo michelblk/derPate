@@ -13,12 +13,12 @@
 	<h4><%= EnglishReasonPhraseCatalog.INSTANCE.getReason(response.getStatus(), null) %></h4>
 	<br />
 	<p>
-		<button onclick="location.reload(true);" class="btn">
+		<button onclick="location.reload(true);" class="btn btn-outline-db">
 			Erneut versuchen
 		</button>
 	</p>
 	<p>
-		<button onclick="location.href='<%= request.getContextPath() %>/';" class="btn">
+		<button onclick="location.href='<%= request.getContextPath() %>/';" class="btn btn-db">
 			Zur&uuml;ck zur Startseite
 		</button>
 	</p>
