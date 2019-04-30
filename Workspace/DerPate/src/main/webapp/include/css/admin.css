@@ -1,0 +1,7 @@
+input[type='checkbox'].removeableText:checked ~ span.removeableText  {
+	text-decoration: line-through;
+	color: #f01414; /* DB Rot */
+}
+input[type='checkbox'].removeableText {
+	display: none;
+}
