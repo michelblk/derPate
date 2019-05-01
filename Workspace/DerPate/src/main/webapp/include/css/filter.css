@@ -1,5 +1,6 @@
 .godfather-card {
-	width: 18rem;
+	height: 24rem;
+	width: 16rem;
 	float: left;
 	margin: 5px;
 }
@@ -27,4 +28,11 @@
 
 .godfather-card-description{
 	white-space: pre-wrap;
+}
+
+.filtermenue{
+	margin-top: 1rem;
+}
+input[type="checkbox"]{
+	margin-left: 0.5rem;
 }

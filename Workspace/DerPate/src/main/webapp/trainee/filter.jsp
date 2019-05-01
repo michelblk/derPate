@@ -30,7 +30,7 @@
 
 <div class="container">
 	<div class="form-group text-center">
-		<form id="filtering-form">
+		<form id="filtering-form" class="filtermenue">
 			<div class="btn-group" role="group">
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-db btn-secondary dropdown-toggle"

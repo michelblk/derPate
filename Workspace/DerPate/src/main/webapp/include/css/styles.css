@@ -40,6 +40,7 @@ html, body {
     text-decoration: none;
     border-radius: 0;
     overflow: hidden;
+    margin: 0 auto;
 }
 
 .btn-db:hover {
@@ -74,7 +75,10 @@ input[type="date"] {
   font-size: .875em;
   padding: 6px 33px 5px ;
   border-radius: 0 !important;
+  margin-top: .3rem;
 }
+
+
 
 .btn-outline-db:hover {
   color: #c00;
