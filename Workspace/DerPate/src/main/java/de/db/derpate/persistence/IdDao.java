@@ -68,7 +68,7 @@ public abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	 *         <code>null</code>
 	 */
 	@Override
-	public E findById(@Nullable K id) {
+	public synchronized E findById(@Nullable K id) {
 		if (id != null) {
 			E result = this.entityManager.find(this.entityClass, id);
 			return result;
@@ -77,7 +77,7 @@ public abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	}
 
 	@Override
-	public List<E> all() {
+	public synchronized List<E> all() {
 		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 
 		// Build query
@@ -96,7 +96,7 @@ public abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	}
 
 	@Override
-	public boolean persist(E entity) {
+	public synchronized boolean persist(E entity) {
 		boolean success = false;
 		try {
 			EntityTransaction transaction = this.entityManager.getTransaction();
@@ -113,7 +113,7 @@ public abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	}
 
 	@Override
-	public boolean update(E entity) {
+	public synchronized boolean update(E entity) {
 		boolean success = false;
 		try {
 			EntityTransaction transaction = this.entityManager.getTransaction();
@@ -130,7 +130,7 @@ public abstract class IdDao<@NonNull K, @Nullable E> implements Dao<K, E> {
 	}
 
 	@Override
-	public boolean remove(E entity) {
+	public synchronized boolean remove(E entity) {
 		boolean success = false;
 		try {
 			EntityTransaction transaction = this.entityManager.getTransaction();
