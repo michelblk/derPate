@@ -71,7 +71,7 @@
 						$("#spinner").hide();
 						if(e.status === <%=LoginServlet.SC_LOGIN_SUCCESS%>) {
 							// success
-							location.href = e.responseText;
+							location.href = "home";
 						}else
 						if(e.status === <%=Integer.toString((new CSRFServletFilter(CSRFForm.LOGIN)).getErrorStatusCode())%>) {
 							// CSRF token gone
