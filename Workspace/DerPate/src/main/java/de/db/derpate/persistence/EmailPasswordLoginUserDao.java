@@ -32,7 +32,7 @@ abstract class EmailPasswordLoginUserDao<@NonNull K, @Nullable E> extends IdDao<
 	 *         <code>null</code>, if user was not found
 	 */
 	@Nullable
-	public E findByEmail(@NonNull String email) {
+	public synchronized E findByEmail(@NonNull String email) {
 		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 		CriteriaQuery<E> query = builder.createQuery(this.entityClass);
 

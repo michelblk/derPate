@@ -167,8 +167,9 @@ public class GodfatherUpdateServlet extends FilterServlet {
 			if (overwritePassword(req.getParameter(PARAMETER_GODFATHER_PASSWORD), godfather)) {
 				response.add(PARAMETER_GODFATHER_PASSWORD);
 			}
-			if (updateLocation(this.locationDao
-					.findById(URIParameterEncryptionUtil.decryptToInteger(PARAMETER_GODFATHER_LOCATION)), godfather)) {
+			if (updateLocation(this.locationDao.findById(
+					URIParameterEncryptionUtil.decryptToInteger(req.getParameter(PARAMETER_GODFATHER_LOCATION))),
+					godfather)) {
 				response.add(PARAMETER_GODFATHER_LOCATION);
 			}
 			if (updateMaxTrainees(req.getParameter(PARAMETER_GODFATHER_MAXTRAINEES), godfather)) {
@@ -185,10 +186,11 @@ public class GodfatherUpdateServlet extends FilterServlet {
 				resp.setStatus(SC_SUCCESS);
 				resp.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 				resp.getWriter().print(new Gson().toJson(response));
-			} else {
-				// if a database error occurred
-				resp.sendError(SC_ERROR);
+				return;
 			}
+			// if a database error occurred
+			resp.setStatus(SC_ERROR);
+			return;
 		}
 		resp.sendError(SC_NOT_FOUND);
 	}
@@ -210,6 +212,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		boolean valid = false;
 		if (lastName != null && InputVerifyUtil.hasAtLeastXCharacters(lastName, 2)) { // FIXME zahl auslagern
 			outGodfather.setLastName(lastName);
+			valid = true;
 		}
 		return valid;
 	}
@@ -218,6 +221,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		boolean valid = false;
 		if (firstName != null && InputVerifyUtil.hasAtLeastXCharacters(firstName, 2)) { // FIXME zahl auslagern
 			outGodfather.setFirstName(firstName);
+			valid = true;
 		}
 		return valid;
 	}
@@ -236,7 +240,8 @@ public class GodfatherUpdateServlet extends FilterServlet {
 		Integer diff = DateUtil.getYearDiff(hiringDate);
 		if (hiringDate != null && diff != null && diff <= 5 && diff >= 0) { // FIXME zahlen auslagern
 			valid = true;
-			outGodfather.setHiringDate((java.sql.Date) hiringDate);
+			outGodfather.setHiringDate(new java.sql.Date(hiringDate.getTime())); // TODO use java.time.LOCALDATE instead
+																					// of sql.date
 		}
 		return valid;
 	}
@@ -244,9 +249,12 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	private static boolean updateBirthday(@Nullable Date birthday, @NonNull Godfather outGodfather) {
 		boolean valid = false;
 		Integer diff = DateUtil.getYearDiff(birthday);
-		if (birthday != null && diff != null && diff >= 10 && diff < 100) { // FIXME zahlen auslagern
+		if (birthday == null) { // caution!
 			valid = true;
-			outGodfather.setBirthday((java.sql.Date) birthday);
+			outGodfather.setBirthday(null);
+		} else if (diff != null && diff >= 10 && diff < 100) { // FIXME zahlen auslagern
+			valid = true;
+			outGodfather.setBirthday(new java.sql.Date(birthday.getTime()));
 		}
 		return valid;
 	}
@@ -290,17 +298,21 @@ public class GodfatherUpdateServlet extends FilterServlet {
 	}
 
 	private static boolean resetDescription(String description, Godfather outGodfather) {
+		boolean valid = false;
 		if (description != null) {
 			outGodfather.setDescription(null); // reset description
+			valid = true;
 		}
-		return true;
+		return valid;
 	}
 
 	private static boolean resetPickText(String picktext, Godfather outGodfather) {
+		boolean valid = false;
 		if (picktext != null) {
 			outGodfather.setPickText(null); // reset pick text
+			valid = true;
 		}
-		return true;
+		return valid;
 	}
 
 	private static boolean overwritePassword(String password, Godfather outGodfather) {

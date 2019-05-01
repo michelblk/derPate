@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 import de.db.derpate.Constants;
 import de.db.derpate.manager.LoggingManager;
@@ -38,5 +39,17 @@ public final class ServletUtil {
 			LoggingManager.log(Level.WARNING,
 					"Servlet could not set charset " + Constants.CHARSET + ": " + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
+	}
+
+	/**
+	 * Replaces a null value with an empty {@link String}
+	 *
+	 * @param string the {@link Object}
+	 * @return {@link Object#toString()} or empty {@link String}
+	 */
+	@SuppressWarnings("null")
+	@NonNull
+	public static String replaceNullWithEmptyString(@Nullable Object string) {
+		return string != null ? string.toString() : ""; //$NON-NLS-1$
 	}
 }
