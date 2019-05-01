@@ -10,6 +10,7 @@ import de.db.derpate.servlet.filter.validation.InputValidator;
 import de.db.derpate.servlet.filter.validation.LengthValidator;
 import de.db.derpate.servlet.filter.validation.NumberValidator;
 import de.db.derpate.servlet.filter.validation.PatternValidator;
+import de.db.derpate.servlet.godfatherOnly.GodfatherUpdateImageServlet;
 import de.db.derpate.util.InputVerifyUtil;
 import de.db.derpate.util.URIParameterEncryptionUtil;
 
@@ -76,7 +77,12 @@ public enum ServletParameter {
 	/**
 	 * @see Godfather#getPickText()
 	 */
-	,GODFATHER_PICK_TEXT(true, null);
+	,GODFATHER_PICK_TEXT(true, null)
+	/**
+	 * @see GodfatherImageServlet
+	 * @see GodfatherUpdateImageServlet
+	 */
+	,GODFATHER_IMAGE(true, null);
 
 	private InputValidator validator;
 	private boolean nullable;

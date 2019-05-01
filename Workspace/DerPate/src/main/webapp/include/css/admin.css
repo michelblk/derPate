@@ -5,3 +5,8 @@ input[type='checkbox'].removeableText:checked ~ span.removeableText  {
 input[type='checkbox'].removeableText {
 	display: none;
 }
+.bg-img {
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}

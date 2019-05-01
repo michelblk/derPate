@@ -39,6 +39,8 @@ public final class Constants {
 	 */
 	public static final Charset CHARSET;
 
+	public static final String DATA_PATH;
+
 	static {
 		String charsetString = APPLICATION_PROPERTIES.getProperty("app.charset", "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
 		Charset charset;
@@ -50,6 +52,8 @@ public final class Constants {
 					+ " cannot be used. Switching to default charset (" + charset.name() + "):" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		CHARSET = charset;
+
+		DATA_PATH = APPLICATION_PROPERTIES.getProperty("app.data");
 	}
 
 	/**

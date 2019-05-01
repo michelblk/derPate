@@ -31,7 +31,7 @@ $(document).ready(function () {
 					var card = $("#godfahter-card-default").clone();
 					$(card).removeAttr("id").removeClass("default");
 					$(card).attr('data-id', id);
-					$(card).find(".godfather-card-image").css('background-image', 'url(\"../godfatherImage?id=' + id + '\")');
+					$(card).find(".godfather-card-image").css('background-image', 'url(\"godfatherImage?godfather_id=' + id + '\")');
 					$(card).find(".godfather-card-firstname").text(firstName);
 					$(card).find(".godfather-card-age").val(age);
 					$(card).find(".godfather-card-location").text(location);

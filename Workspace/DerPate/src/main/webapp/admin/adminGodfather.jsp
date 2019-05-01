@@ -48,7 +48,9 @@
 				Location location = godfather.getLocation();
 		%>
 		<div class="godfather-card card">
-			<div class="card-img-top godfather-card-image"></div>
+			<div class="card-header">
+				<div class="rounded card-img-top bg-img" style="height: 100px; background-image:url('godfatherImage?godfather_id=<%= URIParameterEncryptionUtil.encrypt(godfather.getId()) %>');"></div>
+			</div>	
 			<form class="card-body" class="godfather-update-form">
 				<div class="card-text">
 					<div class="row">
