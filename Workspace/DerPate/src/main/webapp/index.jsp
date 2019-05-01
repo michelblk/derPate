@@ -16,47 +16,33 @@
 		</div>
 
 		<form method="post" action="login">
-			<input type="hidden" class="csrftoken"
-				name="<%=CSRFPreventionUtil.FIELD_NAME%>"
-				value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN)%>" />
+			<input type="hidden" class="csrftoken" name="<%=CSRFPreventionUtil.FIELD_NAME%>" value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN)%>" />
 			<div class="form-signin">
-				<input type="text" class="form-control" id="input_token"
-					name="<%=LoginServlet.INPUT_FIELD_TOKEN%>" value=""
-					placeholder="Benutzererkennung" />
-				<button class="btn btn-db btn-lg btn-primary btn-block" type="submit"
-					value="Login">Login</button>
+				<input type="text" class="form-control" id="input_token" name="<%=LoginServlet.INPUT_FIELD_TOKEN%>" value="" placeholder="Benutzererkennung" autocomplete="username" />
+				<button class="btn btn-db btn-lg btn-primary btn-block" type="submit" value="Login">Login</button>
 			</div>
 		</form>
 		<form method="post" action="login" style="display: none;">
-			<input type="hidden" class="csrftoken"
-				name="<%=CSRFPreventionUtil.FIELD_NAME%>"
-				value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN)%>" />
+			<input type="hidden" class="csrftoken" name="<%=CSRFPreventionUtil.FIELD_NAME%>" value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.LOGIN)%>" />
 			<div class="form-signin">
-				<input type="text" class="form-control"
-					name="<%=LoginServlet.INPUT_FIELD_EMAIL%>"
-					placeholder="Benutzername" /> <input type="password"
-					class="form-control" name="<%=LoginServlet.INPUT_FIELD_PASSWORD%>"
-					placeholder="Passwort" />
-				<button class="btn btn-db btn-lg btn-primary btn-block" type="submit"
-					value="Login">Login</button>
-
+				<input type="email" class="form-control" name="<%=LoginServlet.INPUT_FIELD_EMAIL%>" placeholder="Benutzername" autocomplete="email" />
+				<input type="password" class="form-control" name="<%=LoginServlet.INPUT_FIELD_PASSWORD%>" placeholder="Passwort" autocomplete="current-password"/>
+				<button class="btn btn-db btn-lg btn-primary btn-block" type="submit" value="Login">Login</button>
 			</div>
 		</form>
 
-
-
-		<button class="btn btn-outline-db" id="adminlogin">Admin
-			Login</button>
-
+		<button class="btn btn-outline-db" id="adminlogin">Admin Login</button>
 	</div>
 </div>
 <script>
 	$(document).ready(function(){
 		  $('#adminlogin').click(function(){
+			  $('#login form:visible')[0].reset();
 		    $('#login form').toggle(1000);
 		  });
 		});
 
+		<%-- TODO Caution: Autocomplete may cause that both forms are filled, even though only one is visible! --%>
 		$(document).ready(function () {
 			$("#login form").submit(function (e) {
 				$("#spinner").show();
@@ -71,7 +57,7 @@
 						$("#spinner").hide();
 						if(e.status === <%=LoginServlet.SC_LOGIN_SUCCESS%>) {
 							// success
-							location.href = "home";
+							location.href = "redirect";
 						}else
 						if(e.status === <%=Integer.toString((new CSRFServletFilter(CSRFForm.LOGIN)).getErrorStatusCode())%>) {
 							// CSRF token gone
@@ -95,16 +81,13 @@
 							alert("Unknown error");
 						}
 						var newToken = e.getResponseHeader("<%=CSRFPreventionUtil.HEADER_FIELD%>");
-															if (newToken != null
-																	&& newToken.length > 0) {
-																$(".csrftoken")
-																		.val(
-																				newToken);
-															}
-														}
-													});
-											return false;
-										});
-					});
+						if (newToken != null && newToken.length > 0) {
+							$(".csrftoken").val(newToken);
+						}
+					}
+				});
+			return false;
+		});
+	});
 </script>
 <jsp:include page="WEB-INF/include/footer.jsp" />

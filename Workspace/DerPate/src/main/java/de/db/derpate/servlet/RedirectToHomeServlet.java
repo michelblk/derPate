@@ -12,6 +12,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import de.db.derpate.Usermode;
 import de.db.derpate.manager.LoginManager;
 import de.db.derpate.model.LoginUser;
+import de.db.derpate.model.Trainee;
 
 /**
  * This {@link HttpServlet} redirects the client to the default welcome page<br>
@@ -20,7 +21,7 @@ import de.db.derpate.model.LoginUser;
  * @author MichelBlank
  *
  */
-@WebServlet("/home")
+@WebServlet("/redirect")
 public class RedirectToHomeServlet extends BaseServlet {
 	/**
 	 * Default serial version UID
@@ -34,7 +35,7 @@ public class RedirectToHomeServlet extends BaseServlet {
 
 		String target = req.getContextPath() + "/"; //$NON-NLS-1$
 
-		if (mode != null) { // user is logged in
+		if (user != null && mode != null) { // user is logged in
 			switch (mode) {
 			case ADMIN:
 				target += "admin/adminWelcome.jsp"; //$NON-NLS-1$
@@ -43,7 +44,13 @@ public class RedirectToHomeServlet extends BaseServlet {
 				target += "godfather/godfatherUpdate.jsp"; //$NON-NLS-1$
 				break;
 			case TRAINEE:
-				target += "trainee/filter.jsp"; //$NON-NLS-1$
+				target += "trainee/"; //$NON-NLS-1$
+				if (((Trainee) user).getGodfather() == null) {
+					target += "filter.jsp"; //$NON-NLS-1$
+				} else {
+					target += ""; //$NON-NLS-1$ // FIXME insert path to page that should be shown, when trainee
+									// selected a godfather
+				}
 				break;
 			}
 		}
