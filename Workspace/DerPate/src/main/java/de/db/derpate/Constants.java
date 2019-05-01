@@ -39,6 +39,9 @@ public final class Constants {
 	 */
 	public static final Charset CHARSET;
 
+	/**
+	 * Path that should be used to store data permanently
+	 */
 	public static final String DATA_PATH;
 
 	static {
@@ -53,7 +56,7 @@ public final class Constants {
 		}
 		CHARSET = charset;
 
-		DATA_PATH = APPLICATION_PROPERTIES.getProperty("app.data");
+		DATA_PATH = APPLICATION_PROPERTIES.getProperty("app.data"); //$NON-NLS-1$
 	}
 
 	/**
