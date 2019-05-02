@@ -20,7 +20,7 @@
 			Falls nicht kommst du über den Knopf schließen wieder zu der Auswahl zurück. 
 			</div>
 			<br>
-			<a class="btn btn-lg btn-db btn-primary btn-block" href="godfather/godfatherUpdate.jsp">Weiter</a>
+			<a class="btn btn-lg btn-db btn-primary btn-block" href="trainee/filter.jsp">Weiter</a>
 		</div>
 	</div>
 <jsp:include page="/WEB-INF/include/footer.jsp" />
