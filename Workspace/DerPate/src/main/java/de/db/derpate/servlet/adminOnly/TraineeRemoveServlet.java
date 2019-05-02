@@ -37,7 +37,7 @@ public class TraineeRemoveServlet extends FilterServlet {
 	 *
 	 * @see URIParameterEncryptionUtil
 	 */
-	public static final String PARAMETER_TRAINEE_ID = "trainee"; //$NON-NLS-1$
+	public static final String PARAMETER_TRAINEE_TOKEN = "trainee"; //$NON-NLS-1$
 	/**
 	 * HTTP status code, if the token doesn't exist
 	 */
@@ -88,7 +88,7 @@ public class TraineeRemoveServlet extends FilterServlet {
 	private static Trainee findTrainee(HttpServletRequest req, @NonNull TraineeDao traineeDao) {
 		Trainee trainee = null;
 
-		String encryptedToken = req.getParameter(PARAMETER_TRAINEE_ID);
+		String encryptedToken = req.getParameter(PARAMETER_TRAINEE_TOKEN);
 		String token = URIParameterEncryptionUtil.decrypt(encryptedToken);
 
 		if (token != null) {
