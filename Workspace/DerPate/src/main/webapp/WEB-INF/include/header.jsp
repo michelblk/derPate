@@ -23,33 +23,27 @@ Usermode usermode = LoginManager.getInstance().getUsermode(user);
 		<script src="include/bootstrap/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-	
 	<nav class="navbar navbar-expand-sm menuebar">
 		<div class="container-fluid">
 			<ul class="text-center">
 				<% if(usermode == Usermode.ADMIN) { %>
-				<li>
-					<a class="nav-link" href="admin/adminGodfather.jsp">Paten</a>
-				 </li>
-				<li>
-					<a class="nav-link" href="admin/adminWelcome.jsp">Tokengenerator</a>
-				</li>
+					<li>
+						<a class="nav-link" href="admin/adminGodfather.jsp">Patenverwaltung</a>
+					 </li>
+					 <li>
+					 	<a class="nav-link" href="admin/adminTrainee.jsp">Nachwuchskr&auml;fteverwaltung</a>
+					 </li>
 				<% } else if (usermode == Usermode.GODFATHER) { %>
-				<li>
-					<a class="nav-link" href="godfather/godfatherUpdate.jsp)">Profil</a>
-				</li>
+					<li>
+						<a class="nav-link" href="godfather/godfatherUpdate.jsp)">Profil</a>
+					</li>
 				<% } else if (usermode == Usermode.TRAINEE) { %>
-				<li>
-					<a class="nav-link" href="trainee/filter.jsp">Paten</a>
-				</li>
+					<li>
+						<a class="nav-link" href="trainee/filter.jsp">Paten</a>
+					</li>
 				<% } %>
-
 			</ul>
-				
-				<img src="include/images/db_logo.svg" class="float-right image">	
-			
+				<img src="include/images/db_logo.svg" class="float-right image">
 		</div>
 	</nav>
-	
-
 	
