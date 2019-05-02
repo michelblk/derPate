@@ -40,7 +40,6 @@ $(document).ready(function () {
 					$(card).find(".godfather-card-educationalyear").val(educationalYear);
 					$(card).find(".godfather-card-description").val(description);
 					
-					
 					$("#async-results").append(card);
 					
 				});
@@ -86,7 +85,7 @@ $(document).ready(function () {
 	});
 	
 	
-	$(".godfahter-card-select-form").on("submit", "#more-Info-godfather", function (e) {
+	$("#more-info-godfather").on("submit", ".godfahter-card-select-form", function (e) {
 		e.preventDefault();
 		
 		var url = $(this).attr("action");
@@ -100,7 +99,7 @@ $(document).ready(function () {
 			complete: function(e, text) {
 				if(e.status == 204) {
 					// success
-					location.href="";
+					location.href="redirect";
 				}else if(e.status == 500) {
 					// internal error
 					alert("Internal error");
