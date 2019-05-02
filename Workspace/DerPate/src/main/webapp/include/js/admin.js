@@ -55,4 +55,30 @@ $(document).ready(function () {
 		
 		return false;
 	});
+	
+	$(".trainee-remove").click(function (e) {
+		e.preventDefault();
+		
+		var id = $(this).siblings(".trainee-id").val();
+		var csrf = $(this).siblings(".trainee-csrf").val();
+		
+		if(confirm("Wirklich löschen?")) {
+			$.ajax({
+				url: 'adminGodfatherUpdate?godfatherid='+id,
+				method: 'DELETE',
+				headers: {
+					'X-Csrf-Token': csrf
+				},
+				success: function(data) {
+					location.reload(true);
+				},
+				error: function(jqXHR) {
+					alert("Ein Fehler ist aufgetreten!");
+					location.reload(true);
+				}
+			});
+		}
+		
+		return false;
+	});
 });

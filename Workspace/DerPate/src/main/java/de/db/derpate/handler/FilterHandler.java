@@ -17,7 +17,7 @@ import de.db.derpate.servlet.filter.ServletFilter;
  * @author MichelBlank
  * @see de.db.derpate.servlet.filter
  */
-public class FilterServletHandler {
+public class FilterHandler {
 	/**
 	 * Filters set by constructor
 	 */
@@ -30,7 +30,7 @@ public class FilterServletHandler {
 	 *
 	 * @param filters array of {@link ServletFilter}s. May not be <code>null</code>.
 	 */
-	public FilterServletHandler(@NonNull ServletFilter... filters) {
+	public FilterHandler(@NonNull ServletFilter... filters) {
 		this.filters = filters;
 	}
 

@@ -22,7 +22,7 @@ import de.db.derpate.model.Trainee;
  *
  */
 @WebServlet("/redirect")
-public class RedirectToHomeServlet extends BaseServlet {
+public class RedirectServlet extends BaseServlet {
 	/**
 	 * Default serial version UID
 	 */

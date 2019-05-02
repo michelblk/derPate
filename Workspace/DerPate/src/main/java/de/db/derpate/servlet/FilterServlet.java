@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import de.db.derpate.handler.FilterServletHandler;
+import de.db.derpate.handler.FilterHandler;
 import de.db.derpate.servlet.filter.ServletFilter;
 
 /**
@@ -27,7 +27,7 @@ public abstract class FilterServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
 	@NonNull
-	private final FilterServletHandler filterHandler;
+	private final FilterHandler filterHandler;
 
 	/**
 	 * Constructor, that expects {@link ServletFilter}s, that get stored and used
@@ -36,7 +36,7 @@ public abstract class FilterServlet extends BaseServlet {
 	 * @param filters array of {@link ServletFilter}s. May not be null.
 	 */
 	public FilterServlet(@NonNull ServletFilter... filters) {
-		this.filterHandler = new FilterServletHandler(filters);
+		this.filterHandler = new FilterHandler(filters);
 	}
 
 	/**

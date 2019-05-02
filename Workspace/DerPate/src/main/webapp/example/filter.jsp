@@ -1,7 +1,7 @@
 <%@page
 	contentType="text/html" pageEncoding="UTF-8"
 	import="de.db.derpate.CSRFForm"
-	import="de.db.derpate.servlet.traineeOnly.GodfatherFilterServlet"
+	import="de.db.derpate.servlet.GodfatherFilterServlet"
 	import="de.db.derpate.servlet.traineeOnly.GodfatherSelectServlet"
 	import="de.db.derpate.util.CSRFPreventionUtil"
 	import="de.db.derpate.persistence.LocationDao"
