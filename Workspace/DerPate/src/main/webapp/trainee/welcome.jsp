@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html" pageEncoding="UTF-8" %>
 
-<jsp:include page="WEB-INF/include/header.jsp" />
+<jsp:include page="/WEB-INF/include/header.jsp" />
 	<div class="container text-center">
 		<div class="col-sm-12 col-md-8 mx-auto">
 			<h1 class="display-1 text-center">Willkommen!</h1>
 			<div class="text-justify">
-			Willkommen !
 			Der Pate ist eine interne Applikation um dich bei anfänglichen Fragen und
 			Schwierigkeiten zu unterstützen. Hier kannst du selbst einen sogenannten Paten
 			auswählen mit welchem du über mehrere Möglichkeiten kommunizieren kannst.
@@ -24,4 +23,4 @@
 			<a class="btn btn-lg btn-db btn-primary btn-block" href="godfather/godfatherUpdate.jsp">Weiter</a>
 		</div>
 	</div>
-<jsp:include page="WEB-INF/include/footer.jsp" />
+<jsp:include page="/WEB-INF/include/footer.jsp" />
