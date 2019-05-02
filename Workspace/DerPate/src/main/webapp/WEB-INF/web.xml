@@ -21,7 +21,7 @@
 	<!-- Filter -->
 	<filter>
 	   <filter-name>TraineeOnly</filter-name>
-	   <filter-class>de.db.derPate.servlet.filter.LoginServletFilter</filter-class>
+	   <filter-class>de.db.derpate.servlet.filter.LoginServletFilter</filter-class>
 	   <init-param>
 	      <param-name>usermode</param-name>
 	      <param-value>TRAINEE</param-value>
@@ -29,19 +29,31 @@
 	</filter>
 	<filter>
 		<filter-name>GodfatherOnly</filter-name>
-		<filter-class>de.db.derPate.servlet.filter.LoginServletFilter</filter-class>
+		<filter-class>de.db.derpate.servlet.filter.LoginServletFilter</filter-class>
 		<init-param>
 			<param-name>usermode</param-name>
 			<param-value>GODFATHER</param-value>
 		</init-param>
 	</filter>
+		<filter>
+		<filter-name>AdminOnly</filter-name>
+		<filter-class>de.db.derpate.servlet.filter.LoginServletFilter</filter-class>
+		<init-param>
+			<param-name>usermode</param-name>
+			<param-value>ADMIN</param-value>
+		</init-param>
+	</filter>
 	
 	<filter-mapping>
-	   <filter-name>TraineeOnly</filter-name>
-	   <url-pattern>/example/filter.jsp</url-pattern>
+		<filter-name>AdminOnly</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>TraineeOnly</filter-name>
+		<url-pattern>/trainee/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>GodfatherOnly</filter-name>
-		<url-pattern>/example/godfatherUpdate.jsp</url-pattern>
+		<url-pattern>/godfather/*</url-pattern>
 	</filter-mapping>
 </web-app>

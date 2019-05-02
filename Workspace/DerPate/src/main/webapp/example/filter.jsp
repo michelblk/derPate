@@ -1,27 +1,33 @@
 <%@page
 	contentType="text/html" pageEncoding="UTF-8"
-	import="de.db.derPate.CSRFForm"
-	import="de.db.derPate.servlet.traineeOnly.GodfatherServlet"
-	import="de.db.derPate.servlet.traineeOnly.GodfatherSelectServlet"
-	import="de.db.derPate.util.CSRFPreventionUtil"
-	import="de.db.derPate.persistence.LocationDao"
-	import="de.db.derPate.model.Location"
-	import="de.db.derPate.util.URIParameterEncryptionUtil"
-	import="de.db.derPate.persistence.TeachingTypeDao"
-	import="de.db.derPate.model.TeachingType"
-	import="de.db.derPate.persistence.JobDao"
+	import="de.db.derpate.CSRFForm"
+	import="de.db.derpate.servlet.traineeOnly.GodfatherFilterServlet"
+	import="de.db.derpate.servlet.traineeOnly.GodfatherSelectServlet"
+	import="de.db.derpate.util.CSRFPreventionUtil"
+	import="de.db.derpate.persistence.LocationDao"
+	import="de.db.derpate.model.Location"
+	import="de.db.derpate.util.URIParameterEncryptionUtil"
+	import="de.db.derpate.persistence.TeachingTypeDao"
+	import="de.db.derpate.model.TeachingType"
+	import="de.db.derpate.persistence.JobDao"
 	import="org.eclipse.jdt.annotation.NonNull"
-	import="de.db.derPate.persistence.GodfatherDao"
-	import="de.db.derPate.model.Job"
-	import="de.db.derPate.Constants"
+	import="de.db.derpate.persistence.GodfatherDao"
+	import="de.db.derpate.model.Job"
+	import="de.db.derpate.Constants"
 	import="java.util.List"
+%>
+<%
+	LocationDao locationDao = new LocationDao();
+	TeachingTypeDao teachingTypeDao = new TeachingTypeDao();
+	JobDao jobDao = new JobDao();
+	GodfatherDao godfatherDao = new GodfatherDao();
 %>
 <%-- TODO selectionstatus check --%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Filter Example</title>
-		<meta charset="<%= Constants.CHARSET.name() %>" />
+		<meta charset="<%=Constants.CHARSET.name()%>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="stylesheet" type="text/css" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="filter.css" />
@@ -41,13 +47,16 @@
 							</button>
 							<ul class="dropdown-menu">
 								<%
-								List<Location> locations = LocationDao.getInstance().list();
-								for(Location location : locations) { %>
+									List<Location> locations = locationDao.all();
+																				for(Location location : locations) {
+								%>
 									<li>
-										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_LOCATION %>" value="<%= URIParameterEncryptionUtil.encrypt(location.getId()) %>" />
+										<input type="checkbox" name="<%=GodfatherFilterServlet.FILTER_PARAM_LOCATION%>" value="<%=URIParameterEncryptionUtil.encrypt(location.getId())%>" />
 										<%=location.getName()%>
 									</li>
-								<% } %>
+								<%
+									}
+								%>
 							</ul>
 						</div>
 						
@@ -57,13 +66,16 @@
 							</button>
 							<ul class="dropdown-menu">
 								<%
-								List<TeachingType> teachingTypes = TeachingTypeDao.getInstance().list();
-								for(TeachingType teachingType : teachingTypes) { %>
+									List<TeachingType> teachingTypes = teachingTypeDao.all();
+																				for(TeachingType teachingType : teachingTypes) {
+								%>
 									<li>
-										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_TEACHING_TYPE %>" value="<%= URIParameterEncryptionUtil.encrypt(teachingType.getId()) %>" />
-										<%= teachingType.getName() %>
+										<input type="checkbox" name="<%=GodfatherFilterServlet.FILTER_PARAM_TEACHING_TYPE%>" value="<%=URIParameterEncryptionUtil.encrypt(teachingType.getId())%>" />
+										<%=teachingType.getName()%>
 									</li>
-								<% } %>
+								<%
+									}
+								%>
 							</ul>
 						</div>
 						
@@ -73,13 +85,16 @@
 							</button>
 							<ul class="dropdown-menu">
 								<%
-								List<Job> jobs = JobDao.getInstance().list();
-								for(Job job : jobs) { %>
+									List<Job> jobs = jobDao.all();
+																				for(Job job : jobs) {
+								%>
 									<li>
-										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_JOB %>" value="<%= URIParameterEncryptionUtil.encrypt(job.getId()) %>" />
-										<%= job.getName() %>
+										<input type="checkbox" name="<%=GodfatherFilterServlet.FILTER_PARAM_JOB%>" value="<%=URIParameterEncryptionUtil.encrypt(job.getId())%>" />
+										<%=job.getName()%>
 									</li>
-								<% } %>
+								<%
+									}
+								%>
 							</ul>
 						</div>
 						
@@ -89,10 +104,11 @@
 							</button>
 							<ul class="dropdown-menu">
 								<%
-								List<@NonNull Integer> educationalYears = GodfatherDao.getEducationalYears();
-								for(@NonNull Integer year : educationalYears) { %>
+									List<@NonNull Integer> educationalYears = godfatherDao.getEducationalYears();
+														for(@NonNull Integer year : educationalYears) {
+								%>
 									<li>
-										<input type="checkbox" name="<%= GodfatherServlet.FILTER_PARAM_EDUCATIONAL_YEAR %>" value="<%= URIParameterEncryptionUtil.encrypt(year) %>" />
+										<input type="checkbox" name="<%=GodfatherFilterServlet.FILTER_PARAM_EDUCATIONAL_YEAR%>" value="<%= URIParameterEncryptionUtil.encrypt(year) %>" />
 										<%= year %>
 									</li>
 								<% } %>

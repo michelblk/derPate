@@ -1,24 +1,25 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"
-		import="de.db.derPate.model.Godfather"
-		import="de.db.derPate.manager.LoginManager"
-		import="de.db.derPate.servlet.godfatherOnly.GodfatherUpdateServlet"
-		import="de.db.derPate.Constants"
-		import="de.db.derPate.util.CSRFPreventionUtil"
-		import="de.db.derPate.CSRFForm"
-		import="de.db.derPate.persistence.LocationDao"
+		import="de.db.derpate.model.Godfather"
+		import="de.db.derpate.manager.LoginManager"
+		import="de.db.derpate.servlet.godfatherOnly.GodfatherUpdateServlet"
+		import="de.db.derpate.Constants"
+		import="de.db.derpate.util.CSRFPreventionUtil"
+		import="de.db.derpate.CSRFForm"
+		import="de.db.derpate.persistence.LocationDao"
 		import="java.util.List"
-		import="de.db.derPate.model.Location"
-		import="de.db.derPate.util.URIParameterEncryptionUtil"
-		import="de.db.derPate.model.Job"
-		import="de.db.derPate.persistence.JobDao"
-		import="de.db.derPate.persistence.GodfatherDao" %>
-<% 
-// FIXME find better solution
-Godfather sessionGodfather = LoginManager.getInstance().getUserBySession(session);
-if(sessionGodfather == null) return;
-Godfather godfather = GodfatherDao.getInstance().byId(sessionGodfather.getId()); // always use up to date godfather, as maxTrainees will be displayed
-if(godfather == null) return;
-LoginManager.getInstance().update(session, godfather); // update session %>
+		import="de.db.derpate.model.Location"
+		import="de.db.derpate.util.URIParameterEncryptionUtil"
+		import="de.db.derpate.model.Job"
+		import="de.db.derpate.persistence.JobDao"
+		import="de.db.derpate.persistence.GodfatherDao" %>
+<%	
+LocationDao locationDao = new LocationDao();
+
+Godfather godfather = LoginManager.getInstance().getUserBySession(session);
+if (godfather == null){
+	return;
+}
+%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -51,8 +52,10 @@ LoginManager.getInstance().update(session, godfather); // update session %>
 					<div class="form-group">
 						<label>Erste Tätigkeitsstätte</label>
 						<select class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_LOCATION %>">
-							<% List<Location> locations = LocationDao.getInstance().list();
-							for(Location location : locations) { %>
+							<%
+								List<Location> locations = locationDao.all();
+												for(Location location : locations) {
+							%>
 								<option value="<%=URIParameterEncryptionUtil.encrypt(location.getId()) %>" <% if(location.equals(godfather.getLocation())){%>selected<% } %>>
 									<%= location.getName() %>
 								</option>
@@ -66,12 +69,12 @@ LoginManager.getInstance().update(session, godfather); // update session %>
 					</div>
 					<div class="form-group">
 						<label>Beschreibung</label>
-						<textarea class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_DESCRIPTION %>" rows="3" placeholder="Hallo, ich bin ..."><%= godfather.getDescription() %></textarea>
+						<textarea class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_DESCRIPTION %>" rows="3" placeholder="Hallo, ich bin ..."><%= godfather.getDescription() != null ? godfather.getDescription() : "" %></textarea>
 						<div class="invalid-feedback">Hier stimmt etwas nicht. Maximal 500 Zeichen sind erlaubt. Unicodeblock Smileys sind nicht zulässig.</div>
 					</div>
 					<div class="form-group">
 						<label>Text, der der Nachwuchskraft nach der Anmeldung angezeigt wird</label>
-						<textarea class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_PICKTEXT %>" rows="3" placeholder="Ich freue mich, dass Du dich für mich entschieden hast! ..." ><%= godfather.getPickText() %></textarea>
+						<textarea class="form-control" name="<%= GodfatherUpdateServlet.PARAMETER_PICKTEXT %>" rows="3" placeholder="Ich freue mich, dass Du dich für mich entschieden hast! ..." ><%= godfather.getPickText() != null ? godfather.getPickText() : "" %></textarea>
 						<div class="invalid-feedback">Hier stimmt etwas nicht. Maximal 500 Zeichen sind erlaubt. Unicodeblock Smileys sind nicht zulässig.</div>
 					</div>
 					<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.GODFATHER_UPDATE_SELF) %>" />
