@@ -1,7 +1,8 @@
-<%@page import="de.db.derpate.Usermode"%>
-<%@page import="de.db.derpate.model.LoginUser"%>
-<%@page import="de.db.derpate.manager.LoginManager"%>
-<%@ page language="java" contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html" pageEncoding="UTF-8" 
+	import="de.db.derpate.manager.LoginManager"
+	import="de.db.derpate.model.LoginUser"
+	import="de.db.derpate.Usermode"
+	import="de.db.derpate.model.Trainee"%>
 <%
 LoginUser user = LoginManager.getInstance().getUserBySession(session);
 Usermode usermode = LoginManager.getInstance().getUsermode(user);
@@ -37,14 +38,17 @@ Usermode usermode = LoginManager.getInstance().getUsermode(user);
 					<li>
 						<a class="nav-link" href="godfather/godfatherUpdate.jsp">Profil</a>
 					</li>
-				<% } else if (usermode == Usermode.TRAINEE) { %>
+				<% } else if (usermode == Usermode.TRAINEE) { 
+					if(user != null && ((Trainee)user).getGodfather() == null) {
+				%>
 					<li>
 						<a class="nav-link" href="trainee/welcome.jsp">Willkommen</a>
 					</li>
 					<li>
 						<a class="nav-link" href="trainee/filter.jsp">Paten w&auml;hlen</a>
 					</li>
-				<% } %>
+				<% 	}
+				   }%>
 			</ul>
 			<a href="redirect">
 				<img src="include/images/db_logo.svg" class="float-right image">

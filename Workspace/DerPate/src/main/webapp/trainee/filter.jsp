@@ -1,5 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"
 	import="de.db.derpate.CSRFForm"
+	import="de.db.derpate.model.LoginUser"
+	import="de.db.derpate.model.Trainee"
+	import="de.db.derpate.manager.LoginManager"
 	import="de.db.derpate.servlet.GodfatherFilterServlet"
 	import="de.db.derpate.servlet.traineeOnly.GodfatherSelectServlet"
 	import="de.db.derpate.util.CSRFPreventionUtil"
@@ -16,6 +19,12 @@
 	import="java.util.List"%>
 
 <%
+	LoginUser user = LoginManager.getInstance().getUserBySession(session);
+	if(!(user instanceof Trainee) || ((Trainee)user).getGodfather() != null) {
+		response.sendRedirect("../redirect");
+		return;
+	}
+
 	LocationDao locationDao = new LocationDao();
 	TeachingTypeDao teachingTypeDao = new TeachingTypeDao();
 	JobDao jobDao = new JobDao();

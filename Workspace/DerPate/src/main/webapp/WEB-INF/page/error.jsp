@@ -18,7 +18,7 @@
 		</button>
 	</p>
 	<p>
-		<button onclick="location.href='<%= request.getContextPath() %>/';" class="btn btn-db">
+		<button onclick="location.href='redirect';" class="btn btn-db">
 			Zur&uuml;ck zur Startseite
 		</button>
 	</p>

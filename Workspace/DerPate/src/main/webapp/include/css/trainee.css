@@ -1,0 +1,41 @@
+.card-heading {
+	padding: 0 20px;
+	margin: 0;
+	background-color: #eee;
+	height: 100px;
+}
+
+.avatar {
+	position: relative;
+	width: 125px;
+	height: 125px;
+	top: -62.5px;
+	margin: 0 auto -62.5px auto;
+	border-radius: 100%;
+	border: 5px solid rgba(255, 255, 255, 0.5);
+	overflow: hidden;
+}
+
+.avatar .img {
+	background-color: #eee;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 100%;
+	width: 100%;
+}
+
+.info {
+	text-align: center;
+	padding: 4px 8px 10px;
+}
+
+.info .title {
+	font-size: 24px;
+	margin-bottom: 4px;
+}
+
+.contact a {
+	color: inherit;
+	text-decoration: inherit;
+}
