@@ -43,7 +43,11 @@ Usermode usermode = LoginManager.getInstance().getUsermode(user);
 					<a class="nav-link" href="trainee/filter.jsp">Paten</a>
 				</li>
 				<% } %>
+
 			</ul>
+				
+				<img src="include/images/db_logo.svg" class="float-right image">	
+			
 		</div>
 	</nav>
 	
