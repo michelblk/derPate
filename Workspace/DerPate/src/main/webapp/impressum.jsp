@@ -16,7 +16,7 @@
 			journalistisch-redaktionellen Inhalte oder Angebote gem. § 55 Abs. 2
 			RStV obliegt der Leitung der Unternehmenskommunikation: DB Systel
 			GmbH Dr. David Lengeler Jürgen-Ponto-Platz 1 60329 Frankfurt a. Main
-		</div>
+		</div> 
 	</div>
 </div>
 <jsp:include page="WEB-INF/include/footer.jsp" />
