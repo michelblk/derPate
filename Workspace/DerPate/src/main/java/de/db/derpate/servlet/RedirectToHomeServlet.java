@@ -46,10 +46,10 @@ public class RedirectToHomeServlet extends BaseServlet {
 			case TRAINEE:
 				target += "trainee/"; //$NON-NLS-1$
 				if (((Trainee) user).getGodfather() == null) {
-					target += "filter.jsp"; //$NON-NLS-1$
+					target += "welcome.jsp"; //$NON-NLS-1$
 				} else {
-					target += ""; //$NON-NLS-1$ // FIXME insert path to page that should be shown, when trainee
-									// selected a godfather
+					target += "selected.jsp"; //$NON-NLS-1$
+					// selected a godfather
 				}
 				break;
 			}
