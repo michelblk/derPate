@@ -108,17 +108,16 @@
 							<div class="form-group col-md-6 row">
 								<label class="col-md-4 col-form-label">Job</label>
 								<div class="col-md-8">
-									<span><%= Job + TeachingType! %></span>
-									<select class="form-control">
-										<%
-											for(Job oneJob : jobDao.all()){
-												if(oneJob != null){
-													TeachingType teachingType = oneJob.getTeachingType();
-													out.print("<option value=\"" + URIParameterEncryptionUtil.encrypt(oneJob.getId()) + "\" " + (oneJob.equals(location) ? "selected" : "") + ">" + oneJob.getName() + (teachingType!=null ? " (" + teachingType.getName() + ")": "")+ "</option>"); 
-												}
-											}
-										%>
-									</select>
+									<%
+										Job godfatherJob = godfather.getJob();
+										if(godfatherJob != null) {
+											TeachingType teachingType = godfatherJob.getTeachingType();
+
+									%>
+											<span><%=godfatherJob.getName() + (teachingType!=null ? " (" + teachingType.getName() + ")": "") %></span>	
+									<%		
+										}
+									%>
 								</div>
 							</div>
 							<%
