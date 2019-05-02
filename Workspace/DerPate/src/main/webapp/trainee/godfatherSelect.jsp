@@ -77,7 +77,7 @@
     
         <tr>
       <th>Beschreibung</th>
-      <td class="godfather-card-description"><%= godfather.getDescription() %></td> 
+      <td class="godfather-card-description"><%= godfather.getDescription() %></td>  
     </tr>
     </tbody>
     </table>
