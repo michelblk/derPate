@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import org.eclipse.jdt.annotation.NonNull;
 
 import de.db.derpate.manager.LoggingManager;
-import de.db.derpate.util.CSRFPreventionUtil;
 import de.db.derpate.util.HashUtil;
 import de.db.derpate.util.PropertyUtil;
 import de.db.derpate.util.SHA256Util;
@@ -64,17 +63,6 @@ public final class Constants {
 	 * security of this application.
 	 */
 	public static final class Security {
-		/**
-		 * The number of tokens that can be generated per session per form, used in the
-		 * {@link CSRFPreventionUtil}. If the number of tokens is exceeded, the oldest
-		 * one will be invalidated.<br>
-		 * Default value, if property not found: 10
-		 *
-		 * @see CSRFPreventionUtil
-		 */
-		public static final int CSRF_DEFAULT_MAX_TOKENS = SECURITY_PROPERTIES.getIntProperty("csrf.default_max_tokens", //$NON-NLS-1$
-				10);
-
 		/**
 		 * The password used for the default AES256 encryption.
 		 */
