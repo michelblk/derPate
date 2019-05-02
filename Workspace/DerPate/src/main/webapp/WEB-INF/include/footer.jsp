@@ -10,13 +10,7 @@
 						<a href="imprint.jsp">Impressum</a>
 					</li>
 					<li>
-						<a href="aboutus.jsp">&Uuml;ber uns</a>
-					</li>
-					<li>
 						<a href="privacypolicy.jsp">Datenschutzbestimmungen</a>
-					</li>
-					<li>
-						<a href="contact.jsp">Kontakt</a>
 					</li>
 					<%
 						if(LoginManager.getInstance().isLoggedIn(session)){
