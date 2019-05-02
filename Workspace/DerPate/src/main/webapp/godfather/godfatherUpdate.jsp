@@ -13,6 +13,8 @@
 	import="de.db.derpate.persistence.JobDao"
 	import="de.db.derpate.manager.LoginManager"
 	import="de.db.derpate.servlet.godfatherOnly.GodfatherUpdateServlet"
+	import="de.db.derpate.servlet.ServletParameter"
+	
 %>
 
 <%
@@ -38,7 +40,6 @@
 		%>
 
 		<div class="godfather-card card">
-			<div class="card-img-top godfather-card-image"></div>
 			<div class="card-body">
 				<div class="card-text">
 					<form>
@@ -163,22 +164,38 @@
 					<form onSubmit="return checkPassword(this)">
 						<div class="row">
 							<div class="form-group col-md-6 row">
-								<label class="col-md-4 col-form-label">Neues Password</label>
+								<label class="col-md-4 col-form-label">Neues Passwort</label>
 								<div class="col-md-8">
 									<input name="password" type="password" id="password">
 								</div>
 							</div>
 							<div class="form-group col-md-6 row">
-								<label class="col-md-4 col-form-label">Password wiederholen</label>
+								<label class="col-md-4 col-form-label">Passwort wiederholen</label>
 								<div class="col-md-8">
 									<input  name="password_confirm" type="password" id="password_confirm" oninput="check(this)">
 								</div>
 							</div>
 						</div>
 						<div>
-							<input type="submit" value="chech password">
+							<input type="submit" value="Passwort ändern">
 						</div>
+						
+						
 					</form>
+						<div class="row">
+							<div class="form-group col-md-6 row">
+								<label class="col-md-4 col-form-label">Bild Hochladen</label>
+								<div class="col-md-8">
+									<div class="card-img-top godfather-card-image">
+									<form action="../uploadGodfatherImage" method="post" enctype="multipart/form-data">
+  										<input type="file" name="<%= ServletParameter.GODFATHER_IMAGE %>" accept="image/png, image/jpeg" />
+  										<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>"  value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.GODFATHER_UPDATE_SELF) %> ">
+										<input type="submit"  />
+									</form>
+									</div>
+								</div>
+							</div>
+						</div>
 				</div>
 			</div>
 			<div class="card-footer">
