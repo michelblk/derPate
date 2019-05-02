@@ -35,7 +35,7 @@ Usermode usermode = LoginManager.getInstance().getUsermode(user);
 					 </li>
 				<% } else if (usermode == Usermode.GODFATHER) { %>
 					<li>
-						<a class="nav-link" href="godfather/godfatherUpdate.jsp)">Profil</a>
+						<a class="nav-link" href="godfather/godfatherUpdate.jsp">Profil</a>
 					</li>
 				<% } else if (usermode == Usermode.TRAINEE) { %>
 					<li>
@@ -43,7 +43,9 @@ Usermode usermode = LoginManager.getInstance().getUsermode(user);
 					</li>
 				<% } %>
 			</ul>
+			<a href="redirect">
 				<img src="include/images/db_logo.svg" class="float-right image">
+			</a>	
 		</div>
 	</nav>
 	

@@ -5,6 +5,12 @@
 	import="de.db.derpate.servlet.filter.CSRFServletFilter"
 	import="de.db.derpate.CSRFForm"
 	import="de.db.derpate.util.URIParameterEncryptionUtil"%>
+<%
+	if(LoginManager.getInstance().isLoggedIn(session)) {
+		response.sendRedirect("redirect");
+		return;
+	}
+%>
 <jsp:include page="WEB-INF/include/header.jsp" />
 <link rel="stylesheet" type="text/css" href="include/css/login.css" />
 <div class="container container-middle">
