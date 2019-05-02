@@ -39,7 +39,10 @@ Usermode usermode = LoginManager.getInstance().getUsermode(user);
 					</li>
 				<% } else if (usermode == Usermode.TRAINEE) { %>
 					<li>
-						<a class="nav-link" href="trainee/filter.jsp">Paten</a>
+						<a class="nav-link" href="trainee/welcome.jsp">Willkommen</a>
+					</li>
+					<li>
+						<a class="nav-link" href="trainee/filter.jsp">Paten w&auml;hlen</a>
 					</li>
 				<% } %>
 			</ul>
