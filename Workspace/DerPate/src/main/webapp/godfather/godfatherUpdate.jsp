@@ -184,12 +184,12 @@
 					</form>
 						<div class="row">
 							<div class="form-group col-md-6 row">
-								<label class="col-md-4 col-form-label">Bild Hochladen</label>
+								<label class="col-md-4 col-form-label">Bild hochladen</label>
 								<div class="col-md-8">
 									<div class="card-img-top godfather-card-image">
 									<form action="uploadGodfatherImage" method="post" enctype="multipart/form-data">
   										<input type="file" name="<%= ServletParameter.GODFATHER_IMAGE %>" accept="image/png, image/jpeg" />
-  										<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>"  value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.GODFATHER_UPDATE_SELF) %> ">
+  										<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>"  value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.GODFATHER_UPDATE_SELF) %>">
 										<input type="submit"  />
 									</form>
 									</div>
