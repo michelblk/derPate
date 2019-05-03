@@ -32,6 +32,9 @@ Usermode usermode = LoginManager.getInstance().getUsermode(user);
 						<a class="nav-link" href="admin/adminGodfather.jsp">Patenverwaltung</a>
 					 </li>
 					 <li>
+						<a class="nav-link" href="admin/adminAddGodfather.jsp">Paten hinzufügen</a>
+					 </li>
+					 <li>
 					 	<a class="nav-link" href="admin/adminTrainee.jsp">Nachwuchskr&auml;fteverwaltung</a>
 					 </li>
 				<% } else if (usermode == Usermode.GODFATHER) { %>
