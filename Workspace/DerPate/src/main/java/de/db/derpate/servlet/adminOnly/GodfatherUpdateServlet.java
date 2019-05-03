@@ -317,7 +317,7 @@ public class GodfatherUpdateServlet extends FilterServlet {
 
 	private static boolean overwritePassword(String password, Godfather outGodfather) {
 		boolean success = false;
-		if (password != null && !password.isBlank()) {
+		if (password != null && InputVerifyUtil.isNotBlank(password)) {
 			HashUtil hashUtil = Constants.Login.hashUtil;
 			String encryptedPassword = hashUtil.hash(password, Constants.Login.hashSaltLength,
 					Constants.Login.hashPepper, Constants.Login.hashSeparator);
