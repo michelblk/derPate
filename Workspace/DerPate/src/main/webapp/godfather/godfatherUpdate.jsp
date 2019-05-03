@@ -42,7 +42,7 @@
 		<div class="godfather-card card">
 			<div class="card-body">
 				<div class="card-text">
-					<form>
+					<form id="updating-form" action="godfatherUpdate" method="POST">
 						<div class="row">
 							<div class="form-group col-md-6 row">
 								<label class="col-md-4 col-form-label">Vorname</label>
@@ -160,6 +160,10 @@
 								</div>
 							</div>
 						</div>
+						<input type="hidden" name="<%= CSRFPreventionUtil.FIELD_NAME %>" value="<%= CSRFPreventionUtil.generateToken(session, CSRFForm.GODFATHER_UPDATE_SELF) %>" />
+						<button type="submit" class="btn btn-secondary">
+							Daten &auml;ndern
+						</button>
 					</form>
 					<form onSubmit="return checkPassword(this)">
 						<div class="row">
@@ -197,17 +201,6 @@
 							</div>
 						</div>
 				</div>
-			</div>
-			<div class="card-footer">
-				<form class="godfahter-card-select-form" action="../godfatherSelect"
-					method="POST">
-					<input type="hidden" class="godfather-card-select-csrf"
-						name="<%=CSRFPreventionUtil.FIELD_NAME%>"
-						value="<%=CSRFPreventionUtil.generateToken(session, CSRFForm.TRAINEE_SELECT_GODFATHER)%>" />
-					<input type="hidden" class="godfather-card-select-id"
-						name="<%=GodfatherSelectServlet.PARAM_GODFAHTER_ID%>" value="">
-					<input type="submit" class="btn update" value="UPDATE">
-				</form>
 			</div>
 		</div>
 

@@ -43,9 +43,7 @@ $(document).ready(function () {
 	    }
 		return false;
 	});
-});
-
-$(document).ready(function () {				
+			
 				$("#updating-form").submit(function (e) {
 					e.preventDefault();
 					var $form = $(this);
@@ -100,3 +98,4 @@ $(document).ready(function () {
 				var buttons = $(form).find("button[type='submit']");
 				$(buttons).prop("disabled", bool);
 			}
+});
