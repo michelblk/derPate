@@ -17,11 +17,11 @@ import="de.db.derpate.persistence.JobDao"
 <div class="container">
 
 <form action="adminGodfatherAdd" method="POST">
-	<input type="text" name="<%= ServletParameter.GODFATHER_FIRST_NAME%>">
-	<input type="text" name="<%= ServletParameter.GODFATHER_LAST_NAME %>">
-	<input type="email" name="<%= ServletParameter.GODFATHER_EMAIL %>">
-	<input type="password" name="<%= ServletParameter.GODFATHER_PASSWORD %>">
-	<select class="form-control" name="<%= ServletParameter.GODFATHER_LOCATION_ID %>" required>
+	<input type="text" name="<%= ServletParameter.GODFATHER_FIRST_NAME%>" placeholder="Vorname">
+	<input type="text" name="<%= ServletParameter.GODFATHER_LAST_NAME %>" placeholder="Nachname">
+	<input type="email" name="<%= ServletParameter.GODFATHER_EMAIL %>" placeholder="Email">
+	<input type="password" name="<%= ServletParameter.GODFATHER_PASSWORD %>" placeholder="Passwort">
+	<select class="form-control" name="<%= ServletParameter.GODFATHER_LOCATION_ID %>"  required>
 		<%
 			LocationDao locationDao = new LocationDao();
 			for(Location oneLocation : locationDao.all()){
