@@ -1,0 +1,13 @@
+de.db.derpate
+de.db.derpate.handler
+de.db.derpate.manager
+de.db.derpate.model
+de.db.derpate.model.typeadapter
+de.db.derpate.persistence
+de.db.derpate.servlet
+de.db.derpate.servlet.adminOnly
+de.db.derpate.servlet.filter
+de.db.derpate.servlet.filter.validation
+de.db.derpate.servlet.godfatherOnly
+de.db.derpate.servlet.traineeOnly
+de.db.derpate.util
